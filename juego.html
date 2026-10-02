@@ -5,6 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+<style>
+    *
+    {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        image-rendering: pixelated;
+    }
+    canvas
+    {
+        z-index: 99;
+        width: 100%;
+        height: 100vh;
+    }
+    body::-webkit-scrollbar 
+    {
+        width: 0px;
+        height: 0px;
+    }
+
+</style>
 <body>
     <canvas id="canvas"></canvas>
 </body>
@@ -12,7 +33,12 @@
 
 <script>
 const canvas = document.getElementById("canvas");
-
+canvas.width = 854;
+canvas.height = 480;
+const ctx = canvas.getContext("2d", { willReadFrequently: true });
+let auto = {x: 100, y: 100, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15};
+const imagenauto = new Image();
+imagenauto.src = 'New Piskel.png';
 function colisiones(porcion)
 {
     porcion.x += porcion.velocidadx;
@@ -74,4 +100,25 @@ function colisiones(porcion)
 
     return colisiones;
 }
+
+function dibujar()
+{
+    ctx.drawImage(imagenauto, auto.x, auto.y, auto.anchoimagen, auto.altoimagen);
+}
+
+function loop()
+{
+    ctx.clearRect(0,0,canvas.width, canvas.height);
+    dibujar();
+    requestAnimationFrame(loop);
+}
+
+imagenauto.onload = function()
+{
+    console.log(auto.x, auto.y);
+    loop();
+};
+
+    
+
 </script>
