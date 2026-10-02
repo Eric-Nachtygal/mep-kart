@@ -12,4 +12,66 @@
 
 <script>
 const canvas = document.getElementById("canvas");
+
+function colisiones(porcion)
+{
+    porcion.x += porcion.velocidadx;
+    porcion.y += porcion.velocidady;
+
+    //let alturahitbox = 20;
+    let centrox = porcion.x + porcion.ancho / 2;
+    let centroy = porcion.y + porcion.altura / 2;
+    let hitbox_izq = centrox - 7;
+    let hitbox_der = centrox + 3;
+    let hitbox_abajo = porcion.y + porcion.altura
+    let hitbox_arriba = hitbox_abajo - 20;
+
+    let colisiones = {abajo: true, arriba: true, izquierda: true, derecha: true};
+    let listaObstaculos = obstaculos;
+
+
+    //se fija que la porcion y el objeto esten tocandose
+    for (let i = 0; i < listaObstaculos.length; i++)
+    {
+        if (listaObstaculos[i].x + listaObstaculos[i].ancho <= hitbox_izq || listaObstaculos[i].x >= hitbox_der || listaObstaculos[i].y + listaObstaculos[i].altura <= hitbox_abajo || listaObstaculos[i].y >= hitbox_abajo)
+        {
+            //costados
+            if (listaObstaculos[i].x < porcion.x + centrox)
+            {
+                colisiones.izquierda = false;
+            } 
+            else if (listaObstaculos[i].x > porcion.x + centrox)
+            {
+                colisiones.derecha = false;
+            }
+            else
+            {
+                colisiones.izquierda = false;
+                colisiones.derecha = false;
+            }
+
+            //arriba y abajo
+            if (listaObstaculos[i].y < porcion.y + centroy)
+            {
+                colisiones.arriba = false;
+            } 
+            else if (listaObstaculos[i].x > porcion.y + centroy)
+            {
+                colisiones.abajo = false;
+            }
+            else
+            {
+                colisiones.arriba = false;
+                colisiones.abajo = false;
+            }
+
+            break;
+        }
+    }
+
+    porcion.x -= porcion.velocidadx;
+    porcion.y -= porcion.velocidady;
+
+    return colisiones;
+}
 </script>
