@@ -37,6 +37,7 @@ canvas.width = 854;
 canvas.height = 480;
 const ctx = canvas.getContext("2d", { willReadFrequently: true });
 let auto = {x: 100, y: 100, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15};
+let mouseapretado = false;
 const imagenauto = new Image();
 imagenauto.src = 'New Piskel.png';
 function colisiones(porcion)
@@ -122,7 +123,27 @@ imagenauto.onload = function()
 
 function moverjugador()
 {
+    canvas.addEventListener("mousedown", function (e) 
+    {
+        if (!mouseapretado)
+        {
+            mouseapretado = true;
+        }
+    });
 
+    canvas.addEventListener("mouseup", function (e) 
+    {
+        if (mouseapretado)
+        {
+            mouseapretado = false;
+        }
+    });
+
+    if (mouseapretado)
+    {
+        auto.x += 4;
+    }
+    
 }
 
 </script>
