@@ -17,14 +17,14 @@ function colisiones(porcion)
 {
     porcion.x += porcion.velocidadx;
     porcion.y += porcion.velocidady;
-
+    //21x9
     //let alturahitbox = 20;
     let centrox = porcion.x + porcion.ancho / 2;
     let centroy = porcion.y + porcion.altura / 2;
-    let hitbox_izq = centrox - 7;
-    let hitbox_der = centrox + 3;
-    let hitbox_abajo = porcion.y + porcion.altura
-    let hitbox_arriba = hitbox_abajo - 20;
+    let hitbox_izq = porcion.x + 4;
+    let hitbox_der = (porcion.x + porcion.ancho) - 2;
+    let hitbox_abajo = (porcion.y + porcion.altura) -3;
+    let hitbox_arriba = hitbox_abajo - 9;
 
     let colisiones = {abajo: true, arriba: true, izquierda: true, derecha: true};
     let listaObstaculos = obstaculos;
@@ -36,11 +36,11 @@ function colisiones(porcion)
         if (listaObstaculos[i].x + listaObstaculos[i].ancho <= hitbox_izq || listaObstaculos[i].x >= hitbox_der || listaObstaculos[i].y + listaObstaculos[i].altura <= hitbox_abajo || listaObstaculos[i].y >= hitbox_abajo)
         {
             //costados
-            if (listaObstaculos[i].x < porcion.x + centrox)
+            if (listaObstaculos[i].x < centrox)
             {
                 colisiones.izquierda = false;
             } 
-            else if (listaObstaculos[i].x > porcion.x + centrox)
+            else if (listaObstaculos[i].x > centrox)
             {
                 colisiones.derecha = false;
             }
@@ -51,11 +51,11 @@ function colisiones(porcion)
             }
 
             //arriba y abajo
-            if (listaObstaculos[i].y < porcion.y + centroy)
+            if (listaObstaculos[i].y < centroy)
             {
                 colisiones.arriba = false;
             } 
-            else if (listaObstaculos[i].x > porcion.y + centroy)
+            else if (listaObstaculos[i].x > centroy)
             {
                 colisiones.abajo = false;
             }
