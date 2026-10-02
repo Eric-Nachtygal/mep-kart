@@ -4,6 +4,7 @@ Gameplay
 Pasar sistema de colisiones
 Logica de bots
 Hacer que los sprites giren
+agregar las cajitas con poderes
 Agregar poderes
 Agregar nitro
 Agregar menu de seleccion de mapa modo etc
