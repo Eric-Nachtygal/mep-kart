@@ -122,6 +122,40 @@ imagenauto.onload = function()
 
 function moverjugador()
 {
+    canvas.addEventListener('keydown', function(e) 
+    {
+        if (e.key === 'ArrowUp' || e.key === 'w') 
+        {
+            mov = true;
+            auto.velocidad_y = 2;
+        } 
+        else if (e.key === 'ArrowDown' || e.key === 's') 
+        {
+            mov = true;
+            auto.velocidad_y = -2;
+        } 
+        else if (e.key === 'ArrowLeft' || e.key === 'a') 
+        {
+            mov = true;
+            auto.velocidad_x = 2;
+        } 
+        else if (e.key === 'ArrowRight' || e.key === 'd') 
+        {
+            mov = true;
+            auto.velocidad_x = -2;
+        }
+        else
+        {
+            mov = false;
+        }
+    });
+    
+        if(mov)
+        {
+            auto.x += auto.velocidad_x;
+            auto.y += auto.velocidad_y;
+        }
+
 
 }
 
