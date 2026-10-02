@@ -36,8 +36,9 @@ const canvas = document.getElementById("canvas");
 canvas.width = 854;
 canvas.height = 480;
 const ctx = canvas.getContext("2d", { willReadFrequently: true });
-let auto = {x: 100, y: 100, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15};
+let auto = {x: 100, y: 100, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15, velocidad_y: 0, velocidad_x: 0};
 let mouseapretado = false;
+let teclas = {};
 const imagenauto = new Image();
 imagenauto.src = 'New Piskel.png';
 function colisiones(porcion)
@@ -107,55 +108,51 @@ function dibujar()
     ctx.drawImage(imagenauto, auto.x, auto.y, auto.anchoimagen, auto.altoimagen);
 }
 
-function loop()
-{
-    ctx.clearRect(0,0,canvas.width, canvas.height);
-    dibujar();
-    moverjugador();
-    requestAnimationFrame(loop);
-}
-
-imagenauto.onload = function()
-{
-    console.log(auto.x, auto.y);
-    loop();
-};
-
 function moverjugador()
 {
-    canvas.addEventListener('keydown', function(e) 
+    document.addEventListener('keydown', function(e) 
     {
-        if (e.key === 'ArrowUp' || e.key === 'w') 
-        {
-            mov = true;
-            auto.velocidad_y = 2;
-        } 
-        else if (e.key === 'ArrowDown' || e.key === 's') 
-        {
-            mov = true;
-            auto.velocidad_y = -2;
-        } 
-        else if (e.key === 'ArrowLeft' || e.key === 'a') 
-        {
-            mov = true;
-            auto.velocidad_x = 2;
-        } 
-        else if (e.key === 'ArrowRight' || e.key === 'd') 
-        {
-            mov = true;
-            auto.velocidad_x = -2;
-        }
-        else
-        {
-            mov = false;
-        }
+        e.preventDefault();
+        teclas[e.key.toLowerCase()] = true;
+        
     });
     
-        if(mov)
-        {
-            auto.x += auto.velocidad_x;
-            auto.y += auto.velocidad_y;
-        }
+    document.addEventListener('keyup', function(e)
+    {
+        teclas[e.key.toLowerCase()] = false;
+    });
+
+    if (teclas['F5'])
+    {
+        window.location.href = "juego.html";
+    }
+
+    if (teclas['ArrowUp'] || teclas['w']) 
+    {
+        mov = true;
+        auto.velocidad_y = -2;
+    } 
+    else if (teclas['ArrowDown'] || teclas['s']) 
+    {
+        mov = true;
+        auto.velocidad_y = 2;
+    } 
+    else if (teclas['ArrowLeft'] || teclas['a']) 
+    {
+        mov = true;
+        auto.velocidad_x = 2;
+    } 
+    else if (teclas['ArrowRight'] || teclas['d']) 
+    {
+        mov = true;
+        auto.velocidad_x = -2;
+    }
+    else
+    {
+        mov = false;
+    }
+       
+
 
     canvas.addEventListener("mousedown", function (e) 
     {
@@ -175,9 +172,31 @@ function moverjugador()
 
     if (mouseapretado)
     {
-        auto.x += 4;
+        auto.velocidad_x += 4;
+        mov = true;
     }
     
+    if (mov)
+    {
+        auto.x += auto.velocidad_x;
+        auto.y += auto.velocidad_y;
+    }
 }
+
+function loop()
+{
+    ctx.clearRect(0,0,canvas.width, canvas.height);
+    dibujar();
+    moverjugador();
+    requestAnimationFrame(loop);
+}
+
+imagenauto.onload = function()
+{
+    console.log(auto.x, auto.y);
+    loop();
+};
+
+
 
 </script>
