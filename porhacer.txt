@@ -1,7 +1,6 @@
 Sprites autos
 Sprites mapas
 Gameplay
-Pasar sistema de colisiones
 Logica de bots
 Hacer que los sprites giren
 agregar las cajitas con poderes
@@ -15,3 +14,6 @@ Agregar sistema de contar tiempo
 Modo contrareloj
 Agregar sonido
 Agregar musica
+
+HECHO:
+Pasar sistema de colisiones

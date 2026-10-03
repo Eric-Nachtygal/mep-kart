@@ -41,6 +41,10 @@ let mouseapretado = false;
 let teclas = {};
 const imagenauto = new Image();
 imagenauto.src = 'New Piskel.png';
+/*PARA DESPUES: hacer un array con cada corredor (listaautos o algo asi), en colisiones() revisar colisiones entre los autos
+(empujar en direccion de la colision), revisar si esta adentro de la ruta o no, y evitar que se salga de la pantalla
+tambien tendriamos que correrlo para cada jugador cuando empieze el loop, y guardarlo (ej: auto.col_arriba, auto.col_abajo, etc)
+esto evitaria tener que correr la funcion cada vez que necesitamos ver las colisiones como en khaos doom*/
 function colisiones(porcion)
 {
     porcion.x += porcion.velocidadx;
