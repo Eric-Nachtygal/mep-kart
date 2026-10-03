@@ -130,28 +130,60 @@ function moverjugador()
     if (teclas['arrowup'] || teclas['w']) 
     {
         mov = true;
-        auto.velocidad_y = -2;
+        if (auto.velocidad_y > -6)
+        {
+            auto.velocidad_y -= 2;
+        }  
     } 
     else if (teclas['arrowdown'] || teclas['s']) 
     {
         mov = true;
-        auto.velocidad_y = 2;
+        if (auto.velocidad_y < 6)
+        {
+            auto.velocidad_y += 2;
+        } 
     } 
     else if (teclas['arrowleft'] || teclas['a']) 
     {
         mov = true;
-        auto.velocidad_x = -2;
+        if (auto.velocidad_x > -10)
+        {
+            auto.velocidad_x -= 2;
+        }
     } 
     else if (teclas['arrowright'] || teclas['d']) 
     {
         mov = true;
-        auto.velocidad_x = 2;
+        if (auto.velocidad_x < 10)
+        {
+            auto.velocidad_x += 2;
+        }  
     }
     else
     {
         mov = false;
-        auto.velocidad_x = 0;
-        auto.velocidad_y = 0;
+        if (auto.velocidad_x !=0)
+        {
+            if (auto.velocidad_x > 0)
+            {
+                auto.velocidad_x -= 1;
+            }
+            else
+            {
+                auto.velocidad_x += 1;
+            }
+        }
+        if (auto.velocidad_y !=0)
+        {
+            if (auto.velocidad_y > 0)
+            {
+                auto.velocidad_y -= 1;
+            }
+            else
+            {
+                auto.velocidad_y += 1;
+            }
+        }
     }
        
 
@@ -178,11 +210,10 @@ function moverjugador()
         mov = true;
     }
     
-    if (mov)
-    {
-        auto.x += auto.velocidad_x;
-        auto.y += auto.velocidad_y;
-    }
+
+    auto.x += auto.velocidad_x;
+    auto.y += auto.velocidad_y;
+
 }
 
 function loop()
