@@ -122,34 +122,36 @@ function moverjugador()
         teclas[e.key.toLowerCase()] = false;
     });
 
-    if (teclas['F5'])
+    if (teclas['f5'])
     {
         window.location.href = "juego.html";
     }
 
-    if (teclas['ArrowUp'] || teclas['w']) 
+    if (teclas['arrowup'] || teclas['w']) 
     {
         mov = true;
         auto.velocidad_y = -2;
     } 
-    else if (teclas['ArrowDown'] || teclas['s']) 
+    else if (teclas['arrowdown'] || teclas['s']) 
     {
         mov = true;
         auto.velocidad_y = 2;
     } 
-    else if (teclas['ArrowLeft'] || teclas['a']) 
-    {
-        mov = true;
-        auto.velocidad_x = 2;
-    } 
-    else if (teclas['ArrowRight'] || teclas['d']) 
+    else if (teclas['arrowleft'] || teclas['a']) 
     {
         mov = true;
         auto.velocidad_x = -2;
+    } 
+    else if (teclas['arrowright'] || teclas['d']) 
+    {
+        mov = true;
+        auto.velocidad_x = 2;
     }
     else
     {
         mov = false;
+        auto.velocidad_x = 0;
+        auto.velocidad_y = 0;
     }
        
 
