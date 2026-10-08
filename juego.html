@@ -36,7 +36,7 @@ const canvas = document.getElementById("canvas");
 canvas.width = 854;
 canvas.height = 480;
 const ctx = canvas.getContext("2d", { willReadFrequently: true });
-let auto = {x: 100, y: 100, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15, velocidad_y: 0, velocidad_x: 0};
+let auto = {x: 100, y: 100, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15, velocidad_y: 0, velocidad_x: 0, velocidadmax_x: 6, velocidadmax_y: 6};
 let mouseapretado = false;
 let teclas = {};
 const imagenauto = new Image();
@@ -126,6 +126,9 @@ function moverjugador()
         teclas[e.key.toLowerCase()] = false;
     });
 
+    let movx = false;
+    let movy = false;
+
     if (teclas['f5'])
     {
         window.location.href = "juego.html";
@@ -133,65 +136,37 @@ function moverjugador()
 
     if (teclas['arrowup'] || teclas['w']) 
     {
-        mov = true;
-        if (auto.velocidad_y > -6)
+        movy = true;
+        if (auto.velocidad_y > -auto.velocidadmax_y)
         {
             auto.velocidad_y -= 2;
         }  
     } 
-    else if (teclas['arrowdown'] || teclas['s']) 
+    if (teclas['arrowdown'] || teclas['s']) 
     {
-        mov = true;
-        if (auto.velocidad_y < 6)
+        movy = true;
+        if (auto.velocidad_y < auto.velocidadmax_y)
         {
             auto.velocidad_y += 2;
         } 
-    } 
-    else if (teclas['arrowleft'] || teclas['a']) 
+    }
+    if (teclas['arrowright'] || teclas['d']) 
     {
-        mov = true;
-        if (auto.velocidad_x > -10)
-        {
-            auto.velocidad_x -= 2;
-        }
-    } 
-    else if (teclas['arrowright'] || teclas['d']) 
-    {
-        mov = true;
-        if (auto.velocidad_x < 10)
+        movx = true;
+        if (auto.velocidad_x < auto.velocidadmax_x)
         {
             auto.velocidad_x += 2;
         }  
     }
-    else
+    if (teclas['arrowleft'] || teclas['a']) 
     {
-        mov = false;
-        if (auto.velocidad_x !=0)
+        movx = true;
+        if (auto.velocidad_x > -auto.velocidadmax_x)
         {
-            if (auto.velocidad_x > 0)
-            {
-                auto.velocidad_x -= 1;
-            }
-            else
-            {
-                auto.velocidad_x += 1;
-            }
+            auto.velocidad_x -= 2;
         }
-        if (auto.velocidad_y !=0)
-        {
-            if (auto.velocidad_y > 0)
-            {
-                auto.velocidad_y -= 1;
-            }
-            else
-            {
-                auto.velocidad_y += 1;
-            }
-        }
-    }
-       
-
-
+    } 
+    
     canvas.addEventListener("mousedown", function (e) 
     {
         if (!mouseapretado)
@@ -210,9 +185,42 @@ function moverjugador()
 
     if (mouseapretado)
     {
-        auto.velocidad_x += 4;
-        mov = true;
+        auto.velocidad_x += 2;
+        movx = true;
     }
+
+    if (!movx)
+    {
+        if (auto.velocidad_x !=0)
+        {
+            if (auto.velocidad_x > 0)
+            {
+                auto.velocidad_x -= 1;
+            }
+            else
+            {
+                auto.velocidad_x += 1;
+            }
+        }
+    }
+    if (!movy)
+    {
+        if (auto.velocidad_y !=0)
+        {
+            if (auto.velocidad_y > 0)
+            {
+                auto.velocidad_y -= 1;
+            }
+            else
+            {
+                auto.velocidad_y += 1;
+            }
+        }
+    }
+       
+
+
+    
     
 
     auto.x += auto.velocidad_x;
