@@ -161,7 +161,7 @@ function moverjugador()
         mov = true; 
         if (auto.velocidad_x < auto.velocidadmax_x)
         {
-            auto.velocidad_x += 2;
+            auto.velocidad_x += 0.25;
         }
         else if (auto.velocidad_x > auto.velocidadmax_x)
         {
@@ -173,7 +173,7 @@ function moverjugador()
         mov = true;
         if (auto.velocidad_x > -auto.velocidadmax_x)
         {
-            auto.velocidad_x -= 2;
+            auto.velocidad_x -= 0.25;
         } 
         else if (auto.velocidad_x <= -auto.velocidadmax_x)
         {
