@@ -147,14 +147,14 @@ function moverjugador()
     }
 
 
-    if (teclas['arrowright'] || teclas['d'] || teclas['arrowleft'] || teclas['a']) 
+   /* if (teclas['arrowright'] || teclas['d'] || teclas['arrowleft'] || teclas['a']) 
     {
         auto.velocidadmax_x = 5.25;
     }
     else
     {
         auto.velocidadmax_x = 6;
-    }
+    }*/
     
     if (teclas['arrowup'] || teclas['w'] || teclas[' ']) 
     {
@@ -182,11 +182,11 @@ function moverjugador()
     }
     if (teclas['arrowright'] || teclas['d']) 
     {
-        auto.angulo += 0.02*(auto.velocidad_x/2);
+        auto.angulo += 0.017*(auto.velocidad_x/2);
     }
     if (teclas['arrowleft'] || teclas['a']) 
     {
-        auto.angulo -= 0.02*(auto.velocidad_x/2);
+        auto.angulo -= 0.017*(auto.velocidad_x/2);
     } 
 
     
