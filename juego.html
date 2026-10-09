@@ -115,6 +115,7 @@ function dibujar()
         ctx.translate(auto.x + (auto.anchoimagen / 2), auto.y + (auto.altoimagen / 2));
         //ctx.rotate(auto.angulo * (Math.PI / 180));
         ctx.rotate(auto.angulo);
+        ctx.imageSmoothingEnabled = false;
         ctx.drawImage(imagenauto, -auto.anchoimagen / 2, -auto.altoimagen / 2, auto.anchoimagen, auto.altoimagen);
         ctx.restore();
     }
