@@ -36,7 +36,7 @@ const canvas = document.getElementById("canvas");
 canvas.width = 854;
 canvas.height = 480;
 const ctx = canvas.getContext("2d", { willReadFrequently: true });
-let auto = {x: 100, y: 100, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad_x: 0, velocidadmax_x: 6, angulo: 0};
+let auto = {x: 100, y: 100, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad_x: 0, velocidadmax_x: 6, angulo: 0, angulo_muestra: 0};
 let mouseapretado = false;
 let teclas = {};
 let mousex = 0;
@@ -123,7 +123,7 @@ function dibujar()
         ctx.save();
         ctx.translate(auto.x + (auto.anchoimagen / 2), auto.y + (auto.altoimagen / 2));
         //ctx.rotate(auto.angulo * (Math.PI / 180));
-        ctx.rotate(auto.angulo);
+        ctx.rotate(auto.angulo_muestra);
         ctx.imageSmoothingEnabled = false;
         ctx.drawImage(imagenauto, -auto.anchoimagen / 2, -auto.altoimagen / 2, auto.anchoimagen, auto.altoimagen);
         ctx.restore();
@@ -189,14 +189,34 @@ function moverjugador()
             auto.velocidad_x = -auto.velocidadmax_x;
         }
     }
-    if (teclas['arrowright'] || teclas['d']) 
+    if (teclas['shift']) 
     {
-        auto.angulo += 0.017*(auto.velocidad_x/2);
+        if (mov && teclas['arrowleft'] || teclas['a'])
+        {
+            auto.angulo -= 0.025*(auto.velocidad_x/2);
+            auto.angulo_muestra = auto.angulo - 0.25*(auto.velocidad_x/2);
+        }
+        if (mov && teclas['arrowright'] || teclas['d'])
+        {
+            auto.angulo += 0.025*(auto.velocidad_x/2);
+            auto.angulo_muestra = auto.angulo + 0.25*(auto.velocidad_x/2);
+        }
     }
-    if (teclas['arrowleft'] || teclas['a']) 
+    else
     {
-        auto.angulo -= 0.017*(auto.velocidad_x/2);
-    } 
+        auto.angulo_muestra = auto.angulo;
+        if (teclas['arrowright'] || teclas['d']) 
+        {
+            auto.angulo += 0.017*(auto.velocidad_x/2);
+            auto.angulo_muestra = auto.angulo;
+        }
+        if (teclas['arrowleft'] || teclas['a']) 
+        {
+            auto.angulo -= 0.017*(auto.velocidad_x/2);
+            auto.angulo_muestra = auto.angulo;
+        } 
+    }
+    
 
     
     canvas.addEventListener("mousedown", function (e) 
