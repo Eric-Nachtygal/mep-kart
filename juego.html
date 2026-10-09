@@ -36,7 +36,7 @@ const canvas = document.getElementById("canvas");
 canvas.width = 854;
 canvas.height = 480;
 const ctx = canvas.getContext("2d", { willReadFrequently: true });
-let auto = {x: 100, y: 100, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15, velocidad_y: 0, velocidad_x: 0, velocidadmax_x: 6, velocidadmax_y: 6};
+let auto = {x: 100, y: 100, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15, velocidad_y: 0, velocidad_x: 0, velocidadmax_x: 6, velocidadmax_y: 6, angulo: 0};
 let mouseapretado = false;
 let teclas = {};
 const imagenauto = new Image();
@@ -136,36 +136,29 @@ function moverjugador()
 
     if (teclas['arrowup'] || teclas['w']) 
     {
-        movy = true;
-        if (auto.velocidad_y > -auto.velocidadmax_y)
+        movy = true; 
+        if (auto.velocidad_x < auto.velocidadmax_x)
         {
-            auto.velocidad_y -= 2;
+            auto.velocidad_x += 2;
         }  
     } 
     if (teclas['arrowdown'] || teclas['s']) 
     {
         movy = true;
-        if (auto.velocidad_y < auto.velocidadmax_y)
+        if (auto.velocidad_x > -auto.velocidadmax_x)
         {
-            auto.velocidad_y += 2;
+            auto.velocidad_x -= 2;
         } 
     }
     if (teclas['arrowright'] || teclas['d']) 
     {
-        movx = true;
-        if (auto.velocidad_x < auto.velocidadmax_x)
-        {
-            auto.velocidad_x += 2;
-        }  
+        auto.angulo += 0.02*(auto.velocidad_x/2);
     }
     if (teclas['arrowleft'] || teclas['a']) 
     {
-        movx = true;
-        if (auto.velocidad_x > -auto.velocidadmax_x)
-        {
-            auto.velocidad_x -= 2;
-        }
+        auto.angulo -= 0.02*(auto.velocidad_x/2);
     } 
+
     
     canvas.addEventListener("mousedown", function (e) 
     {
@@ -220,14 +213,14 @@ function moverjugador()
             }
         }
     }
-       
+    
 
 
     
     
 
-    auto.x += auto.velocidad_x;
-    auto.y += auto.velocidad_y;
+    auto.x += Math.cos(auto.angulo) * auto.velocidad_x;
+    auto.y += Math.sin(auto.angulo) * auto.velocidad_x;
 
 }
 
