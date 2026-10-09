@@ -39,12 +39,21 @@ const ctx = canvas.getContext("2d", { willReadFrequently: true });
 let auto = {x: 100, y: 100, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad_x: 0, velocidadmax_x: 6, angulo: 0};
 let mouseapretado = false;
 let teclas = {};
+let mousex = 0;
+let mousey = 0;
 const imagenauto = new Image();
 imagenauto.src = 'New Piskel.png';
 /*PARA DESPUES: hacer un array con cada corredor (listaautos o algo asi), en colisiones() revisar colisiones entre los autos
 (empujar en direccion de la colision), revisar si esta adentro de la ruta o no, y evitar que se salga de la pantalla
 tambien tendriamos que correrlo para cada jugador cuando empieze el loop, y guardarlo (ej: auto.col_arriba, auto.col_abajo, etc)
 esto evitaria tener que correr la funcion cada vez que necesitamos ver las colisiones como en khaos doom*/
+function posicionmouse(e)
+{
+    const rect = canvas.getBoundingClientRect();
+    mousex = (e.clientX - rect.left) * (canvas.width / rect.width);
+    mousey = (e.clientY - rect.top) * (canvas.height / rect.height);
+}
+
 function colisiones(porcion)
 {
     /*porcion.x += porcion.velocidadx;
@@ -192,18 +201,18 @@ function moverjugador()
     
     canvas.addEventListener("mousedown", function (e) 
     {
-        if (!mouseapretado)
-        {
-            mouseapretado = true;
-        }
+        mouseapretado = true;
+        posicionmouse(e);
+    });
+
+    canvas.addEventListener("mousemove", function(e)
+    {
+        posicionmouse(e);
     });
 
     canvas.addEventListener("mouseup", function (e) 
     {
-        if (mouseapretado)
-        {
-            mouseapretado = false;
-        }
+        mouseapretado = false;
     });
 
     if (mouseapretado)
@@ -211,12 +220,36 @@ function moverjugador()
         mov = true;
         if (auto.velocidad_x < auto.velocidadmax_x)
         {
-            auto.velocidad_x += 2;
+            auto.velocidad_x += 0.25;
         }
         else if (auto.velocidad_x > auto.velocidadmax_x)
         {
             auto.velocidad_x = auto.velocidadmax_x;
         }
+        let aux_x = auto.x + (auto.anchoimagen / 2);
+        let aux_y = auto.y + (auto.altoimagen / 2);
+        let deltax = mousex - aux_x;
+        let deltay = mousey - aux_y;
+        let angulo_mouse = Math.atan2(deltay, deltax);
+        let diferencia = Math.atan2(Math.sin(angulo_mouse - auto.angulo),Math.cos(angulo_mouse - auto.angulo));
+        
+        if (Math.abs(diferencia) <= Math.abs(0.017*(auto.velocidad_x/2))) //si la diferencia es muy poca no rota
+        {
+            auto.angulo = angulo_mouse;
+        }
+        else
+        {
+            auto.angulo += Math.sign(diferencia) * Math.abs(0.017*(auto.velocidad_x/2));
+        }
+        /*if (auto.angulo > angulo_mouse)
+        {
+            auto.angulo += 0.017*(auto.velocidad_x/2);
+        }
+        else if (auto.angulo < angulo_mouse)
+        {
+            auto.angulo -= 0.017*(auto.velocidad_x/2);
+        }*/
+        
     }
 
     if (!mov)
