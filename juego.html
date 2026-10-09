@@ -36,7 +36,7 @@ const canvas = document.getElementById("canvas");
 canvas.width = 854;
 canvas.height = 480;
 const ctx = canvas.getContext("2d", { willReadFrequently: true });
-let auto = {x: 100, y: 100, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15, velocidad_y: 0, velocidad_x: 0, velocidadmax_x: 6, velocidadmax_y: 6, angulo: 0};
+let auto = {x: 100, y: 100, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad_x: 0, velocidadmax_x: 6, angulo: 0};
 let mouseapretado = false;
 let teclas = {};
 const imagenauto = new Image();
@@ -47,8 +47,8 @@ tambien tendriamos que correrlo para cada jugador cuando empieze el loop, y guar
 esto evitaria tener que correr la funcion cada vez que necesitamos ver las colisiones como en khaos doom*/
 function colisiones(porcion)
 {
-    porcion.x += porcion.velocidadx;
-    porcion.y += porcion.velocidady;
+    /*porcion.x += porcion.velocidadx;
+    porcion.y += porcion.velocidady;*/
     //21x9
     //let alturahitbox = 20;
     let centrox = porcion.x + porcion.ancho / 2;
@@ -101,8 +101,8 @@ function colisiones(porcion)
         }
     }
 
-    porcion.x -= porcion.velocidadx;
-    porcion.y -= porcion.velocidady;
+    /*porcion.x -= porcion.velocidadx;
+    porcion.y -= porcion.velocidady;*/
 
     return colisiones;
 }
@@ -138,8 +138,7 @@ function moverjugador()
         teclas[e.key.toLowerCase()] = false;
     });
 
-    let movx = false;
-    let movy = false;
+    let mov = false;
 
     if (teclas['f5'])
     {
@@ -149,7 +148,7 @@ function moverjugador()
 
     if (teclas['arrowright'] || teclas['d'] || teclas['arrowleft'] || teclas['a']) 
     {
-        auto.velocidadmax_x = 5.75;
+        auto.velocidadmax_x = 5.25;
     }
     else
     {
@@ -158,7 +157,7 @@ function moverjugador()
     
     if (teclas['arrowup'] || teclas['w'] || teclas[' ']) 
     {
-        movy = true; 
+        mov = true; 
         if (auto.velocidad_x < auto.velocidadmax_x)
         {
             auto.velocidad_x += 2;
@@ -170,7 +169,7 @@ function moverjugador()
     } 
     if (teclas['arrowdown'] || teclas['s']) 
     {
-        movy = true;
+        mov = true;
         if (auto.velocidad_x > -auto.velocidadmax_x)
         {
             auto.velocidad_x -= 2;
@@ -208,45 +207,32 @@ function moverjugador()
 
     if (mouseapretado)
     {
-        movx = true;
+        mov = true;
         if (auto.velocidad_x < auto.velocidadmax_x)
         {
             auto.velocidad_x += 2;
         }
+        else if (auto.velocidad_x > auto.velocidadmax_x)
+        {
+            auto.velocidad_x = auto.velocidadmax_x;
+        }
     }
 
-    if (!movx)
+    if (!mov)
     {
         if (auto.velocidad_x !=0)
         {
-            if (auto.velocidad_x > 0 && auto.velocidad_x < 1)
+            if (auto.velocidad_x > 0)
             {
-                auto.velocidad_x = 0;
-            }
-            else if (auto.velocidad_x > 0)
-            {
-                auto.velocidad_x -= 1;
+                auto.velocidad_x -= 0.25;
             }
             else
             {
-                auto.velocidad_x += 1;
+                auto.velocidad_x += 0.25;
             }
         }
     }
-    if (!movy)
-    {
-        if (auto.velocidad_y !=0)
-        {
-            if (auto.velocidad_y > 0)
-            {
-                auto.velocidad_y -= 1;
-            }
-            else
-            {
-                auto.velocidad_y += 1;
-            }
-        }
-    }
+
     
 
 
