@@ -109,7 +109,19 @@ function colisiones(porcion)
 
 function dibujar()
 {
-    ctx.drawImage(imagenauto, auto.x, auto.y, auto.anchoimagen, auto.altoimagen);
+    if (auto.angulo != 0)
+    {
+        ctx.save();
+        ctx.translate(auto.x + (auto.anchoimagen / 2), auto.y + (auto.altoimagen / 2));
+        //ctx.rotate(auto.angulo * (Math.PI / 180));
+        ctx.rotate(auto.angulo);
+        ctx.drawImage(imagenauto, -auto.anchoimagen / 2, -auto.altoimagen / 2, auto.anchoimagen, auto.altoimagen);
+        ctx.restore();
+    }
+    else
+    {
+        ctx.drawImage(imagenauto, auto.x, auto.y, auto.anchoimagen, auto.altoimagen);
+    }
 }
 
 function moverjugador()
@@ -134,13 +146,27 @@ function moverjugador()
         window.location.href = "juego.html";
     }
 
-    if (teclas['arrowup'] || teclas['w']) 
+
+    if (teclas['arrowright'] || teclas['d'] || teclas['arrowleft'] || teclas['a']) 
+    {
+        auto.velocidadmax_x = 5.75;
+    }
+    else
+    {
+        auto.velocidadmax_x = 6;
+    }
+    
+    if (teclas['arrowup'] || teclas['w'] || teclas[' ']) 
     {
         movy = true; 
         if (auto.velocidad_x < auto.velocidadmax_x)
         {
             auto.velocidad_x += 2;
-        }  
+        }
+        else if (auto.velocidad_x > auto.velocidadmax_x)
+        {
+            auto.velocidad_x = auto.velocidadmax_x;
+        }
     } 
     if (teclas['arrowdown'] || teclas['s']) 
     {
@@ -149,6 +175,10 @@ function moverjugador()
         {
             auto.velocidad_x -= 2;
         } 
+        else if (auto.velocidad_x <= -auto.velocidadmax_x)
+        {
+            auto.velocidad_x = -auto.velocidadmax_x;
+        }
     }
     if (teclas['arrowright'] || teclas['d']) 
     {
@@ -189,7 +219,11 @@ function moverjugador()
     {
         if (auto.velocidad_x !=0)
         {
-            if (auto.velocidad_x > 0)
+            if (auto.velocidad_x > 0 && auto.velocidad_x < 1)
+            {
+                auto.velocidad_x = 0;
+            }
+            else if (auto.velocidad_x > 0)
             {
                 auto.velocidad_x -= 1;
             }
