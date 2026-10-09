@@ -185,8 +185,11 @@ function moverjugador()
 
     if (mouseapretado)
     {
-        auto.velocidad_x += 2;
         movx = true;
+        if (auto.velocidad_x < auto.velocidadmax_x)
+        {
+            auto.velocidad_x += 2;
+        }
     }
 
     if (!movx)
