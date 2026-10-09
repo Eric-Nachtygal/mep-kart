@@ -49,9 +49,8 @@ tambien tendriamos que correrlo para cada jugador cuando empieze el loop, y guar
 esto evitaria tener que correr la funcion cada vez que necesitamos ver las colisiones como en khaos doom*/
 function posicionmouse(e)
 {
-    const rect = canvas.getBoundingClientRect();
-    mousex = (e.clientX - rect.left) * (canvas.width / rect.width);
-    mousey = (e.clientY - rect.top) * (canvas.height / rect.height);
+    mousex = (e.clientX) * (canvas.width / canvas.clientWidth);
+    mousey = (e.clientY) * (canvas.height / canvas.clientHeight);
 }
 
 function colisiones(porcion)
