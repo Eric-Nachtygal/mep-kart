@@ -42,7 +42,7 @@ let teclas = {};
 let mousex = 0;
 let mousey = 0;
 const imagenauto = new Image();
-imagenauto.src = 'New Piskel.png';
+imagenauto.src = 'sprites/auto_jugador.png';
 /*PARA DESPUES: hacer un array con cada corredor (listaautos o algo asi), en colisiones() revisar colisiones entre los autos
 (empujar en direccion de la colision), revisar si esta adentro de la ruta o no, y evitar que se salga de la pantalla
 tambien tendriamos que correrlo para cada jugador cuando empieze el loop, y guardarlo (ej: auto.col_arriba, auto.col_abajo, etc)
@@ -192,13 +192,13 @@ function moverjugador()
     {
         if (mov && teclas['arrowleft'] || teclas['a'])
         {
-            auto.angulo -= 0.025*(auto.velocidad_x/2);
-            auto.angulo_muestra = auto.angulo - 0.25*(auto.velocidad_x/2);
+            auto.angulo -= 0.022*(auto.velocidad_x/2);
+            auto.angulo_muestra = auto.angulo - 0.22*(auto.velocidad_x/2);
         }
         if (mov && teclas['arrowright'] || teclas['d'])
         {
-            auto.angulo += 0.025*(auto.velocidad_x/2);
-            auto.angulo_muestra = auto.angulo + 0.25*(auto.velocidad_x/2);
+            auto.angulo += 0.022*(auto.velocidad_x/2);
+            auto.angulo_muestra = auto.angulo + 0.22*(auto.velocidad_x/2);
         }
     }
     else
@@ -226,7 +226,10 @@ function moverjugador()
 
     canvas.addEventListener("mousemove", function(e)
     {
-        posicionmouse(e);
+        if (mouseapretado)
+        {
+            posicionmouse(e);
+        }
     });
 
     canvas.addEventListener("mouseup", function (e) 
@@ -307,7 +310,7 @@ function loop()
 
 imagenauto.onload = function()
 {
-    console.log(auto.x, auto.y);
+    //console.log(auto.x, auto.y);
     loop();
 };
 
