@@ -218,7 +218,19 @@ function moverjugador()
     }
     if (teclas['shift']) 
     {
-        auto.velocidadmax= 4;
+        if (auto.min_turbo != 0)
+        {
+            auto.velocidadmax = 7;
+            auto.min_turbo -= 0.04;
+            if (auto.min_turbo < 0)
+            {
+                auto.min_turbo = 0;
+            }
+        }
+        else
+        {
+            auto.velocidadmax= 4.25;
+        }
         if (mov && teclas['arrowleft'] || teclas['a'])
         {
             auto.angulo -= 0.022*(auto.velocidad/2);
