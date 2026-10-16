@@ -69,7 +69,33 @@ let mouseapretado = false;
 let teclas = {};
 let mousex = 0;
 let mousey = 0;
-
+const mapa1 = [
+{x: 500, y: 50, ancho: 390, altura: 94},
+{x:320, y:67, ancho:180, altura:90},
+{x:200, y:47, ancho:115, altura:93},
+{x:130, y:54, ancho:65, altura:94},
+{x:70, y:90, ancho:80, altura:180},
+{x:70, y:227, ancho:87, altura:64},
+{x:160, y:240, ancho:340, altura:94},
+{x:470, y:270, ancho:80, altura:160},
+{x:100, y:385, ancho:400, altura:96},
+{x:55, y:407, ancho:73, altura:94},
+{x:44, y:506, ancho:95, altura:80},
+{x:65, y:580, ancho:280, altura:100},
+{x:340, y:555, ancho:220, altura:105},
+{x:560, y:580, ancho:120, altura:115},
+{x:680, y:607, ancho:450, altura:94},
+{x:1130, y:598, ancho:100, altura:100},
+{x:1200, y:560, ancho:100, altura:85},
+{x:1200, y:450, ancho:110, altura:110},
+{x:895, y:390, ancho:325, altura:110},
+{x:800, y:270, ancho:90, altura:190},
+{x:840, y:217, ancho:240, altura:89},
+{x:1030, y:257, ancho:250, altura:110},
+{x:1260, y:207, ancho:80, altura:114},
+{x:1240, y:97, ancho:95, altura:104},
+{x:895, y:59, ancho:365, altura:114},
+];
 
 /*PARA DESPUES: hacer un array con cada corredor (listaautos o algo asi), en colisiones() revisar colisiones entre los autos
 (empujar en direccion de la colision), revisar si esta adentro de la ruta o no, y evitar que se salga de la pantalla
@@ -252,7 +278,14 @@ function moverjugador()
         }
         else
         {
-            auto.velocidadmax = 4.75;
+            if (auto.pasto)
+            {
+                auto.velocidadmax = 3.75;
+            }
+            else
+            {
+                auto.velocidadmax = 4.75;
+            }
             auto.min_turbo_con = 0;
         }
         /*else
@@ -377,7 +410,15 @@ function loop()
 Promise.all(promesasCarga).then(() => 
 {
     fondo_ctx.drawImage(imagenmapa1, 0, 0);
+    /*ctx.fillStyle = 'rgba(255,0,0,0.5)';
+    for (let i = 0; i < mapa1.length; i++)
+    {
+        ctx.fillRect(mapa1[i].x, mapa1[i].y, mapa1[i].ancho, mapa1[i].altura);
+    }
     //console.log(auto.x, auto.y);
+    auto.x = mapa1[0].x;
+    auto.y = mapa1[0].y;
+    ctx.drawImage(imagenauto1, auto.x, auto.y, auto.anchoimagen, auto.altoimagen);*/
     loop();
 });
 
