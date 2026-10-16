@@ -44,7 +44,7 @@ fondo.width = 854;
 fondo.height = 480;
 const ctx = canvas.getContext("2d", { willReadFrequently: true });
 const fondo_ctx = fondo.getContext("2d", { willReadFrequently: false });
-let auto = {x: 100, y: 100, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 3.5, angulo: 0, angulo_muestra: 0};
+let auto = {x: 100, y: 100, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 3.5, angulo: 0, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0};
 let mouseapretado = false;
 let teclas = {};
 let mousex = 0;
@@ -200,6 +200,7 @@ function moverjugador()
     }
     if (teclas['shift']) 
     {
+        auto.velocidadmax=3;
         if (mov && teclas['arrowleft'] || teclas['a'])
         {
             auto.angulo -= 0.022*(auto.velocidad/2);
@@ -210,9 +211,36 @@ function moverjugador()
             auto.angulo += 0.022*(auto.velocidad/2);
             auto.angulo_muestra = auto.angulo + 0.22*(auto.velocidad/2);
         }
+        if (mov && (teclas['arrowright'] || teclas['d'] || teclas['arrowleft'] || teclas['a']))
+        {
+            auto.min_turbo_con += 0.02;
+        }
+        else
+        {
+            auto.min_turbo_con += 0.01;
+        }
     }
     else
     {
+        if (auto.min_turbo_con > 4)
+        {
+            auto.velocidadmax = 5;
+            auto.min_turbo_con = 0;
+        }
+        else if (auto.min_turbo_con > 2)
+        {
+            auto.velocidadmax = 4;
+            auto.min_turbo_con = 0;
+        }
+        else
+        {
+            auto.velocidadmax = 3.5;
+            auto.min_turbo_con = 0;
+        }
+        /*else
+        {
+            auto.velocidadmax = 3.5;
+        }*/
         auto.angulo_muestra = auto.angulo;
         if (teclas['arrowright'] || teclas['d']) 
         {
