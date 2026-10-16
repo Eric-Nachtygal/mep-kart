@@ -64,7 +64,7 @@ promesasCarga.push(new Promise(res => {
         };
     }));
 
-let auto = {x: 100, y: 100, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 0, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0};
+let auto = {x: 100, y: 100, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 0, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false};
 let mouseapretado = false;
 let teclas = {};
 let mousex = 0;
@@ -218,7 +218,7 @@ function moverjugador()
     }
     if (teclas['shift']) 
     {
-        auto.velocidadmax=3;
+        auto.velocidadmax= 4;
         if (mov && teclas['arrowleft'] || teclas['a'])
         {
             auto.angulo -= 0.022*(auto.velocidad/2);
@@ -252,7 +252,7 @@ function moverjugador()
         }
         else
         {
-            auto.velocidadmax = 3.5;
+            auto.velocidadmax = 4.75;
             auto.min_turbo_con = 0;
         }
         /*else
@@ -300,7 +300,7 @@ function moverjugador()
         {
             auto.velocidad += 0.25;
         }
-        else if (auto.velocidad > auto.velocidadmax)
+        else if (auto.velocidad >= auto.velocidadmax)
         {
             auto.velocidad = auto.velocidadmax;
         }
