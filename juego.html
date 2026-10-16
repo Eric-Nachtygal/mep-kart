@@ -37,22 +37,40 @@
 
 <script>
 const canvas = document.getElementById("canvas");
-canvas.width = 1280;
-canvas.height = 720;
+canvas.width = 1366;
+canvas.height = 768;
 const fondo = document.getElementById("fondo");
 fondo.width = 854;
 fondo.height = 480;
 const ctx = canvas.getContext("2d", { willReadFrequently: true });
 const fondo_ctx = fondo.getContext("2d", { willReadFrequently: false });
-let auto = {x: 100, y: 100, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 3.5, angulo: 0, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0};
+const promesasCarga = []; //en este array guardamos todas las imagenes
+const imagenauto1 = new Image();
+imagenauto1.src = 'sprites/auto_jugador.png';
+const imagenmapa1 = new Image();
+imagenmapa1.src = 'sprites/mapa1.png';
+promesasCarga.push(new Promise(res => {
+        imagenauto1.onload = res;
+        imagenauto1.onerror = () => {
+            console.error("aaaaaaaaaaaaaaaaaaaa");
+            res();
+        };
+    }));
+promesasCarga.push(new Promise(res => {
+        imagenmapa1.onload = res;
+        imagenmapa1.onerror = () => {
+            console.error("aaaaaaaaaaaaaaaaaaaa");
+            res();
+        };
+    }));
+
+let auto = {x: 100, y: 100, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 0, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0};
 let mouseapretado = false;
 let teclas = {};
 let mousex = 0;
 let mousey = 0;
-const imagenauto = new Image();
-imagenauto.src = 'sprites/auto_jugador.png';
-const mapa1 = new Image();
-mapa1.src = 'sprites/mapa1.png';
+
+
 /*PARA DESPUES: hacer un array con cada corredor (listaautos o algo asi), en colisiones() revisar colisiones entre los autos
 (empujar en direccion de la colision), revisar si esta adentro de la ruta o no, y evitar que se salga de la pantalla
 tambien tendriamos que correrlo para cada jugador cuando empieze el loop, y guardarlo (ej: auto.col_arriba, auto.col_abajo, etc)
@@ -134,12 +152,12 @@ function dibujar()
         //ctx.rotate(auto.angulo * (Math.PI / 180));
         ctx.rotate(auto.angulo_muestra);
         ctx.imageSmoothingEnabled = false;
-        ctx.drawImage(imagenauto, -auto.anchoimagen / 2, -auto.altoimagen / 2, auto.anchoimagen, auto.altoimagen);
+        ctx.drawImage(imagenauto1, -auto.anchoimagen / 2, -auto.altoimagen / 2, auto.anchoimagen, auto.altoimagen);
         ctx.restore();
     }
     else
     {
-        ctx.drawImage(imagenauto, auto.x, auto.y, auto.anchoimagen, auto.altoimagen);
+        ctx.drawImage(imagenauto1, auto.x, auto.y, auto.anchoimagen, auto.altoimagen);
     }
 }
 
@@ -181,7 +199,7 @@ function moverjugador()
         {
             auto.velocidad += 0.25;
         }
-        else if (auto.velocidad > auto.velocidadmax)
+        else if (auto.velocidad >= auto.velocidadmax)
         {
             auto.velocidad = auto.velocidadmax;
         }
@@ -306,7 +324,7 @@ function moverjugador()
             }
             else
             {
-                auto.angulo += Math.sign(diferencia) * Math.abs(0.015*(auto.velocidad/2));
+                auto.angulo += Math.sign(diferencia) * Math.abs(0.017*(auto.velocidad/2));
                 auto.angulo_muestra = auto.angulo;
             }
             
@@ -356,15 +374,12 @@ function loop()
     requestAnimationFrame(loop);
 }
 
-imagenauto.onload = function()
+Promise.all(promesasCarga).then(() => 
 {
-    mapa1.onload = function()
-    {
-        fondo_ctx.drawImage(mapa1, 0, 0);
-        //console.log(auto.x, auto.y);
-        loop();
-    }; 
-};
+    fondo_ctx.drawImage(imagenmapa1, 0, 0);
+    //console.log(auto.x, auto.y);
+    loop();
+});
 
 
 
