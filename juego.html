@@ -244,16 +244,28 @@ function moverjugador()
     }
     if (teclas['shift']) 
     {
-        auto.velocidadmax= 4;
+        if (auto.min_turbo != 0)
+        {
+            auto.velocidadmax = 7;
+            auto.min_turbo -= 0.04;
+            if (auto.min_turbo < 0)
+            {
+                auto.min_turbo = 0;
+            }
+        }
+        else
+        {
+            auto.velocidadmax= 4.25;
+        }
         if (mov && teclas['arrowleft'] || teclas['a'])
         {
             auto.angulo -= 0.022*(auto.velocidad/2);
-            auto.angulo_muestra = auto.angulo - 0.22*(auto.velocidad/2);
+            auto.angulo_muestra = auto.angulo - 0.24*(auto.velocidad/2);
         }
         if (mov && teclas['arrowright'] || teclas['d'])
         {
             auto.angulo += 0.022*(auto.velocidad/2);
-            auto.angulo_muestra = auto.angulo + 0.22*(auto.velocidad/2);
+            auto.angulo_muestra = auto.angulo + 0.24*(auto.velocidad/2);
         }
         if (mov && (teclas['arrowright'] || teclas['d'] || teclas['arrowleft'] || teclas['a']))
         {
@@ -268,13 +280,29 @@ function moverjugador()
     {
         if (auto.min_turbo_con > 4)
         {
-            auto.velocidadmax = 5;
+            auto.velocidadmax = 7;
             auto.min_turbo_con = 0;
+            auto.min_turbo = 4;
         }
         else if (auto.min_turbo_con > 2)
         {
-            auto.velocidadmax = 4;
+            auto.velocidadmax = 7;
             auto.min_turbo_con = 0;
+            auto.min_turbo = 2;
+        }
+        else if (auto.min_turbo_con > 1)
+        {
+            auto.velocidadmax = 7;
+            auto.min_turbo_con = 0;
+            auto.min_turbo = 1;
+        }
+        else if (auto.min_turbo != 0)
+        {
+            auto.min_turbo -= 0.04;
+            if (auto.min_turbo < 0)
+            {
+                auto.min_turbo = 0;
+            }
         }
         else
         {
@@ -288,10 +316,6 @@ function moverjugador()
             }
             auto.min_turbo_con = 0;
         }
-        /*else
-        {
-            auto.velocidadmax = 3.5;
-        }*/
         auto.angulo_muestra = auto.angulo;
         if (teclas['arrowright'] || teclas['d']) 
         {
