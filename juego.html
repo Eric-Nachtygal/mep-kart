@@ -37,14 +37,14 @@
 
 <script>
 const canvas = document.getElementById("canvas");
-canvas.width = 1280;
-canvas.height = 720;
+canvas.width = 1366;
+canvas.height = 768;
 const fondo = document.getElementById("fondo");
 fondo.width = 854;
 fondo.height = 480;
 const ctx = canvas.getContext("2d", { willReadFrequently: true });
 const fondo_ctx = fondo.getContext("2d", { willReadFrequently: false });
-let auto = {x: 100, y: 100, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 3.5, angulo: 0, angulo_muestra: 0};
+let auto = {x: 100, y: 100, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 0, angulo_muestra: 0};
 let mouseapretado = false;
 let teclas = {};
 let mousex = 0;
@@ -278,7 +278,7 @@ function moverjugador()
             }
             else
             {
-                auto.angulo += Math.sign(diferencia) * Math.abs(0.015*(auto.velocidad/2));
+                auto.angulo += Math.sign(diferencia) * Math.abs(0.017*(auto.velocidad/2));
                 auto.angulo_muestra = auto.angulo;
             }
             
