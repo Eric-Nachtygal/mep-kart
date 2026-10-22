@@ -96,6 +96,17 @@ const mapa1 = [
 {x:1240, y:97, ancho:95, altura:104},
 {x:895, y:59, ancho:365, altura:114},
 ];
+//estan ordenados desde la linea de meta en adelante
+const mapa1_checkpoints = [
+{x:870, y:607, ancho:20, altura:94},
+{x:100, y:385, ancho:20, altura:296},
+{x:470, y:240, ancho:20, altura:220},
+{x:240, y:45, ancho:20, altura:294},
+{x:500, y: 20, ancho: 20, altura: 164},
+{x:895, y:59, ancho:20, altura:114},
+{x:1030, y:207, ancho:20, altura:130},
+{x:1135, y:390, ancho:20, altura:335},
+];
 
 /*PARA DESPUES: hacer un array con cada corredor (listaautos o algo asi), en colisiones() revisar colisiones entre los autos
 (empujar en direccion de la colision), revisar si esta adentro de la ruta o no, y evitar que se salga de la pantalla
@@ -447,10 +458,10 @@ function loop()
 Promise.all(promesasCarga).then(() => 
 {
     fondo_ctx.drawImage(imagenmapa1, 0, 0);
-    /*ctx.fillStyle = 'rgba(255,0,0,0.5)';
-    for (let i = 0; i < mapa1.length; i++)
+   /* ctx.fillStyle = 'rgba(255,0,0,0.5)';
+    for (let i = 0; i < mapa1_checkpoints.length; i++)
     {
-        ctx.fillRect(mapa1[i].x, mapa1[i].y, mapa1[i].ancho, mapa1[i].altura);
+        ctx.fillRect(mapa1_checkpoints[i].x, mapa1_checkpoints[i].y, mapa1_checkpoints[i].ancho, mapa1_checkpoints[i].altura);
     }
     //console.log(auto.x, auto.y);
     auto.x = mapa1[0].x;
