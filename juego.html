@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 </head>
 <style>
     *
@@ -234,6 +237,17 @@ function dibujar()
     }
 
     ctx.drawImage(flecha, auto.x + 3, auto.y - 25, 20, 20);
+
+    ctx.fillStyle = "rgb(255, 255, 255)";
+    ctx.strokeStyle = "rgb(0, 0, 0)";
+    ctx.lineWidth = 1; 
+    ctx.font = '40px Bebas Neue';
+    ctx.strokeText("Vuelta " + auto.vuelta, 50, 80);
+    ctx.fillText("Vuelta " + auto.vuelta, 50, 80);
+    //contador de checkpoints solo para probar, despues se comenta para la expo
+    ctx.font = '20px Bebas Neue';
+    ctx.strokeText("Checkpoint" + auto.checkpoint, 50, 110);
+    ctx.fillText("Checkpoint " + auto.checkpoint, 50, 110);
 }
 
 function moverjugador()
