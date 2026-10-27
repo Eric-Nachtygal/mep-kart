@@ -50,6 +50,8 @@ const imagenauto1 = new Image();
 imagenauto1.src = 'sprites/auto_jugador.png';
 const imagenmapa1 = new Image();
 imagenmapa1.src = 'sprites/mapa1.png';
+const flecha = new Image();
+flecha.src = 'sprites/flecha_auto.png';
 promesasCarga.push(new Promise(res => {
         imagenauto1.onload = res;
         imagenauto1.onerror = () => {
@@ -60,6 +62,13 @@ promesasCarga.push(new Promise(res => {
 promesasCarga.push(new Promise(res => {
         imagenmapa1.onload = res;
         imagenmapa1.onerror = () => {
+            console.error("aaaaaaaaaaaaaaaaaaaa");
+            res();
+        };
+    }));
+promesasCarga.push(new Promise(res => {
+        flecha.onload = res;
+        flecha.onerror = () => {
             console.error("aaaaaaaaaaaaaaaaaaaa");
             res();
         };
@@ -223,6 +232,8 @@ function dibujar()
     {
         ctx.drawImage(imagenauto1, auto.x, auto.y, auto.anchoimagen, auto.altoimagen);
     }
+
+    ctx.drawImage(flecha, auto.x + 3, auto.y - 25, 20, 20);
 }
 
 function moverjugador()
