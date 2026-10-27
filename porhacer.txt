@@ -7,7 +7,7 @@ agregar las cajitas con poderes
 Agregar poderes
 Agregar nitro
 Agregar menu de seleccion de mapa modo etc
-Los checkpoints
+
 
 Agregar sistema de puestos
 Agregar sistema de contar tiempo
@@ -19,3 +19,4 @@ HECHO:
 Pasar sistema de colisiones
 Hacer que los sprites giren
 Pasar sistema de dibujar
+Los checkpoints
