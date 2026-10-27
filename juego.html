@@ -64,7 +64,7 @@ promesasCarga.push(new Promise(res => {
         };
     }));
 
-let auto = {x: 100, y: 100, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 0, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false};
+let auto = {x: 870, y: 607, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 0, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1};
 let mouseapretado = false;
 let teclas = {};
 let mousex = 0;
@@ -142,39 +142,63 @@ function colisiones(porcion)
             porcion.pasto = false; // encontró un tramo de ruta
             break;
         }
-       /* esto es codigo para otras colisiones if ((mapa1[i].x + mapa1[i].ancho <= hitbox_izq) || (mapa1[i].x >= hitbox_der) || (mapa1[i].y + mapa1[i].altura <= hitbox_abajo) || (mapa1[i].y >= hitbox_abajo))
-        {
-            
-            //costados
-            if (mapa1[i].x < centrox)
-            {
-                colisionemapa1[i].izquierda = false;
-            } 
-            else if (mapa1[i].x > centrox)
-            {
-                colisionemapa1[i].derecha = false;
-            }
-            else
-            {
-                colisionemapa1[i].izquierda = false;
-                colisionemapa1[i].derecha = false;
-            }
-
-            //arriba y abajo
-            if (mapa1[i].y < centroy)
-            {
-                colisionemapa1[i].arriba = false;
-            } 
-            else if (mapa1[i].x > centroy)
-            {
-                colisionemapa1[i].abajo = false;
-            }
-            else
-            {
-                colisionemapa1[i].arriba = false;
-                colisionemapa1[i].abajo = false;
-            }*/
+       
     }
+
+    for (let i = 0; i < mapa1_checkpoints.length; i++)
+    {
+        let auxcheckpoint = mapa1_checkpoints[i].x + mapa1_checkpoints[i].ancho > hitbox_izq && mapa1_checkpoints[i].x < hitbox_der && mapa1_checkpoints[i].y + mapa1_checkpoints[i].altura > hitbox_arriba && mapa1_checkpoints[i].y < hitbox_abajo;
+        if (auxcheckpoint)
+        {
+            if (porcion.checkpoint == i - 1)
+            {
+                porcion.checkpoint = i;
+                break;
+            }
+            else if (porcion.checkpoint == mapa1_checkpoints.length - 1 && i == 0)
+            {
+                porcion.checkpoint = 0;
+                porcion.vuelta += 1;
+                //console.log("Vuelta: " + porcion.vuelta);
+                break;
+            }
+        }
+       
+    }
+
+
+    /* esto es codigo para otras colisiones if ((mapa1[i].x + mapa1[i].ancho <= hitbox_izq) || (mapa1[i].x >= hitbox_der) || (mapa1[i].y + mapa1[i].altura <= hitbox_abajo) || (mapa1[i].y >= hitbox_abajo))
+    {
+        
+        //costados
+        if (mapa1[i].x < centrox)
+        {
+            colisionemapa1[i].izquierda = false;
+        } 
+        else if (mapa1[i].x > centrox)
+        {
+            colisionemapa1[i].derecha = false;
+        }
+        else
+        {
+            colisionemapa1[i].izquierda = false;
+            colisionemapa1[i].derecha = false;
+        }
+
+        //arriba y abajo
+        if (mapa1[i].y < centroy)
+        {
+            colisionemapa1[i].arriba = false;
+        } 
+        else if (mapa1[i].x > centroy)
+        {
+            colisionemapa1[i].abajo = false;
+        }
+        else
+        {
+            colisionemapa1[i].arriba = false;
+            colisionemapa1[i].abajo = false;
+        }*/
 
     /*porcion.x -= porcion.velocidadx;
     porcion.y -= porcion.velocidady;*/
