@@ -111,14 +111,13 @@ const mapa1 = [
 ];
 //estan ordenados desde la linea de meta en adelante
 const mapa1_checkpoints = [
-{x:870, y:607, ancho:20, altura:94},
-{x:100, y:385, ancho:20, altura:296},
-{x:470, y:240, ancho:20, altura:220},
+{x:870, y:507, ancho:20, altura:254},
+{x:300, y:385, ancho:20, altura:296},
 {x:240, y:45, ancho:20, altura:294},
 {x:500, y: 20, ancho: 20, altura: 164},
 {x:895, y:59, ancho:20, altura:114},
 {x:1030, y:207, ancho:20, altura:130},
-{x:1135, y:390, ancho:20, altura:335},
+{x:1030, y:390, ancho:20, altura:335},
 ];
 
 /*PARA DESPUES: hacer un array con cada corredor (listaautos o algo asi), en colisiones() revisar colisiones entre los autos
@@ -508,7 +507,7 @@ function loop()
 Promise.all(promesasCarga).then(() => 
 {
     fondo_ctx.drawImage(imagenmapa1, 0, 0);
-   /* ctx.fillStyle = 'rgba(255,0,0,0.5)';
+    /*ctx.fillStyle = 'rgba(255,0,0,0.5)';
     for (let i = 0; i < mapa1_checkpoints.length; i++)
     {
         ctx.fillRect(mapa1_checkpoints[i].x, mapa1_checkpoints[i].y, mapa1_checkpoints[i].ancho, mapa1_checkpoints[i].altura);
