@@ -119,6 +119,19 @@ const mapa1_checkpoints = [
 {x:1030, y:207, ancho:20, altura:130},
 {x:1030, y:390, ancho:20, altura:335},
 ];
+//no tienen orden especifico
+const mapa1_obstaculos = [
+{x:760, y:497, ancho:355, altura:104},
+{x:600, y:150, ancho:160, altura:256},
+{x:570, y: 0, ancho:200, altura:44},
+{x:380, y: 0, ancho: 115, altura: 54},
+{x:895, y:0, ancho:270, altura:45},
+{x:945, y:20, ancho:130, altura:55},
+{x:958, y:330, ancho:100, altura:30},
+{x:1060, y:359, ancho:70, altura:10},
+{x:1135, y:374, ancho:200, altura:20},
+{x:0, y:690, ancho:400, altura:100},
+];
 
 /*PARA DESPUES: hacer un array con cada corredor (listaautos o algo asi), en colisiones() revisar colisiones entre los autos
 (empujar en direccion de la colision), revisar si esta adentro de la ruta o no, y evitar que se salga de la pantalla
@@ -196,40 +209,44 @@ function colisiones(porcion)
        
     }
 
-
-    /* esto es codigo para otras colisiones if ((mapa1[i].x + mapa1[i].ancho <= hitbox_izq) || (mapa1[i].x >= hitbox_der) || (mapa1[i].y + mapa1[i].altura <= hitbox_abajo) || (mapa1[i].y >= hitbox_abajo))
+    for (let i = 0; i < mapa1_obstaculos.length; i++)
     {
-        
-        //costados
-        if (mapa1[i].x < centrox)
+        if ((mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho <= hitbox_izq) || (mapa1_obstaculos[i].x >= hitbox_der) || (mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura <= hitbox_abajo) || (mapa1_obstaculos[i].y >= hitbox_abajo))
         {
-            colisionemapa1[i].izquierda = false;
-        } 
-        else if (mapa1[i].x > centrox)
-        {
-            colisionemapa1[i].derecha = false;
-        }
-        else
-        {
-            colisionemapa1[i].izquierda = false;
-            colisionemapa1[i].derecha = false;
-        }
+            
+            //costados
+            if (mapa1_obstaculos[i].x < centrox)
+            {
+                colisiones.izquierda = false;
+                porcion.x = mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho;
+            } 
+            else if (mapa1_obstaculos[i].x > centrox)
+            {
+                colisiones.derecha = false;
+                porcion.x = mapa1_obstaculos[i].x;
+            }
+            else
+            {
+                colisiones.izquierda = false;
+                colisiones.derecha = false;
+            }
 
-        //arriba y abajo
-        if (mapa1[i].y < centroy)
-        {
-            colisionemapa1[i].arriba = false;
-        } 
-        else if (mapa1[i].x > centroy)
-        {
-            colisionemapa1[i].abajo = false;
+            //arriba y abajo
+            if (mapa1_obstaculos[i].y < centroy)
+            {
+                colisiones.arriba = false;
+            } 
+            else if (mapa1_obstaculos[i].x > centroy)
+            {
+                colisiones.abajo = false;
+            }
+            else
+            {
+                colisiones.arriba = false;
+                colisiones.abajo = false;
+            }
         }
-        else
-        {
-            colisionemapa1[i].arriba = false;
-            colisionemapa1[i].abajo = false;
-        }*/
-
+    }
     /*porcion.x -= porcion.velocidadx;
     porcion.y -= porcion.velocidady;*/
     
@@ -273,7 +290,7 @@ function moverjugador()
     {
         if(e.key == 'F11' || e.key == 'F5' || e.key == 'F12')
         {
-            exit;
+            return;
         }
         e.preventDefault();
         teclas[e.key.toLowerCase()] = true;
@@ -526,9 +543,9 @@ Promise.all(promesasCarga).then(() =>
 {
     fondo_ctx.drawImage(imagenmapa1, 0, 0);
     /*ctx.fillStyle = 'rgba(255,0,0,0.5)';
-    for (let i = 0; i < mapa1_checkpoints.length; i++)
+    for (let i = 0; i < mapa1_obstaculos.length; i++)
     {
-        ctx.fillRect(mapa1_checkpoints[i].x, mapa1_checkpoints[i].y, mapa1_checkpoints[i].ancho, mapa1_checkpoints[i].altura);
+        ctx.fillRect(mapa1_obstaculos[i].x, mapa1_obstaculos[i].y, mapa1_obstaculos[i].ancho, mapa1_obstaculos[i].altura);
     }
     //console.log(auto.x, auto.y);
     auto.x = mapa1[0].x;
