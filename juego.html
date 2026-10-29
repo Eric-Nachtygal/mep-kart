@@ -143,6 +143,24 @@ function colisiones(porcion)
     let hitbox_abajo = (porcion.y + porcion.altura) -3;
     let hitbox_arriba = hitbox_abajo - 9;
 
+    if (porcion.y <= 17)
+    {
+        porcion.y = 17;
+    }
+    else if (porcion.y >= canvas.height - 27)
+    {
+        porcion.y = canvas.height - 27;
+    }
+
+    if (porcion.x <= 7)
+    {
+        porcion.x = 7;
+    }
+    else if (porcion.x >= canvas.width - 27)
+    {
+        porcion.x = canvas.width - 27;
+    }
+
     let colisiones = {abajo: true, arriba: true, izquierda: true, derecha: true};
     porcion.pasto = true;
     //se fija que la porcion y el objeto esten tocandose
@@ -253,6 +271,10 @@ function moverjugador()
 {
     document.addEventListener('keydown', function(e) 
     {
+        if(e.key == 'F11' || e.key == 'F5' || e.key == 'F12')
+        {
+            exit;
+        }
         e.preventDefault();
         teclas[e.key.toLowerCase()] = true;
         
@@ -265,10 +287,6 @@ function moverjugador()
 
     let mov = false;
 
-    if (teclas['f5'])
-    {
-        window.location.href = "juego.html";
-    }
 
     //console.log(auto.pasto);
 
