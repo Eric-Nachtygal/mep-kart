@@ -221,7 +221,7 @@ function colisiones(porcion)
             if (colisionx < colisiony)
             {
                 //costados
-                if ((mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho) / 2 < centrox)
+                if (mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho / 2 < centrox)
                 {
                     colisiones.izquierda = false;
                     porcion.x = mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho;
@@ -229,13 +229,13 @@ function colisiones(porcion)
                 else
                 {
                     colisiones.derecha = false;
-                    porcion.x = mapa1_obstaculos[i].x;
+                    porcion.x = mapa1_obstaculos[i].x - 19;
                 }
             }
             else
             {
                 //arriba y abajo
-                if ((mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura) / 2  < centroy)
+                if (mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura / 2  < centroy)
                 {
                     colisiones.arriba = false;
                     porcion.y = mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura;
