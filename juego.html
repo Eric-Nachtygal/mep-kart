@@ -211,39 +211,40 @@ function colisiones(porcion)
 
     for (let i = 0; i < mapa1_obstaculos.length; i++)
     {
-        if ((mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho <= hitbox_izq) || (mapa1_obstaculos[i].x >= hitbox_der) || (mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura <= hitbox_abajo) || (mapa1_obstaculos[i].y >= hitbox_abajo))
+        if (!((mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho <= hitbox_izq) || (mapa1_obstaculos[i].x >= hitbox_der)) && !((mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura <= hitbox_abajo) || (mapa1_obstaculos[i].y >= hitbox_arriba)))
         {
-            
-            //costados
-            if (mapa1_obstaculos[i].x < centrox)
-            {
-                colisiones.izquierda = false;
-                porcion.x = mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho;
-            } 
-            else if (mapa1_obstaculos[i].x > centrox)
-            {
-                colisiones.derecha = false;
-                porcion.x = mapa1_obstaculos[i].x;
-            }
-            else
-            {
-                colisiones.izquierda = false;
-                colisiones.derecha = false;
-            }
+            //donde hay mas colision
+            let colisionx = (mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho < hitbox_der ? mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho : hitbox_der) - (mapa1_obstaculos[i].x > hitbox_izq ? mapa1_obstaculos[i].x : hitbox_izq);
+            let colisiony = (mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura < hitbox_abajo ? mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura : hitbox_abajo) - (mapa1_obstaculos[i].y > hitbox_arriba ? mapa1_obstaculos[i].y : hitbox_arriba);
 
-            //arriba y abajo
-            if (mapa1_obstaculos[i].y < centroy)
+
+            if (colisionx < colisiony)
             {
-                colisiones.arriba = false;
-            } 
-            else if (mapa1_obstaculos[i].x > centroy)
-            {
-                colisiones.abajo = false;
+                //costados
+                if ((mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho) / 2 < centrox)
+                {
+                    colisiones.izquierda = false;
+                    porcion.x = mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho;
+                } 
+                else
+                {
+                    colisiones.derecha = false;
+                    porcion.x = mapa1_obstaculos[i].x;
+                }
             }
             else
             {
-                colisiones.arriba = false;
-                colisiones.abajo = false;
+                //arriba y abajo
+                if ((mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura) / 2  < centroy)
+                {
+                    colisiones.arriba = false;
+                    porcion.y = mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura;
+                } 
+                else
+                {
+                    colisiones.abajo = false;
+                    porcion.y = mapa1_obstaculos[i].y;
+                }
             }
         }
     }
