@@ -122,15 +122,21 @@ const mapa1_checkpoints = [
 //no tienen orden especifico
 const mapa1_obstaculos = [
 {x:760, y:497, ancho:355, altura:104},
-{x:600, y:150, ancho:160, altura:256},
+{x:620, y:150, ancho:120, altura:256},
 {x:570, y: 0, ancho:200, altura:44},
 {x:380, y: 0, ancho: 115, altura: 54},
 {x:895, y:0, ancho:270, altura:45},
 {x:945, y:20, ancho:130, altura:55},
 {x:958, y:330, ancho:100, altura:30},
-{x:1060, y:359, ancho:70, altura:10},
-{x:1135, y:374, ancho:200, altura:20},
+{x:1060, y:359, ancho:80, altura:25},
+{x:1135, y:374, ancho:200, altura:25},
 {x:0, y:690, ancho:400, altura:100},
+{x: 400, y:650, ancho:125, altura:100},
+{x: 525, y:710, ancho:845, altura:100},
+{x: 0, y:0, ancho:45, altura:400},
+{x: 0, y:400, ancho:35, altura:300},
+{x: 45, y:0, ancho:155, altura:40},
+{x: 295, y:0, ancho:40, altura:40},
 ];
 
 /*PARA DESPUES: hacer un array con cada corredor (listaautos o algo asi), en colisiones() revisar colisiones entre los autos
@@ -145,8 +151,8 @@ function posicionmouse(e)
 
 function colisiones(porcion)
 {
-    /*porcion.x += porcion.velocidadx;
-    porcion.y += porcion.velocidady;*/
+    porcion.x += Math.cos(porcion.angulo) * porcion.velocidad;
+    porcion.y += Math.sin(porcion.angulo) * porcion.velocidad;
     //21x9
     //let alturahitbox = 20;
     let centrox = porcion.x + porcion.ancho / 2;
@@ -248,8 +254,9 @@ function colisiones(porcion)
             }
         }
     }
-    /*porcion.x -= porcion.velocidadx;
-    porcion.y -= porcion.velocidady;*/
+    
+    porcion.x -= Math.cos(porcion.angulo) * porcion.velocidad;
+    porcion.y -= Math.sin(porcion.angulo) * porcion.velocidad;
     
     return colisiones;
 }
@@ -416,7 +423,7 @@ function moverjugador()
         {
             if (auto.pasto)
             {
-                auto.velocidadmax = 1.75;
+                auto.velocidadmax = 3.75;
             }
             else
             {
@@ -549,8 +556,6 @@ Promise.all(promesasCarga).then(() =>
         ctx.fillRect(mapa1_obstaculos[i].x, mapa1_obstaculos[i].y, mapa1_obstaculos[i].ancho, mapa1_obstaculos[i].altura);
     }
     //console.log(auto.x, auto.y);
-    auto.x = mapa1[0].x;
-    auto.y = mapa1[0].y;
     ctx.drawImage(imagenauto1, auto.x, auto.y, auto.anchoimagen, auto.altoimagen);*/
     loop();
 });
