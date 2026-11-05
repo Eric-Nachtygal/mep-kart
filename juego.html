@@ -87,7 +87,10 @@ document.addEventListener('contextmenu', function (e)
 {
     e.preventDefault();
 });
-let auto = {x: 880, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1};
+let auto = {x: 880, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen: imagenauto1};
+let bot1 = {x: 920, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto1};
+
+let autos = [auto,bot1];
 let mouseapretado = false;
 let teclas = {};
 let mousex = 0;
@@ -302,72 +305,75 @@ function colisiones(porcion)
 
 function dibujar()
 {
-    if (auto.angulo != 0)
+    for (let i=0; i<autos.length; i++)
     {
-        ctx.save();
-        ctx.translate(auto.x + (auto.anchoimagen / 2), auto.y + (auto.altoimagen / 2));
-        //ctx.rotate(auto.angulo * (Math.PI / 180));
-        ctx.rotate(auto.angulo_muestra);
-        ctx.imageSmoothingEnabled = false;
-        ctx.drawImage(imagenauto1, -auto.anchoimagen / 2, -auto.altoimagen / 2, auto.anchoimagen, auto.altoimagen);
-        ctx.restore();
-        if(auto.min_turbo_con > 1)
+        if (autos[i].angulo != 0)
         {
             ctx.save();
-            ctx.translate(auto.x + (auto.anchoimagen / 2), auto.y + (auto.altoimagen / 2));
+            ctx.translate(autos[i].x + (autos[i].anchoimagen / 2), autos[i].y + (autos[i].altoimagen / 2));
             //ctx.rotate(auto.angulo * (Math.PI / 180));
-            ctx.rotate(auto.angulo_muestra);
+            ctx.rotate(autos[i].angulo_muestra);
             ctx.imageSmoothingEnabled = false;
-            if (auto.min_turbo_con < 2)
+            ctx.drawImage(autos[i].imagen, -autos[i].anchoimagen / 2, -autos[i].altoimagen / 2, autos[i].anchoimagen, autos[i].altoimagen);
+            ctx.restore();
+            if(autos[i].min_turbo_con > 1)
             {
-                if (auto.angulo_muestra > auto.angulo)
+                ctx.save();
+                ctx.translate(autos[i].x + (autos[i].anchoimagen / 2), autos[i].y + (autos[i].altoimagen / 2));
+                //ctx.rotate(auto.angulo * (Math.PI / 180));
+                ctx.rotate(autos[i].angulo_muestra);
+                ctx.imageSmoothingEnabled = false;
+                if (autos[i].min_turbo_con < 2)
                 {
-                    ctx.save();
-                    ctx.scale(1, -1);
-                    ctx.drawImage(imagenderrape1, -auto.anchoimagen / 2, -auto.altoimagen / 2, auto.anchoimagen, auto.altoimagen);
-                    ctx.restore();
+                    if (autos[i].angulo_muestra > autos[i].angulo)
+                    {
+                        ctx.save();
+                        ctx.scale(1, -1);
+                        ctx.drawImage(imagenderrape1, -autos[i].anchoimagen / 2, -autos[i].altoimagen / 2, autos[i].anchoimagen, autos[i].altoimagen);
+                        ctx.restore();
+                    }
+                    else
+                    {
+                        ctx.drawImage(imagenderrape1, -autos[i].anchoimagen / 2, -autos[i].altoimagen / 2, autos[i].anchoimagen, autos[i].altoimagen);
+                    }
+                    
+                }
+                else if (autos[i].min_turbo_con < 4)
+                {
+                    if (autos[i].angulo_muestra > autos[i].angulo)
+                    {
+                        ctx.save();
+                        ctx.scale(1, -1);
+                        ctx.drawImage(imagenderrape2, -autos[i].anchoimagen / 2, -autos[i].altoimagen / 2, autos[i].anchoimagen, autos[i].altoimagen);
+                        ctx.restore();
+                    }
+                    else
+                    {
+                        ctx.drawImage(imagenderrape2, -autos[i].anchoimagen / 2, -autos[i].altoimagen / 2, autos[i].anchoimagen, autos[i].altoimagen);
+                    }
                 }
                 else
                 {
-                    ctx.drawImage(imagenderrape1, -auto.anchoimagen / 2, -auto.altoimagen / 2, auto.anchoimagen, auto.altoimagen);
+                    if (autos[i].angulo_muestra > autos[i].angulo)
+                    {
+                        ctx.save();
+                        ctx.scale(1, -1);
+                        ctx.drawImage(imagenderrape3, -autos[i].anchoimagen / 2, -autos[i].altoimagen / 2, autos[i].anchoimagen, autos[i].altoimagen);
+                        ctx.restore();
+                    }
+                    else
+                    {
+                        ctx.drawImage(imagenderrape3, -autos[i].anchoimagen / 2, -autos[i].altoimagen / 2, autos[i].anchoimagen, autos[i].altoimagen);
+                    }
                 }
                 
+                ctx.restore();
             }
-            else if (auto.min_turbo_con < 4)
-            {
-                if (auto.angulo_muestra > auto.angulo)
-                {
-                    ctx.save();
-                    ctx.scale(1, -1);
-                    ctx.drawImage(imagenderrape2, -auto.anchoimagen / 2, -auto.altoimagen / 2, auto.anchoimagen, auto.altoimagen);
-                    ctx.restore();
-                }
-                else
-                {
-                    ctx.drawImage(imagenderrape2, -auto.anchoimagen / 2, -auto.altoimagen / 2, auto.anchoimagen, auto.altoimagen);
-                }
-            }
-            else
-            {
-                if (auto.angulo_muestra > auto.angulo)
-                {
-                    ctx.save();
-                    ctx.scale(1, -1);
-                    ctx.drawImage(imagenderrape3, -auto.anchoimagen / 2, -auto.altoimagen / 2, auto.anchoimagen, auto.altoimagen);
-                    ctx.restore();
-                }
-                else
-                {
-                    ctx.drawImage(imagenderrape3, -auto.anchoimagen / 2, -auto.altoimagen / 2, auto.anchoimagen, auto.altoimagen);
-                }
-            }
-            
-            ctx.restore();
         }
-    }
-    else
-    {
-        ctx.drawImage(imagenauto1, auto.x, auto.y, auto.anchoimagen, auto.altoimagen);
+        else
+        {
+            ctx.drawImage(imagenauto1, autos[i].x, autos[i].y, autos[i].anchoimagen, autos[i].altoimagen);
+        }
     }
 
     ctx.drawImage(flecha, auto.x + 3, auto.y - 25, 20, 20);
@@ -643,12 +649,67 @@ function moverjugador()
 
 }
 
+function moverbots()
+{
+    for (let i = 1; i < autos.length; i++)
+    {
+        if (autos[i].velocidad < autos[i].velocidadmax)
+        {
+            autos[i].velocidad += 0.25;
+        }
+        else if (autos[i].velocidad >= autos[i].velocidadmax)
+        {
+            autos[i].velocidad = autos[i].velocidadmax;
+        }
+
+        let aux_x = autos[i].x + (autos[i].anchoimagen / 2);
+        let aux_y = autos[i].y + (autos[i].altoimagen / 2);
+        let deltax;
+        if (autos[i].checkpoint >= mapa1_checkpoints.length)
+        {
+            deltax = mapa1_checkpoints[0].x - aux_x;
+        }
+        else
+        {
+            deltax = mapa1_checkpoints[autos[i].checkpoint+1].x - aux_x;
+        }
+        let deltay;
+        if (autos[i].checkpoint >= mapa1_checkpoints.length)
+        {
+            deltay = mapa1_checkpoints[0].y - aux_y;
+        }
+        else
+        {
+            deltay = mapa1_checkpoints[autos[i].checkpoint+1].y - aux_y;
+        }
+        let angulo_check = Math.atan2(deltay, deltax);
+        let diferencia = Math.atan2(Math.sin(angulo_check - autos[i].angulo),Math.cos(angulo_check - autos[i].angulo));
+        
+        if (Math.abs(diferencia) <= Math.abs(0.017*(auto.velocidad/2))) //si la diferencia es muy poca no rota
+        {
+            autos[i].angulo = angulo_check;
+        }
+        else
+        {
+            autos[i].angulo += Math.sign(diferencia) * Math.abs(0.017*(autos[i].velocidad/2));
+            autos[i].angulo_muestra = autos[i].angulo;
+        }
+
+        autos[i].x += Math.cos(autos[i].angulo) * autos[i].velocidad;
+        autos[i].y += Math.sin(autos[i].angulo) * autos[i].velocidad;
+    }
+}
+
 function loop()
 {
     ctx.clearRect(0,0,canvas.width, canvas.height);
     dibujar();
-    colisiones(auto);
+    for (let i=0; i<autos.length; i++)
+    {
+        colisiones(autos[i]);
+    }
     moverjugador();
+    moverbots();
     requestAnimationFrame(loop);
 }
 
