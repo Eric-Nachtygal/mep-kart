@@ -134,12 +134,20 @@ const mapa1 = [
 //estan ordenados desde la linea de meta en adelante
 const mapa1_checkpoints = [
 {x:870, y:507, ancho:20, altura:254},
-{x:300, y:385, ancho:20, altura:296},
+{x:300, y:488, ancho:20, altura:296},
+{x:0, y:507, ancho:280, altura:30},
+{x:300, y:358, ancho:20, altura:130},
+{x:378, y:208, ancho:100, altura:170},
 {x:240, y:45, ancho:20, altura:294},
+{x:0, y:140, ancho:200, altura:30},
+{x:400, y:70, ancho:20, altura:130},
 {x:500, y: 20, ancho: 20, altura: 164},
 {x:895, y:59, ancho:20, altura:114},
+{x:1200, y:187, ancho:200, altura:30},
 {x:1030, y:207, ancho:20, altura:130},
+{x:760, y:337, ancho:200, altura:30},
 {x:1030, y:390, ancho:20, altura:335},
+{x:1120, y:530, ancho:300, altura:30},
 ];
 //no tienen orden especifico
 const mapa1_obstaculos = [
@@ -662,6 +670,16 @@ function moverbots()
 {
     for (let i = 1; i < autos.length; i++)
     {
+        if (autos[i].pasto)
+        {
+            autos[i].velocidadmax = 2.75;
+            autos[i].min_turbo_con = 0;
+        }
+        else
+        {
+            autos[i].velocidadmax = 4.75;
+        }
+
         if (autos[i].velocidad < autos[i].velocidadmax)
         {
             autos[i].velocidad += 0.25;
@@ -674,7 +692,7 @@ function moverbots()
         let aux_x = autos[i].x + (autos[i].anchoimagen / 2);
         let aux_y = autos[i].y + (autos[i].altoimagen / 2);
         let deltax;
-        if (autos[i].checkpoint >= mapa1_checkpoints.length)
+        if (autos[i].checkpoint >= mapa1_checkpoints.length - 1)
         {
             deltax = mapa1_checkpoints[0].x - aux_x;
         }
@@ -683,7 +701,7 @@ function moverbots()
             deltax = mapa1_checkpoints[autos[i].checkpoint+1].x - aux_x;
         }
         let deltay;
-        if (autos[i].checkpoint >= mapa1_checkpoints.length)
+        if (autos[i].checkpoint >= mapa1_checkpoints.length - 1)
         {
             deltay = mapa1_checkpoints[0].y - aux_y;
         }
@@ -691,6 +709,7 @@ function moverbots()
         {
             deltay = mapa1_checkpoints[autos[i].checkpoint+1].y - aux_y;
         }
+        console.log(autos[i].checkpoint);
         let angulo_check = Math.atan2(deltay, deltax);
         let diferencia = Math.atan2(Math.sin(angulo_check - autos[i].angulo),Math.cos(angulo_check - autos[i].angulo));
         
@@ -725,10 +744,10 @@ function loop()
 Promise.all(promesasCarga).then(() => 
 {
     fondo_ctx.drawImage(imagenmapa1, 0, 0);
-    /*ctx.fillStyle = 'rgba(255,0,0,0.5)';
-    for (let i = 0; i < mapa1_obstaculos.length; i++)
+    ctx.fillStyle = 'rgba(255,0,0,0.5)';
+    for (let i = 0; i < mapa1_checkpoints.length; i++)
     {
-        ctx.fillRect(mapa1_obstaculos[i].x, mapa1_obstaculos[i].y, mapa1_obstaculos[i].ancho, mapa1_obstaculos[i].altura);
+        ctx.fillRect(mapa1_checkpoints[i].x, mapa1_checkpoints[i].y, mapa1_checkpoints[i].ancho, mapa1_checkpoints[i].altura);
     }
     //console.log(auto.x, auto.y);
     ctx.drawImage(imagenauto1, auto.x, auto.y, auto.anchoimagen, auto.altoimagen);//*/
