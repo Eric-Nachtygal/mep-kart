@@ -83,6 +83,10 @@ promesasCarga.push(new Promise(res => {
         };
     }));
 
+document.addEventListener('contextmenu', function (e)
+{
+    e.preventDefault();
+});
 let auto = {x: 880, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1};
 let mouseapretado = false;
 let teclas = {};
@@ -127,12 +131,36 @@ const mapa1_checkpoints = [
 ];
 //no tienen orden especifico
 const mapa1_obstaculos = [
-{x:760, y:497, ancho:355, altura:104},
-{x:620, y:150, ancho:120, altura:256},
+{x:760, y:530, ancho:40, altura:70},
+{x:805, y:480, ancho:40, altura:70},
+{x:850, y:530, ancho:40, altura:50},
+{x:920, y:550, ancho:40, altura:50},
+{x:970, y:500, ancho:95, altura:50},
+{x:1080, y:550, ancho:40, altura:50},
+{x:1330, y:600, ancho:40, altura:120},
+{x:1330, y:310, ancho:40, altura:120},
+{x:1250, y:390, ancho:40, altura:50},
+{x:1320, y:450, ancho:40, altura:50},
+{x:760, y:240, ancho:40, altura:50},
+{x:820, y:180, ancho:40, altura:50},
+{x:880, y:180, ancho:100, altura:30},
+{x:1000, y:180, ancho:50, altura:30},
+{x:1090, y:180, ancho:130, altura:70},
+{x:630, y:150, ancho:120, altura:280},
+{x:607, y:200, ancho:120, altura:180},
+{x:640, y:430, ancho:110, altura:165},
+{x:490, y:170, ancho:110, altura:80},
 {x:570, y: 0, ancho:200, altura:44},
 {x:380, y: 0, ancho: 115, altura: 54},
 {x:895, y:0, ancho:270, altura:45},
+{x:805, y:0, ancho:40, altura:45},
+{x:1220, y:0, ancho:40, altura:45},
+{x:1320, y:20, ancho:40, altura:100},
 {x:945, y:20, ancho:130, altura:55},
+{x:150, y:500, ancho:40, altura:50},
+{x:280, y:500, ancho:290, altura:40},
+{x:565, y:440, ancho:40, altura:50},
+{x:50, y:280, ancho:50, altura:50},
 {x:958, y:330, ancho:100, altura:30},
 {x:1060, y:359, ancho:80, altura:25},
 {x:1135, y:374, ancho:200, altura:25},
@@ -140,15 +168,19 @@ const mapa1_obstaculos = [
 {x: 400, y:650, ancho:125, altura:100},
 {x: 525, y:710, ancho:845, altura:100},
 {x: 0, y:0, ancho:45, altura:400},
-{x: 0, y:400, ancho:35, altura:300},
+{x: 0, y:440, ancho:35, altura:40},
+{x: 0, y:580, ancho:35, altura:40},
 {x: 45, y:0, ancho:155, altura:40},
 {x: 295, y:0, ancho:40, altura:40},
+{x: 100, y:305, ancho:60, altura:70},
+{x: 160, y:345, ancho:200, altura:25},
+{x: 200, y:170, ancho:265, altura:50},
+{x: 265, y:210, ancho:85, altura:30},
+{x: 40, y:610, ancho:35, altura:80},
+{x: 80, y:650, ancho:50, altura:30},
 ];
 
-/*PARA DESPUES: hacer un array con cada corredor (listaautos o algo asi), en colisiones() revisar colisiones entre los autos
-(empujar en direccion de la colision), revisar si esta adentro de la ruta o no, y evitar que se salga de la pantalla
-tambien tendriamos que correrlo para cada jugador cuando empieze el loop, y guardarlo (ej: auto.col_arriba, auto.col_abajo, etc)
-esto evitaria tener que correr la funcion cada vez que necesitamos ver las colisiones como en khaos doom*/
+
 function posicionmouse(e)
 {
     mousex = (e.clientX) * (canvas.width / canvas.clientWidth);
@@ -223,7 +255,8 @@ function colisiones(porcion)
 
     for (let i = 0; i < mapa1_obstaculos.length; i++)
     {
-        if (!((mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho <= hitbox_izq) || (mapa1_obstaculos[i].x >= hitbox_der)) && !((mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura <= hitbox_abajo) || (mapa1_obstaculos[i].y >= hitbox_arriba)))
+        let auxobstaculo = mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho > hitbox_izq && mapa1_obstaculos[i].x < hitbox_der && mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura > hitbox_arriba && mapa1_obstaculos[i].y < hitbox_abajo;
+        if (auxobstaculo)
         {
             //donde hay mas colision
             let colisionx = (mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho < hitbox_der ? mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho : hitbox_der) - (mapa1_obstaculos[i].x > hitbox_izq ? mapa1_obstaculos[i].x : hitbox_izq);
@@ -236,12 +269,12 @@ function colisiones(porcion)
                 if (mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho / 2 < centrox)
                 {
                     colisiones.izquierda = false;
-                    porcion.x = mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho;
+                    porcion.x = mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho - 4;
                 } 
                 else
                 {
                     colisiones.derecha = false;
-                    porcion.x = mapa1_obstaculos[i].x - 19;
+                    porcion.x = mapa1_obstaculos[i].x - (porcion.ancho - 2);
                 }
             }
             else
@@ -250,12 +283,12 @@ function colisiones(porcion)
                 if (mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura / 2  < centroy)
                 {
                     colisiones.arriba = false;
-                    porcion.y = mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura;
+                    porcion.y = mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura - (porcion.altura - 12);
                 } 
                 else
                 {
                     colisiones.abajo = false;
-                    porcion.y = mapa1_obstaculos[i].y;
+                    porcion.y = mapa1_obstaculos[i].y - (porcion.altura - 3);
                 }
             }
         }
@@ -504,8 +537,16 @@ function moverjugador()
     
     canvas.addEventListener("mousedown", function (e) 
     {
-        mouseapretado = true;
-        posicionmouse(e);
+        //click 0 es izquierdo, 1 es medio (ruedita) y 2 es derecho
+        if (e.button == 0)
+        {
+            mouseapretado = true;
+            posicionmouse(e);
+        }
+        if (e.button == 2)
+        {
+            teclas['shift'] = true;
+        }
     });
 
     canvas.addEventListener("mousemove", function(e)
@@ -518,7 +559,15 @@ function moverjugador()
 
     canvas.addEventListener("mouseup", function (e) 
     {
-        mouseapretado = false;
+        if (e.button == 0)
+        {
+            mouseapretado = false;
+        }
+        if (e.button == 2)
+        {
+            teclas['shift'] = false;
+        }
+        
     });
 
     if (mouseapretado)
@@ -612,7 +661,7 @@ Promise.all(promesasCarga).then(() =>
         ctx.fillRect(mapa1_obstaculos[i].x, mapa1_obstaculos[i].y, mapa1_obstaculos[i].ancho, mapa1_obstaculos[i].altura);
     }
     //console.log(auto.x, auto.y);
-    ctx.drawImage(imagenauto1, auto.x, auto.y, auto.anchoimagen, auto.altoimagen);*/
+    ctx.drawImage(imagenauto1, auto.x, auto.y, auto.anchoimagen, auto.altoimagen);//*/
     loop();
 });
 
