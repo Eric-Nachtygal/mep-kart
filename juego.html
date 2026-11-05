@@ -51,6 +51,8 @@ const fondo_ctx = fondo.getContext("2d", { willReadFrequently: false });
 const promesasCarga = []; //en este array guardamos todas las imagenes
 const imagenauto1 = new Image();
 imagenauto1.src = 'sprites/auto_jugador.png';
+const imagenauto2 = new Image();
+imagenauto2.src = 'sprites/auto_azul.png';
 const imagenderrape1 = new Image();
 imagenderrape1.src = 'sprites/drift_azul_izq.png';
 const imagenderrape2 = new Image();
@@ -68,6 +70,13 @@ promesasCarga.push(new Promise(res => {
             res();
         };
     }));
+promesasCarga.push(new Promise(res => {
+    imagenauto2.onload = res;
+    imagenauto2.onerror = () => {
+        console.error("aaaaaaaaaaaaaaaaaaaa");
+        res();
+    };
+}));
 promesasCarga.push(new Promise(res => {
         imagenmapa1.onload = res;
         imagenmapa1.onerror = () => {
@@ -88,7 +97,7 @@ document.addEventListener('contextmenu', function (e)
     e.preventDefault();
 });
 let auto = {x: 880, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen: imagenauto1};
-let bot1 = {x: 920, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto1};
+let bot1 = {x: 920, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto2};
 
 let autos = [auto,bot1];
 let mouseapretado = false;
