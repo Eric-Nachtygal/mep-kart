@@ -77,6 +77,10 @@ promesasCarga.push(new Promise(res => {
         };
     }));
 
+document.addEventListener('contextmenu', function (e)
+{
+    e.preventDefault();
+});
 let auto = {x: 880, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1};
 let mouseapretado = false;
 let teclas = {};
@@ -170,10 +174,7 @@ const mapa1_obstaculos = [
 {x: 80, y:650, ancho:50, altura:30},
 ];
 
-/*PARA DESPUES: hacer un array con cada corredor (listaautos o algo asi), en colisiones() revisar colisiones entre los autos
-(empujar en direccion de la colision), revisar si esta adentro de la ruta o no, y evitar que se salga de la pantalla
-tambien tendriamos que correrlo para cada jugador cuando empieze el loop, y guardarlo (ej: auto.col_arriba, auto.col_abajo, etc)
-esto evitaria tener que correr la funcion cada vez que necesitamos ver las colisiones como en khaos doom*/
+
 function posicionmouse(e)
 {
     mousex = (e.clientX) * (canvas.width / canvas.clientWidth);
@@ -477,8 +478,16 @@ function moverjugador()
     
     canvas.addEventListener("mousedown", function (e) 
     {
-        mouseapretado = true;
-        posicionmouse(e);
+        //click 0 es izquierdo, 1 es medio (ruedita) y 2 es derecho
+        if (e.button == 0)
+        {
+            mouseapretado = true;
+            posicionmouse(e);
+        }
+        if (e.button == 2)
+        {
+            teclas['shift'] = true;
+        }
     });
 
     canvas.addEventListener("mousemove", function(e)
@@ -491,7 +500,15 @@ function moverjugador()
 
     canvas.addEventListener("mouseup", function (e) 
     {
-        mouseapretado = false;
+        if (e.button == 0)
+        {
+            mouseapretado = false;
+        }
+        if (e.button == 2)
+        {
+            teclas['shift'] = false;
+        }
+        
     });
 
     if (mouseapretado)
