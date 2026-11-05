@@ -121,12 +121,36 @@ const mapa1_checkpoints = [
 ];
 //no tienen orden especifico
 const mapa1_obstaculos = [
-{x:760, y:497, ancho:355, altura:104},
-{x:620, y:150, ancho:120, altura:256},
+{x:760, y:530, ancho:40, altura:70},
+{x:805, y:480, ancho:40, altura:70},
+{x:850, y:530, ancho:40, altura:50},
+{x:920, y:550, ancho:40, altura:50},
+{x:970, y:500, ancho:95, altura:50},
+{x:1080, y:550, ancho:40, altura:50},
+{x:1330, y:600, ancho:40, altura:120},
+{x:1330, y:310, ancho:40, altura:120},
+{x:1250, y:390, ancho:40, altura:50},
+{x:1320, y:450, ancho:40, altura:50},
+{x:760, y:240, ancho:40, altura:50},
+{x:820, y:180, ancho:40, altura:50},
+{x:880, y:180, ancho:100, altura:30},
+{x:1000, y:180, ancho:50, altura:30},
+{x:1090, y:180, ancho:130, altura:70},
+{x:630, y:150, ancho:120, altura:280},
+{x:607, y:200, ancho:120, altura:180},
+{x:640, y:430, ancho:110, altura:165},
+{x:490, y:170, ancho:110, altura:80},
 {x:570, y: 0, ancho:200, altura:44},
 {x:380, y: 0, ancho: 115, altura: 54},
 {x:895, y:0, ancho:270, altura:45},
+{x:805, y:0, ancho:40, altura:45},
+{x:1220, y:0, ancho:40, altura:45},
+{x:1320, y:20, ancho:40, altura:100},
 {x:945, y:20, ancho:130, altura:55},
+{x:150, y:500, ancho:40, altura:50},
+{x:280, y:500, ancho:290, altura:40},
+{x:565, y:440, ancho:40, altura:50},
+{x:50, y:280, ancho:50, altura:50},
 {x:958, y:330, ancho:100, altura:30},
 {x:1060, y:359, ancho:80, altura:25},
 {x:1135, y:374, ancho:200, altura:25},
@@ -134,9 +158,16 @@ const mapa1_obstaculos = [
 {x: 400, y:650, ancho:125, altura:100},
 {x: 525, y:710, ancho:845, altura:100},
 {x: 0, y:0, ancho:45, altura:400},
-{x: 0, y:400, ancho:35, altura:300},
+{x: 0, y:440, ancho:35, altura:40},
+{x: 0, y:580, ancho:35, altura:40},
 {x: 45, y:0, ancho:155, altura:40},
 {x: 295, y:0, ancho:40, altura:40},
+{x: 100, y:305, ancho:60, altura:70},
+{x: 160, y:345, ancho:200, altura:25},
+{x: 200, y:170, ancho:265, altura:50},
+{x: 265, y:210, ancho:85, altura:30},
+{x: 40, y:610, ancho:35, altura:80},
+{x: 80, y:650, ancho:50, altura:30},
 ];
 
 /*PARA DESPUES: hacer un array con cada corredor (listaautos o algo asi), en colisiones() revisar colisiones entre los autos
@@ -553,7 +584,7 @@ Promise.all(promesasCarga).then(() =>
         ctx.fillRect(mapa1_obstaculos[i].x, mapa1_obstaculos[i].y, mapa1_obstaculos[i].ancho, mapa1_obstaculos[i].altura);
     }
     //console.log(auto.x, auto.y);
-    ctx.drawImage(imagenauto1, auto.x, auto.y, auto.anchoimagen, auto.altoimagen);*/
+    ctx.drawImage(imagenauto1, auto.x, auto.y, auto.anchoimagen, auto.altoimagen);//*/
     loop();
 });
 
