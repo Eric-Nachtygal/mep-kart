@@ -51,6 +51,12 @@ const fondo_ctx = fondo.getContext("2d", { willReadFrequently: false });
 const promesasCarga = []; //en este array guardamos todas las imagenes
 const imagenauto1 = new Image();
 imagenauto1.src = 'sprites/auto_jugador.png';
+const imagenderrape1 = new Image();
+imagenderrape1.src = 'sprites/drift_azul_izq.png';
+const imagenderrape2 = new Image();
+imagenderrape2.src = 'sprites/drift_amarillo_izq.png';
+const imagenderrape3 = new Image();
+imagenderrape3.src = 'sprites/drift_violeta_izq.png';
 const imagenmapa1 = new Image();
 imagenmapa1.src = 'sprites/mapa1.png';
 const flecha = new Image();
@@ -272,6 +278,59 @@ function dibujar()
         ctx.imageSmoothingEnabled = false;
         ctx.drawImage(imagenauto1, -auto.anchoimagen / 2, -auto.altoimagen / 2, auto.anchoimagen, auto.altoimagen);
         ctx.restore();
+        if(auto.min_turbo_con > 1)
+        {
+            ctx.save();
+            ctx.translate(auto.x + (auto.anchoimagen / 2), auto.y + (auto.altoimagen / 2));
+            //ctx.rotate(auto.angulo * (Math.PI / 180));
+            ctx.rotate(auto.angulo_muestra);
+            ctx.imageSmoothingEnabled = false;
+            if (auto.min_turbo_con < 2)
+            {
+                if (auto.angulo_muestra > auto.angulo)
+                {
+                    ctx.save();
+                    ctx.scale(1, -1);
+                    ctx.drawImage(imagenderrape1, -auto.anchoimagen / 2, -auto.altoimagen / 2, auto.anchoimagen, auto.altoimagen);
+                    ctx.restore();
+                }
+                else
+                {
+                    ctx.drawImage(imagenderrape1, -auto.anchoimagen / 2, -auto.altoimagen / 2, auto.anchoimagen, auto.altoimagen);
+                }
+                
+            }
+            else if (auto.min_turbo_con < 4)
+            {
+                if (auto.angulo_muestra > auto.angulo)
+                {
+                    ctx.save();
+                    ctx.scale(1, -1);
+                    ctx.drawImage(imagenderrape2, -auto.anchoimagen / 2, -auto.altoimagen / 2, auto.anchoimagen, auto.altoimagen);
+                    ctx.restore();
+                }
+                else
+                {
+                    ctx.drawImage(imagenderrape2, -auto.anchoimagen / 2, -auto.altoimagen / 2, auto.anchoimagen, auto.altoimagen);
+                }
+            }
+            else
+            {
+                if (auto.angulo_muestra > auto.angulo)
+                {
+                    ctx.save();
+                    ctx.scale(1, -1);
+                    ctx.drawImage(imagenderrape3, -auto.anchoimagen / 2, -auto.altoimagen / 2, auto.anchoimagen, auto.altoimagen);
+                    ctx.restore();
+                }
+                else
+                {
+                    ctx.drawImage(imagenderrape3, -auto.anchoimagen / 2, -auto.altoimagen / 2, auto.anchoimagen, auto.altoimagen);
+                }
+            }
+            
+            ctx.restore();
+        }
     }
     else
     {
