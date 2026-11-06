@@ -345,18 +345,19 @@ function colisiones(porcion)
         }
     
     }
-    if (!caja.activo)
-    {
-        setTimeout(() => {caja.activo = true; caja.imagen = imagencaja;}, 1000);
-    }
     objetos.forEach(objeto => 
     {
+        
+        if (!objeto.activo)
+        {
+            setTimeout(() => {objeto.activo = true; objeto.imagen = imagencaja;}, 1000);
+        }
         let auxobjeto = objeto.x + objeto.ancho > hitbox_izq && objeto.x < hitbox_der && objeto.y + objeto.altura > hitbox_arriba && objeto.y < hitbox_abajo;
         if (auxobjeto)
         {
-            auto.objeto = objetos[Math.floor((Math.random() * objetos.length) + 1)];
-            caja.imagen = imagencaja2;
-            caja.activo = false;
+            porcion.objeto = objetos[Math.floor((Math.random() * objetos.length) + 1)];
+            objeto.imagen = imagencaja2;
+            objeto.activo = false;
             return;
         }
     });
@@ -489,14 +490,6 @@ function colisiones(porcion)
         }
     }
     
-    for (let i = 0; i < objetos.length; i++)
-    {
-        let auxobjeto = objetos[i].x + objetos[i].ancho > hitbox_izq && objetos[i].x < hitbox_der && objetos[i].y + objetos[i].altura > hitbox_arriba && objetos[i].y < hitbox_abajo;
-        if (auxobjeto)
-        {
-            //aca va la logica
-        }   
-    }
 
     porcion.x -= Math.cos(porcion.angulo) * porcion.velocidad;
     porcion.y -= Math.sin(porcion.angulo) * porcion.velocidad;
