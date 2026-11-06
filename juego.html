@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>MEP KART - Juego</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
@@ -53,6 +53,18 @@ const imagenauto1 = new Image();
 imagenauto1.src = 'sprites/auto_jugador.png';
 const imagenauto2 = new Image();
 imagenauto2.src = 'sprites/auto_azul.png';
+const imagenauto3 = new Image();
+imagenauto3.src = 'sprites/auto_amarillo.png';
+const imagenauto4 = new Image();
+imagenauto4.src = 'sprites/auto_violeta.png';
+const imagenauto5 = new Image();
+imagenauto5.src = 'sprites/auto_gris.png';
+const imagenauto6 = new Image();
+imagenauto6.src = 'sprites/auto_naranja.png';
+const imagenauto7 = new Image();
+imagenauto7.src = 'sprites/auto_verde.png';
+const imagenmoto = new Image();
+imagenmoto.src = 'sprites/moto.png';
 const imagenderrape1 = new Image();
 imagenderrape1.src = 'sprites/drift_azul_izq.png';
 const imagenderrape2 = new Image();
@@ -78,6 +90,49 @@ promesasCarga.push(new Promise(res => {
     };
 }));
 promesasCarga.push(new Promise(res => {
+    imagenauto3.onload = res;
+    imagenauto3.onerror = () => {
+        console.error("aaaaaaaaaaaaaaaaaaaa");
+        res();
+    };
+}));
+promesasCarga.push(new Promise(res => {
+    imagenauto4.onload = res;
+    imagenauto4.onerror = () => {
+        console.error("aaaaaaaaaaaaaaaaaaaa");
+        res();
+    };
+}));
+promesasCarga.push(new Promise(res => {
+    imagenauto5.onload = res;
+    imagenauto5.onerror = () => {
+        console.error("aaaaaaaaaaaaaaaaaaaa");
+        res();
+    };
+}));
+promesasCarga.push(new Promise(res => {
+    imagenauto6.onload = res;
+    imagenauto6.onerror = () => {
+        console.error("aaaaaaaaaaaaaaaaaaaa");
+        res();
+    };
+}));
+promesasCarga.push(new Promise(res => {
+    imagenauto7.onload = res;
+    imagenauto7.onerror = () => {
+        console.error("aaaaaaaaaaaaaaaaaaaa");
+        res();
+    };
+}));
+promesasCarga.push(new Promise(res => {
+    imagenmoto.onload = res;
+    imagenmoto.onerror = () => {
+        console.error("aaaaaaaaaaaaaaaaaaaa");
+        res();
+    };
+}));
+
+promesasCarga.push(new Promise(res => {
         imagenmapa1.onload = res;
         imagenmapa1.onerror = () => {
             console.error("aaaaaaaaaaaaaaaaaaaa");
@@ -96,10 +151,16 @@ document.addEventListener('contextmenu', function (e)
 {
     e.preventDefault();
 });
-let auto = {x: 880, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen: imagenauto1};
-let bot1 = {x: 920, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto2};
+let auto = {x: 880, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen: imagenauto1, id:1};
+let bot1 = {x: 920, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto2, camino:0, id:2};
+let bot2 = {x: 960, y: 617, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto3, camino:0, id:3};
+let bot3 = {x: 880, y: 617, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto4, camino:0, id:4};
+let bot4 = {x: 960, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto5, camino:0, id:5};
+let bot5 = {x: 920, y: 617, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto6, camino:0, id:6};
+let bot6 = {x: 1000, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto7, camino:0, id:7};
+let bot7 = {x: 1000, y: 617, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenmoto, camino:0, id:8};
 
-let autos = [auto,bot1];
+let autos = [auto,bot1,bot2,bot3,bot4,bot5,bot6,bot7]; //agregar bots
 let mouseapretado = false;
 let teclas = {};
 let mousex = 0;
@@ -132,22 +193,41 @@ const mapa1 = [
 {x:895, y:59, ancho:365, altura:114},
 ];
 //estan ordenados desde la linea de meta en adelante
-const mapa1_checkpoints = [
+const mapa1_checkpoints = 
+[
 {x:870, y:507, ancho:20, altura:254},
-{x:300, y:488, ancho:20, altura:296},
-{x:0, y:507, ancho:280, altura:30},
-{x:300, y:358, ancho:20, altura:130},
-{x:378, y:208, ancho:100, altura:170},
+{x:300, y:385, ancho:20, altura:296},
 {x:240, y:45, ancho:20, altura:294},
-{x:0, y:140, ancho:200, altura:30},
-{x:400, y:70, ancho:20, altura:130},
 {x:500, y: 20, ancho: 20, altura: 164},
 {x:895, y:59, ancho:20, altura:114},
-{x:1200, y:187, ancho:200, altura:30},
 {x:1030, y:207, ancho:20, altura:130},
-{x:760, y:337, ancho:200, altura:30},
 {x:1030, y:390, ancho:20, altura:335},
-{x:1120, y:530, ancho:300, altura:30},
+];
+
+const mapa1_caminobots =
+[
+{x:830, y:647, ancho:30, altura:30},
+{x:440, y:570, ancho:30, altura:30},
+{x:240, y:650, ancho:30, altura:30},
+{x:100, y:540, ancho:30, altura:30},
+{x:180, y:400, ancho:30, altura:30},
+{x:400, y:430, ancho:30, altura:30},
+{x:520, y:340, ancho:30, altura:30},
+{x:400, y:240, ancho:30, altura:30},
+{x:220, y:280, ancho:30, altura:30},
+{x:80, y:170, ancho:30, altura:30},
+{x:250, y:80, ancho:30, altura:30},
+{x:390, y:120, ancho:30, altura:30},
+{x:550, y:70, ancho:30, altura:30},
+{x:895, y:100, ancho:30, altura:30},
+{x:1100, y:90, ancho:30, altura:30},
+{x:1280, y:210, ancho:30, altura:30},
+{x:1160, y:330, ancho:30, altura:30},
+{x:970, y:220, ancho:30, altura:30},
+{x:820, y:330, ancho:30, altura:30},
+{x:1030, y:390, ancho:30, altura:30},
+{x:1240, y:460, ancho:30, altura:30},
+{x:1130, y:670, ancho:30, altura:30},
 ];
 //no tienen orden especifico
 const mapa1_obstaculos = [
@@ -273,6 +353,29 @@ function colisiones(porcion)
        
     }
 
+    if (porcion.id != 1)
+    {
+        for (let i = 0; i < mapa1_caminobots.length; i++)
+        {
+            let auxcamino = mapa1_caminobots[i].x + mapa1_caminobots[i].ancho > hitbox_izq && mapa1_caminobots[i].x < hitbox_der && mapa1_caminobots[i].y + mapa1_caminobots[i].altura > hitbox_arriba && mapa1_caminobots[i].y < hitbox_abajo;
+            if (auxcamino)
+            {
+                if (porcion.camino == i - 1)
+                {
+                    porcion.camino = i;
+                    break;
+                }
+                else if (porcion.camino == mapa1_caminobots.length - 1 && i == 0)
+                {
+                    porcion.camino = 0;
+                    //console.log("Vuelta: " + porcion.vuelta);
+                    break;
+                }
+            }
+        
+        }
+    }
+
     for (let i = 0; i < mapa1_obstaculos.length; i++)
     {
         let auxobstaculo = mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho > hitbox_izq && mapa1_obstaculos[i].x < hitbox_der && mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura > hitbox_arriba && mapa1_obstaculos[i].y < hitbox_abajo;
@@ -309,6 +412,50 @@ function colisiones(porcion)
                 {
                     colisiones.abajo = false;
                     porcion.y = mapa1_obstaculos[i].y - (porcion.altura - 3);
+                }
+            }
+        }
+    }
+
+    for (let i = 0; i < autos.length; i++)
+    {
+        if (autos[i].id != porcion.id)
+        {
+            let auxauto = autos[i].x + autos[i].ancho > hitbox_izq && autos[i].x < hitbox_der && autos[i].y + autos[i].altura > hitbox_arriba && autos[i].y < hitbox_abajo;
+            if (auxauto)
+            {
+                //donde hay mas colision
+                let colisionx = (autos[i].x + autos[i].ancho < hitbox_der ? autos[i].x + autos[i].ancho : hitbox_der) - (autos[i].x > hitbox_izq ? autos[i].x : hitbox_izq);
+                let colisiony = (autos[i].y + autos[i].altura < hitbox_abajo ? autos[i].y + autos[i].altura : hitbox_abajo) - (autos[i].y > hitbox_arriba ? autos[i].y : hitbox_arriba);
+
+
+                if (colisionx < colisiony)
+                {
+                    //costados
+                    if (autos[i].x + autos[i].ancho / 2 < centrox)
+                    {
+                        colisiones.izquierda = false;
+                        porcion.x = autos[i].x + autos[i].ancho - 7;
+                    } 
+                    else
+                    {
+                        colisiones.derecha = false;
+                        porcion.x = autos[i].x - (porcion.ancho - 5);
+                    }
+                }
+                else
+                {
+                    //arriba y abajo
+                    if (autos[i].y + autos[i].altura / 2  < centroy)
+                    {
+                        colisiones.arriba = false;
+                        porcion.y = autos[i].y + autos[i].altura - (porcion.altura - 15);
+                    } 
+                    else
+                    {
+                        colisiones.abajo = false;
+                        porcion.y = autos[i].y - (porcion.altura - 6);
+                    }
                 }
             }
         }
@@ -670,16 +817,6 @@ function moverbots()
 {
     for (let i = 1; i < autos.length; i++)
     {
-        if (autos[i].pasto)
-        {
-            autos[i].velocidadmax = 2.75;
-            autos[i].min_turbo_con = 0;
-        }
-        else
-        {
-            autos[i].velocidadmax = 4.75;
-        }
-
         if (autos[i].velocidad < autos[i].velocidadmax)
         {
             autos[i].velocidad += 0.25;
@@ -692,24 +829,18 @@ function moverbots()
         let aux_x = autos[i].x + (autos[i].anchoimagen / 2);
         let aux_y = autos[i].y + (autos[i].altoimagen / 2);
         let deltax;
-        if (autos[i].checkpoint >= mapa1_checkpoints.length - 1)
-        {
-            deltax = mapa1_checkpoints[0].x - aux_x;
-        }
-        else
-        {
-            deltax = mapa1_checkpoints[autos[i].checkpoint+1].x - aux_x;
-        }
         let deltay;
-        if (autos[i].checkpoint >= mapa1_checkpoints.length - 1)
+        if (autos[i].camino >= mapa1_caminobots.length - 1)
         {
-            deltay = mapa1_checkpoints[0].y - aux_y;
+            deltax = mapa1_caminobots[0].x - aux_x;
+            deltay = mapa1_caminobots[0].y - aux_y;
         }
         else
         {
-            deltay = mapa1_checkpoints[autos[i].checkpoint+1].y - aux_y;
+            deltax = mapa1_caminobots[autos[i].camino+1].x - aux_x;
+            deltay = mapa1_caminobots[autos[i].camino+1].y - aux_y;
         }
-        console.log(autos[i].checkpoint);
+        
         let angulo_check = Math.atan2(deltay, deltax);
         let diferencia = Math.atan2(Math.sin(angulo_check - autos[i].angulo),Math.cos(angulo_check - autos[i].angulo));
         
@@ -744,10 +875,10 @@ function loop()
 Promise.all(promesasCarga).then(() => 
 {
     fondo_ctx.drawImage(imagenmapa1, 0, 0);
-    ctx.fillStyle = 'rgba(255,0,0,0.5)';
-    for (let i = 0; i < mapa1_checkpoints.length; i++)
+    /*ctx.fillStyle = 'rgba(255,0,0,0.5)';
+    for (let i = 0; i < mapa1_caminobots.length; i++)
     {
-        ctx.fillRect(mapa1_checkpoints[i].x, mapa1_checkpoints[i].y, mapa1_checkpoints[i].ancho, mapa1_checkpoints[i].altura);
+        ctx.fillRect(mapa1_caminobots[i].x, mapa1_caminobots[i].y, mapa1_caminobots[i].ancho, mapa1_caminobots[i].altura);
     }
     //console.log(auto.x, auto.y);
     ctx.drawImage(imagenauto1, auto.x, auto.y, auto.anchoimagen, auto.altoimagen);//*/
