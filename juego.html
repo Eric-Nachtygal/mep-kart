@@ -6,7 +6,7 @@
     <title>MEP KART - Juego</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap" rel="stylesheet">
 </head>
 <style>
     *
@@ -581,14 +581,16 @@ function dibujar()
     }
     ctx.drawImage(flecha, auto.x + 3, auto.y - 25, 20, 20);
 
+    ctx.fillStyle = "rgba(106, 255, 254, 0.3)";
+    ctx.fillRect(40, 60, 140, 60);
     ctx.fillStyle = "rgb(255, 255, 255)";
     ctx.strokeStyle = "rgb(0, 0, 0)";
     ctx.lineWidth = 1; 
-    ctx.font = '40px Bebas Neue';
+    ctx.font = '20px Zen Dots';
     ctx.strokeText("Vuelta " + auto.vuelta, 50, 80);
     ctx.fillText("Vuelta " + auto.vuelta, 50, 80);
-    ctx.strokeText("Puesto " + auto.puesto, 50, 150);
-    ctx.fillText("Puesto " + auto.puesto, 50, 150);
+    ctx.strokeText("Puesto " + auto.puesto, 50, 110);
+    ctx.fillText("Puesto " + auto.puesto, 50, 110);
     ctx.strokeText(tiempo.minutos + ":" + tiempo.segundos + ":" + tiempo.centisegundos, 50, 200);
     ctx.fillText(tiempo.minutos + ":" + tiempo.segundos + ":" + tiempo.centisegundos, 50, 200);
     //contador de checkpoints solo para probar, despues se comenta para la expo
