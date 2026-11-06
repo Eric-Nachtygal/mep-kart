@@ -582,7 +582,7 @@ function dibujar()
     ctx.drawImage(flecha, auto.x + 3, auto.y - 25, 20, 20);
 
     ctx.fillStyle = "rgba(106, 255, 254, 0.3)";
-    ctx.fillRect(40, 60, 140, 60);
+    ctx.fillRect(40, 60, 140, 90);
     ctx.fillStyle = "rgb(255, 255, 255)";
     ctx.strokeStyle = "rgb(0, 0, 0)";
     ctx.lineWidth = 1; 
@@ -591,8 +591,8 @@ function dibujar()
     ctx.fillText("Vuelta " + auto.vuelta, 50, 80);
     ctx.strokeText("Puesto " + auto.puesto, 50, 110);
     ctx.fillText("Puesto " + auto.puesto, 50, 110);
-    ctx.strokeText(tiempo.minutos + ":" + tiempo.segundos + ":" + tiempo.centisegundos, 50, 200);
-    ctx.fillText(tiempo.minutos + ":" + tiempo.segundos + ":" + tiempo.centisegundos, 50, 200);
+    ctx.strokeText(tiempo.minutos + ":" + tiempo.segundos + ":" + tiempo.centisegundos, 50, 140);
+    ctx.fillText(tiempo.minutos + ":" + tiempo.segundos + ":" + tiempo.centisegundos, 50, 140);
     //contador de checkpoints solo para probar, despues se comenta para la expo
     /*ctx.font = '20px Bebas Neue';
     ctx.strokeText("Checkpoint" + auto.checkpoint, 50, 110);
