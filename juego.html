@@ -357,7 +357,7 @@ function colisiones(porcion)
         {
             if (!porcion.o)
             {
-                porcion.objeto = objetos[Math.floor((Math.random() * objetos.length) + 1)];
+                porcion.objeto = obj[Math.floor(Math.random() * objetos.length)];
                 porcion.o = true;
             }
             objeto.imagen = imagencaja2;
@@ -633,12 +633,13 @@ function moverjugador()
     }*/
     if(auto.boost)
     {
-        setTimeout(function() {auto.boost = false; auto.velocidadmax= 4.25;}, 3000); 
-    }
-    if(auto.o && auto.objeto == "champi" && teclas['q'])
-    {
         auto.velocidadmax = 8;
         auto.velocidad = 8;
+        setTimeout(function() {auto.boost = false; auto.velocidadmax= 4.25;}, 3000); 
+    }
+    console.log(auto.objeto);
+    if(auto.o && auto.objeto == "champi" && teclas['q'])
+    {
         auto.boost = true;
         auto.o = false;
         auto.objeto = null;
