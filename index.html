@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEP Kart</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <main class="menu" aria-label="Menú principal">
+    <h1>MEP<span>Kart</span></h1>
+    <div class="buttons">
+        <button id="play" class="primary" type="button">Jugar</button>
+        <button id="config" class="primary" type="button">Configuración</button>
+        <a href="juego.html">
+            <button id="carrera" class="mode-button" type="button" hidden>Carrera</button>
+        </a>
+        <a href="juego.html">
+            <button id="contrarreloj" class="mode-button" type="button" hidden>Contrarreloj</button>
+        </a>
+        <button id="volver" class="volver" type="button" hidden>Volver</button>
+    </div>
+    </main>
+
+    <script>
+        const playButton = document.getElementById("play");
+        const configButton = document.getElementById("config");
+        const modeButtons = document.querySelectorAll(".mode-button");
+        const backButton = document.getElementById("volver");
+
+        playButton.addEventListener("click", () => {
+            playButton.hidden = true;
+            modeButtons.forEach((button) => {
+                button.hidden = false;
+            });
+            backButton.hidden = false;
+            configButton.hidden = true;
+        });
+        configButton.addEventListener("click", () => {
+            configButton.hidden = true;
+            playButton.hidden = true;
+            backButton.hidden = false;
+        });
+        backButton.addEventListener("click", () => {
+            backButton.hidden = true;
+            configButton.hidden = false;
+            playButton.hidden = false;
+            modeButtons.forEach((button) => {
+                button.hidden = true;
+            });
+        });
+    </script>
+</body>
+</html>
