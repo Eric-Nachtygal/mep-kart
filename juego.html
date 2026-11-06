@@ -162,14 +162,14 @@ document.addEventListener('contextmenu', function (e)
 {
     e.preventDefault();
 });
-let auto = {x: 880, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen: imagenauto1, id:1, puesto:1, objeto: null};
-let bot1 = {x: 920, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto2, camino:0, id:2, puesto:2, objeto: null};
-let bot2 = {x: 960, y: 617, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto3, camino:0, id:3, puesto:3, objeto: null};
-let bot3 = {x: 880, y: 617, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto4, camino:0, id:4, puesto:4, objeto: null};
-let bot4 = {x: 960, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto5, camino:0, id:5, puesto:5, objeto: null};
-let bot5 = {x: 920, y: 617, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto6, camino:0, id:6, puesto:6, objeto: null};
-let bot6 = {x: 1000, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto7, camino:0, id:7, puesto:7, objeto: null};
-let bot7 = {x: 1000, y: 617, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenmoto, camino:0, id:8, puesto:8, objeto: null};
+let auto = {x: 880, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen: imagenauto1, id:1, puesto:1, objeto: null, o: false, boost: false};
+let bot1 = {x: 920, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto2, camino:0, id:2, puesto:2, objeto: null, o: false, boost: false};
+let bot2 = {x: 960, y: 617, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto3, camino:0, id:3, puesto:3, objeto: null, o: false, boost: false};
+let bot3 = {x: 880, y: 617, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto4, camino:0, id:4, puesto:4, objeto: null, o: false, boost: false};
+let bot4 = {x: 960, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto5, camino:0, id:5, puesto:5, objeto: null, o: false, boost: false};
+let bot5 = {x: 920, y: 617, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto6, camino:0, id:6, puesto:6, objeto: null, o: false, boost: false};
+let bot6 = {x: 1000, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto7, camino:0, id:7, puesto:7, objeto: null, o: false, boost: false};
+let bot7 = {x: 1000, y: 617, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenmoto, camino:0, id:8, puesto:8, objeto: null, o: false, boost: false};
 const obj = ["champi", "tortuga", "bananas"];
 let autos = [auto,bot1,bot2,bot3,bot4,bot5,bot6,bot7];
 
@@ -355,7 +355,11 @@ function colisiones(porcion)
         let auxobjeto = objeto.x + objeto.ancho > hitbox_izq && objeto.x < hitbox_der && objeto.y + objeto.altura > hitbox_arriba && objeto.y < hitbox_abajo;
         if (auxobjeto)
         {
-            porcion.objeto = objetos[Math.floor((Math.random() * objetos.length) + 1)];
+            if (!porcion.o)
+            {
+                porcion.objeto = objetos[Math.floor((Math.random() * objetos.length) + 1)];
+                porcion.o = true;
+            }
             objeto.imagen = imagencaja2;
             objeto.activo = false;
             return;
@@ -379,7 +383,6 @@ function colisiones(porcion)
                 break;
             }
         }
-       
     }
 
     if (porcion.id != 1)
@@ -613,10 +616,11 @@ function moverjugador()
 
     //console.log(auto.pasto);
 
-    if (auto.pasto)
+    if (auto.pasto && !auto.boost)
     {
-        auto.velocidadmax = 2.75;
+        auto.velocidadmax = 2;
         auto.min_turbo_con = 0;
+        auto.min_turbo = 0;
     }
 
    /* if (teclas['arrowright'] || teclas['d'] || teclas['arrowleft'] || teclas['a']) 
@@ -627,7 +631,18 @@ function moverjugador()
     {
         auto.velocidadmax = 6;
     }*/
-    
+    if(auto.boost)
+    {
+        setTimeout(function() {auto.boost = false; auto.velocidadmax= 4.25;}, 3000); 
+    }
+    if(auto.o && auto.objeto == "champi" && teclas['q'])
+    {
+        auto.velocidadmax = 8;
+        auto.velocidad = 8;
+        auto.boost = true;
+        auto.o = false;
+        auto.objeto = null;
+    }
     if (teclas['arrowup'] || teclas['w'] || teclas[' ']) 
     {
         mov = true; 
