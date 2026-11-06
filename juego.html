@@ -225,7 +225,6 @@ const mapa1_caminobots =
 {x:100, y:540, ancho:50, altura:50},
 {x:180, y:400, ancho:50, altura:50},
 {x:400, y:430, ancho:50, altura:50},
-{x:520, y:340, ancho:50, altura:50},
 {x:400, y:240, ancho:50, altura:50},
 {x:220, y:280, ancho:50, altura:50},
 {x:80, y:170, ancho:50, altura:50},
@@ -299,6 +298,7 @@ function posicionmouse(e)
     mousex = (e.clientX) * (canvas.width / canvas.clientWidth);
     mousey = (e.clientY) * (canvas.height / canvas.clientHeight);
 }
+
 function colisiones(porcion)
 {
     porcion.x += Math.cos(porcion.angulo) * porcion.velocidad;
@@ -576,9 +576,9 @@ function dibujar()
     ctx.strokeText("Puesto " + auto.puesto, 50, 150);
     ctx.fillText("Puesto " + auto.puesto, 50, 150);
     //contador de checkpoints solo para probar, despues se comenta para la expo
-    ctx.font = '20px Bebas Neue';
+    /*ctx.font = '20px Bebas Neue';
     ctx.strokeText("Checkpoint" + auto.checkpoint, 50, 110);
-    ctx.fillText("Checkpoint " + auto.checkpoint, 50, 110);
+    ctx.fillText("Checkpoint " + auto.checkpoint, 50, 110);*/
 }
 
 function moverjugador()
