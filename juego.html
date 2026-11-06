@@ -75,6 +75,8 @@ const imagenmapa1 = new Image();
 imagenmapa1.src = 'sprites/mapa1.png';
 const flecha = new Image();
 flecha.src = 'sprites/flecha_auto.png';
+const imagencaja = new Image();
+imagencaja.src = 'sprites/caja_misteriosa.png';
 promesasCarga.push(new Promise(res => {
         imagenauto1.onload = res;
         imagenauto1.onerror = () => {
@@ -133,6 +135,13 @@ promesasCarga.push(new Promise(res => {
 }));
 
 promesasCarga.push(new Promise(res => {
+        imagencaja.onload = res;
+        imagencaja.onerror = () => {
+            console.error("aaaaaaaaaaaaaaaaaaaa");
+            res();
+        };
+    }));
+promesasCarga.push(new Promise(res => {
         imagenmapa1.onload = res;
         imagenmapa1.onerror = () => {
             console.error("aaaaaaaaaaaaaaaaaaaa");
@@ -160,7 +169,11 @@ let bot5 = {x: 920, y: 617, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 
 let bot6 = {x: 1000, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto7, camino:0, id:7, puesto:7};
 let bot7 = {x: 1000, y: 617, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenmoto, camino:0, id:8, puesto:8};
 
-let autos = [auto,bot1,bot2,bot3,bot4,bot5,bot6,bot7]; //agregar bots
+let autos = [auto,bot1,bot2,bot3,bot4,bot5,bot6,bot7];
+
+let caja = {x: 400, y: 577, ancho: 25, altura: 15, anchoimagen: 40, altoimagen: 25, imagen: imagencaja};
+let objetos = [caja];
+
 let mouseapretado = false;
 let teclas = {};
 let mousex = 0;
@@ -461,6 +474,15 @@ function colisiones(porcion)
         }
     }
     
+    for (let i = 0; i < objetos.length; i++)
+    {
+        let auxobjeto = objetos[i].x + objetos[i].ancho > hitbox_izq && objetos[i].x < hitbox_der && objetos[i].y + objetos[i].altura > hitbox_arriba && objetos[i].y < hitbox_abajo;
+        if (auxobjeto)
+        {
+            //aca va la logica
+        }   
+    }
+
     porcion.x -= Math.cos(porcion.angulo) * porcion.velocidad;
     porcion.y -= Math.sin(porcion.angulo) * porcion.velocidad;
     
@@ -536,10 +558,14 @@ function dibujar()
         }
         else
         {
-            ctx.drawImage(imagenauto1, autos[i].x, autos[i].y, autos[i].anchoimagen, autos[i].altoimagen);
+            ctx.drawImage(autos[i].imagen, autos[i].x, autos[i].y, autos[i].anchoimagen, autos[i].altoimagen);
         }
     }
 
+    for (let i=0; i<objetos.length; i++)
+    {
+        ctx.drawImage(objetos[i].imagen, objetos[i].x, objetos[i].y, objetos[i].anchoimagen, objetos[i].altoimagen);
+    }
     ctx.drawImage(flecha, auto.x + 3, auto.y - 25, 20, 20);
 
     ctx.fillStyle = "rgb(255, 255, 255)";
