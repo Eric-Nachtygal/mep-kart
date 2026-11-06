@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>MEP KART - Juego</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
@@ -55,6 +55,16 @@ const imagenauto2 = new Image();
 imagenauto2.src = 'sprites/auto_azul.png';
 const imagenauto3 = new Image();
 imagenauto3.src = 'sprites/auto_amarillo.png';
+const imagenauto4 = new Image();
+imagenauto4.src = 'sprites/auto_violeta.png';
+const imagenauto5 = new Image();
+imagenauto5.src = 'sprites/auto_gris.png';
+const imagenauto6 = new Image();
+imagenauto6.src = 'sprites/auto_naranja.png';
+const imagenauto7 = new Image();
+imagenauto7.src = 'sprites/auto_verde.png';
+const imagenmoto = new Image();
+imagenmoto.src = 'sprites/moto.png';
 const imagenderrape1 = new Image();
 imagenderrape1.src = 'sprites/drift_azul_izq.png';
 const imagenderrape2 = new Image();
@@ -80,6 +90,49 @@ promesasCarga.push(new Promise(res => {
     };
 }));
 promesasCarga.push(new Promise(res => {
+    imagenauto3.onload = res;
+    imagenauto3.onerror = () => {
+        console.error("aaaaaaaaaaaaaaaaaaaa");
+        res();
+    };
+}));
+promesasCarga.push(new Promise(res => {
+    imagenauto4.onload = res;
+    imagenauto4.onerror = () => {
+        console.error("aaaaaaaaaaaaaaaaaaaa");
+        res();
+    };
+}));
+promesasCarga.push(new Promise(res => {
+    imagenauto5.onload = res;
+    imagenauto5.onerror = () => {
+        console.error("aaaaaaaaaaaaaaaaaaaa");
+        res();
+    };
+}));
+promesasCarga.push(new Promise(res => {
+    imagenauto6.onload = res;
+    imagenauto6.onerror = () => {
+        console.error("aaaaaaaaaaaaaaaaaaaa");
+        res();
+    };
+}));
+promesasCarga.push(new Promise(res => {
+    imagenauto7.onload = res;
+    imagenauto7.onerror = () => {
+        console.error("aaaaaaaaaaaaaaaaaaaa");
+        res();
+    };
+}));
+promesasCarga.push(new Promise(res => {
+    imagenmoto.onload = res;
+    imagenmoto.onerror = () => {
+        console.error("aaaaaaaaaaaaaaaaaaaa");
+        res();
+    };
+}));
+
+promesasCarga.push(new Promise(res => {
         imagenmapa1.onload = res;
         imagenmapa1.onerror = () => {
             console.error("aaaaaaaaaaaaaaaaaaaa");
@@ -101,8 +154,13 @@ document.addEventListener('contextmenu', function (e)
 let auto = {x: 880, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen: imagenauto1, id:1};
 let bot1 = {x: 920, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto2, camino:0, id:2};
 let bot2 = {x: 960, y: 617, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto3, camino:0, id:3};
+let bot3 = {x: 880, y: 617, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto4, camino:0, id:4};
+let bot4 = {x: 960, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto5, camino:0, id:5};
+let bot5 = {x: 920, y: 617, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto6, camino:0, id:6};
+let bot6 = {x: 1000, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto7, camino:0, id:7};
+let bot7 = {x: 1000, y: 617, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenmoto, camino:0, id:8};
 
-let autos = [auto,bot1,bot2];
+let autos = [auto,bot1,bot2,bot3,bot4,bot5,bot6,bot7]; //agregar bots
 let mouseapretado = false;
 let teclas = {};
 let mousex = 0;
