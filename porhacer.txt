@@ -1,7 +1,7 @@
 Sprites autos
 Sprites mapas
 Gameplay
-Logica de bots
+
 
 agregar las cajitas con poderes
 Agregar poderes
@@ -9,7 +9,7 @@ Agregar nitro
 Agregar menu de seleccion de mapa modo etc
 
 
-Agregar sistema de puestos
+
 Agregar sistema de contar tiempo
 Modo contrareloj
 Agregar sonido
@@ -20,3 +20,5 @@ Pasar sistema de colisiones
 Hacer que los sprites giren
 Pasar sistema de dibujar
 Los checkpoints
+Agregar sistema de puestos
+Logica de bots
