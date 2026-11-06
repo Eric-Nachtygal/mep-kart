@@ -162,6 +162,8 @@ document.addEventListener('contextmenu', function (e)
 {
     e.preventDefault();
 });
+
+let tiempo = {centisegundos: 0, segundos: 0, minutos: 0};
 let auto = {x: 880, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen: imagenauto1, id:1, puesto:1, objeto: null, o: false, boost: false};
 let bot1 = {x: 920, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto2, camino:0, id:2, puesto:2, objeto: null, o: false, boost: false};
 let bot2 = {x: 960, y: 617, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen:imagenauto3, camino:0, id:3, puesto:3, objeto: null, o: false, boost: false};
@@ -587,11 +589,32 @@ function dibujar()
     ctx.fillText("Vuelta " + auto.vuelta, 50, 80);
     ctx.strokeText("Puesto " + auto.puesto, 50, 150);
     ctx.fillText("Puesto " + auto.puesto, 50, 150);
+    ctx.strokeText(tiempo.minutos + ":" + tiempo.segundos + ":" + tiempo.centisegundos, 50, 200);
+    ctx.fillText(tiempo.minutos + ":" + tiempo.segundos + ":" + tiempo.centisegundos, 50, 200);
     //contador de checkpoints solo para probar, despues se comenta para la expo
     /*ctx.font = '20px Bebas Neue';
     ctx.strokeText("Checkpoint" + auto.checkpoint, 50, 110);
     ctx.fillText("Checkpoint " + auto.checkpoint, 50, 110);*/
 }
+
+
+setInterval(function() 
+{
+        tiempo.centisegundos++;
+        if (tiempo.centisegundos >= 100)
+        {
+            tiempo.centisegundos = 0;
+            tiempo.segundos++;
+            if (tiempo.segundos >= 60)
+            {
+                tiempo.segundos = 0;
+                tiempo.minutos++;
+            }
+        }
+        
+    console.log(tiempo);
+}, 10);
+
 
 function moverjugador()
 {
