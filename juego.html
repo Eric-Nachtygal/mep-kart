@@ -920,20 +920,25 @@ function definir_puestos()
             auxdistanciay = Math.abs(autos[i].y - mapa1_checkpoints[autos[i].checkpoint + 1].y);
         }
         auxdistancia = Math.hypot(auxdistanciax,auxdistanciay);
-        distancias.push({dist:auxdistancia, auto:i, check:autos[i].checkpoint});
+        distancias.push({dist:auxdistancia, auto:i, check:autos[i].checkpoint, vuelta:autos[i].vuelta});
     }
 
-    distancias.sort((a, b) => {
-        if (b.check !== a.check) 
+    distancias.sort((a, b) => 
+    {
+        if (b.vuelta !== a.vuelta)
         {
-            return b.check - a.check;   // mayor checkpoint primero
+            return b.vuelta - a.vuelta;
         }
-        return a.dist - b.dist;       // menor distancia al próximo checkpoint primero
+        if (b.check !== a.check)
+        {
+            return b.check - a.check;
+        }
+        return a.dist - b.dist;
     });
 
     for (let i= 0; i < autos.length; i++)
     {
-        for (let j=0; i < distancias.length; i++)
+        for (let j=0; j < distancias.length; j++)
         {
             if (distancias[j].auto == i)
             {
