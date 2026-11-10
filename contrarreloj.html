@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEP KART - Contrarreloj</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap" rel="stylesheet">
+</head>
+<style>
+    *
+    {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        image-rendering: pixelated;
+    }
+    canvas
+    {
+        z-index: 99;
+        width: 100%;
+        height: 100vh;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    body::-webkit-scrollbar 
+    {
+        width: 0px;
+        height: 0px;
+    }
+
+</style>
+<body>
+    <canvas id="fondo"></canvas>
+    <canvas id="canvas"></canvas>
+    <audio id="audioFondo" src="cancion2.ogg" autoplay loop></audio>
+</body>
+</html>
+
+<script>
+const canvas = document.getElementById("canvas");
+canvas.width = 1366;
+canvas.height = 768;
+const fondo = document.getElementById("fondo");
+fondo.width = 854;
+fondo.height = 480;
+const ctx = canvas.getContext("2d", { willReadFrequently: true });
+const fondo_ctx = fondo.getContext("2d", { willReadFrequently: false });
+const promesasCarga = []; //en este array guardamos todas las imagenes
+const imagenauto1 = new Image();
+imagenauto1.src = 'sprites/auto_jugador.png';
+const imagenderrape1 = new Image();
+imagenderrape1.src = 'sprites/drift_azul_izq.png';
+const imagenderrape2 = new Image();
+imagenderrape2.src = 'sprites/drift_amarillo_izq.png';
+const imagenderrape3 = new Image();
+imagenderrape3.src = 'sprites/drift_violeta_izq.png';
+const imagenmapa1 = new Image();
+imagenmapa1.src = 'sprites/mapa1.png';
+const flecha = new Image();
+flecha.src = 'sprites/flecha_auto.png';
+const imagencaja = new Image();
+imagencaja.src = 'sprites/caja_misteriosa.png';
+const imagencaja2 = new Image();
+imagencaja2.src = 'sprites/caja_misteriosa_inactiva.png';
+promesasCarga.push(new Promise(res => {
+        imagenauto1.onload = res;
+        imagenauto1.onerror = () => {
+            console.error("aaaaaaaaaaaaaaaaaaaa");
+            res();
+        };
+    }));
+
+promesasCarga.push(new Promise(res => {
+        imagencaja.onload = res;
+        imagencaja.onerror = () => {
+            console.error("aaaaaaaaaaaaaaaaaaaa");
+            res();
+        };
+    }));
+promesasCarga.push(new Promise(res => {
+        imagenmapa1.onload = res;
+        imagenmapa1.onerror = () => {
+            console.error("aaaaaaaaaaaaaaaaaaaa");
+            res();
+        };
+    }));
+promesasCarga.push(new Promise(res => {
+        flecha.onload = res;
+        flecha.onerror = () => {
+            console.error("aaaaaaaaaaaaaaaaaaaa");
+            res();
+        };
+    }));
+
+document.addEventListener('contextmenu', function (e)
+{
+    e.preventDefault();
+});
+
+let tiempo = {centisegundos: 0, segundos: 0, minutos: 0};
+let auto = {x: 880, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 1, imagen: imagenauto1, id:1, puesto:1, objeto: null, o: false, boost: false};
+const obj = ["champi", "tortuga", "bananas"];
+let autos = [auto];
+
+let caja = {x: 400, y: 577, ancho: 25, altura: 15, anchoimagen: 40, altoimagen: 25, imagen: imagencaja, activo: true};
+let objetos = [caja];
+
+let mouseapretado = false;
+let teclas = {};
+let mousex = 0;
+let mousey = 0;
+const mapa1 = [
+{x: 500, y: 50, ancho: 390, altura: 94},
+{x:320, y:67, ancho:180, altura:90},
+{x:200, y:47, ancho:115, altura:93},
+{x:130, y:54, ancho:65, altura:94},
+{x:70, y:90, ancho:80, altura:180},
+{x:70, y:227, ancho:87, altura:64},
+{x:160, y:240, ancho:340, altura:94},
+{x:470, y:270, ancho:80, altura:160},
+{x:100, y:385, ancho:400, altura:96},
+{x:55, y:407, ancho:73, altura:94},
+{x:44, y:506, ancho:95, altura:80},
+{x:65, y:580, ancho:280, altura:100},
+{x:340, y:555, ancho:220, altura:105},
+{x:560, y:580, ancho:120, altura:115},
+{x:680, y:607, ancho:450, altura:94},
+{x:1130, y:598, ancho:100, altura:100},
+{x:1200, y:560, ancho:100, altura:85},
+{x:1200, y:450, ancho:110, altura:110},
+{x:895, y:390, ancho:325, altura:110},
+{x:800, y:270, ancho:90, altura:190},
+{x:840, y:217, ancho:240, altura:89},
+{x:1030, y:257, ancho:250, altura:110},
+{x:1260, y:207, ancho:80, altura:114},
+{x:1240, y:97, ancho:95, altura:104},
+{x:895, y:59, ancho:365, altura:114},
+];
+//estan ordenados desde la linea de meta en adelante
+const mapa1_checkpoints = 
+[
+{x:870, y:507, ancho:20, altura:254},
+{x:300, y:385, ancho:20, altura:296},
+{x:240, y:45, ancho:20, altura:294},
+{x:500, y: 20, ancho: 20, altura: 164},
+{x:895, y:59, ancho:20, altura:114},
+{x:1030, y:207, ancho:20, altura:130},
+{x:1030, y:390, ancho:20, altura:335},
+];
+
+
+//no tienen orden especifico
+const mapa1_obstaculos = [
+{x:760, y:530, ancho:40, altura:70},
+{x:805, y:480, ancho:40, altura:70},
+{x:850, y:530, ancho:40, altura:50},
+{x:920, y:550, ancho:40, altura:50},
+{x:970, y:500, ancho:95, altura:50},
+{x:1080, y:550, ancho:40, altura:50},
+{x:1330, y:600, ancho:40, altura:120},
+{x:1330, y:310, ancho:40, altura:120},
+{x:1250, y:390, ancho:40, altura:50},
+{x:1320, y:450, ancho:40, altura:50},
+{x:760, y:240, ancho:40, altura:50},
+{x:820, y:180, ancho:40, altura:50},
+{x:880, y:180, ancho:100, altura:30},
+{x:1000, y:180, ancho:50, altura:30},
+{x:1090, y:180, ancho:130, altura:70},
+{x:630, y:150, ancho:120, altura:280},
+{x:607, y:200, ancho:120, altura:180},
+{x:640, y:430, ancho:110, altura:165},
+{x:490, y:170, ancho:110, altura:80},
+{x:570, y: 0, ancho:200, altura:44},
+{x:380, y: 0, ancho: 115, altura: 54},
+{x:895, y:0, ancho:270, altura:45},
+{x:805, y:0, ancho:40, altura:45},
+{x:1220, y:0, ancho:40, altura:45},
+{x:1320, y:20, ancho:40, altura:100},
+{x:945, y:20, ancho:130, altura:55},
+{x:150, y:500, ancho:40, altura:50},
+{x:280, y:500, ancho:290, altura:40},
+{x:565, y:440, ancho:40, altura:50},
+{x:50, y:280, ancho:50, altura:50},
+{x:958, y:330, ancho:100, altura:30},
+{x:1060, y:359, ancho:80, altura:25},
+{x:1135, y:374, ancho:200, altura:25},
+{x:0, y:690, ancho:400, altura:100},
+{x: 400, y:650, ancho:125, altura:100},
+{x: 525, y:710, ancho:845, altura:100},
+{x: 0, y:0, ancho:45, altura:400},
+{x: 0, y:440, ancho:35, altura:40},
+{x: 0, y:580, ancho:35, altura:40},
+{x: 45, y:0, ancho:155, altura:40},
+{x: 295, y:0, ancho:40, altura:40},
+{x: 100, y:305, ancho:60, altura:70},
+{x: 160, y:345, ancho:200, altura:25},
+{x: 200, y:170, ancho:265, altura:50},
+{x: 265, y:210, ancho:85, altura:30},
+{x: 40, y:610, ancho:35, altura:80},
+{x: 80, y:650, ancho:50, altura:30},
+];
+
+
+function posicionmouse(e)
+{
+    mousex = (e.clientX) * (canvas.width / canvas.clientWidth);
+    mousey = (e.clientY) * (canvas.height / canvas.clientHeight);
+}
+
+function colisiones(porcion)
+{
+    porcion.x += Math.cos(porcion.angulo) * porcion.velocidad;
+    porcion.y += Math.sin(porcion.angulo) * porcion.velocidad;
+    //21x9
+    //let alturahitbox = 20;
+    let centrox = porcion.x + porcion.ancho / 2;
+    let centroy = porcion.y + porcion.altura / 2;
+    let hitbox_izq = porcion.x + 4;
+    let hitbox_der = (porcion.x + porcion.ancho) - 2;
+    let hitbox_abajo = (porcion.y + porcion.altura) -3;
+    let hitbox_arriba = hitbox_abajo - 9;
+
+    if (porcion.y <= 17)
+    {
+        porcion.y = 17;
+    }
+    else if (porcion.y >= canvas.height - 27)
+    {
+        porcion.y = canvas.height - 27;
+    }
+
+    if (porcion.x <= 7)
+    {
+        porcion.x = 7;
+    }
+    else if (porcion.x >= canvas.width - 27)
+    {
+        porcion.x = canvas.width - 27;
+    }
+
+    let colisiones = {abajo: true, arriba: true, izquierda: true, derecha: true};
+    porcion.pasto = true;
+    //se fija que la porcion y el objeto esten tocandose
+    for (let i = 0; i < mapa1.length; i++)
+    {
+        let auxruta = mapa1[i].x + mapa1[i].ancho > hitbox_izq && mapa1[i].x < hitbox_der && mapa1[i].y + mapa1[i].altura > hitbox_arriba && mapa1[i].y < hitbox_abajo;
+        if (auxruta)
+        {
+            porcion.pasto = false; // encontró un tramo de ruta
+            break;
+        }
+    
+    }
+    objetos.forEach(objeto => 
+    {
+        
+        if (!objeto.activo)
+        {
+            setTimeout(() => {objeto.activo = true; objeto.imagen = imagencaja;}, 1000);
+        }
+        let auxobjeto = objeto.x + objeto.ancho > hitbox_izq && objeto.x < hitbox_der && objeto.y + objeto.altura > hitbox_arriba && objeto.y < hitbox_abajo;
+        if (auxobjeto)
+        {
+            if (!porcion.o)
+            {
+                porcion.objeto = obj[Math.floor(Math.random() * objetos.length)];
+                porcion.o = true;
+            }
+            objeto.imagen = imagencaja2;
+            objeto.activo = false;
+            return;
+        }
+    });
+    for (let i = 0; i < mapa1_checkpoints.length; i++)
+    {
+        let auxcheckpoint = mapa1_checkpoints[i].x + mapa1_checkpoints[i].ancho > hitbox_izq && mapa1_checkpoints[i].x < hitbox_der && mapa1_checkpoints[i].y + mapa1_checkpoints[i].altura > hitbox_arriba && mapa1_checkpoints[i].y < hitbox_abajo;
+        if (auxcheckpoint)
+        {
+            if (porcion.checkpoint == i - 1)
+            {
+                porcion.checkpoint = i;
+                break;
+            }
+            else if (porcion.checkpoint == mapa1_checkpoints.length - 1 && i == 0)
+            {
+                porcion.checkpoint = 0;
+                porcion.vuelta += 1;
+                //console.log("Vuelta: " + porcion.vuelta);
+                break;
+            }
+        }
+    }
+
+    if (porcion.id != 1)
+    {
+        for (let i = 0; i < mapa1_caminobots.length; i++)
+        {
+            let auxcamino = mapa1_caminobots[i].x + mapa1_caminobots[i].ancho > hitbox_izq && mapa1_caminobots[i].x < hitbox_der && mapa1_caminobots[i].y + mapa1_caminobots[i].altura > hitbox_arriba && mapa1_caminobots[i].y < hitbox_abajo;
+            if (auxcamino)
+            {
+                if (porcion.camino == i - 1)
+                {
+                    porcion.camino = i;
+                    break;
+                }
+                else if (porcion.camino == mapa1_caminobots.length - 1 && i == 0)
+                {
+                    porcion.camino = 0;
+                    //console.log("Vuelta: " + porcion.vuelta);
+                    break;
+                }
+            }
+        
+        }
+    }
+
+    for (let i = 0; i < mapa1_obstaculos.length; i++)
+    {
+        let auxobstaculo = mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho > hitbox_izq && mapa1_obstaculos[i].x < hitbox_der && mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura > hitbox_arriba && mapa1_obstaculos[i].y < hitbox_abajo;
+        if (auxobstaculo)
+        {
+            //donde hay mas colision
+            let colisionx = (mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho < hitbox_der ? mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho : hitbox_der) - (mapa1_obstaculos[i].x > hitbox_izq ? mapa1_obstaculos[i].x : hitbox_izq);
+            let colisiony = (mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura < hitbox_abajo ? mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura : hitbox_abajo) - (mapa1_obstaculos[i].y > hitbox_arriba ? mapa1_obstaculos[i].y : hitbox_arriba);
+
+
+            if (colisionx < colisiony)
+            {
+                //costados
+                if (mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho / 2 < centrox)
+                {
+                    colisiones.izquierda = false;
+                    porcion.x = mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho - 4;
+                } 
+                else
+                {
+                    colisiones.derecha = false;
+                    porcion.x = mapa1_obstaculos[i].x - (porcion.ancho - 2);
+                }
+            }
+            else
+            {
+                //arriba y abajo
+                if (mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura / 2  < centroy)
+                {
+                    colisiones.arriba = false;
+                    porcion.y = mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura - (porcion.altura - 12);
+                } 
+                else
+                {
+                    colisiones.abajo = false;
+                    porcion.y = mapa1_obstaculos[i].y - (porcion.altura - 3);
+                }
+            }
+        }
+    }
+
+    for (let i = 0; i < autos.length; i++)
+    {
+        if (autos[i].id != porcion.id)
+        {
+            let auxauto = autos[i].x + autos[i].ancho > hitbox_izq && autos[i].x < hitbox_der && autos[i].y + autos[i].altura > hitbox_arriba && autos[i].y < hitbox_abajo;
+            if (auxauto)
+            {
+                //donde hay mas colision
+                let colisionx = (autos[i].x + autos[i].ancho < hitbox_der ? autos[i].x + autos[i].ancho : hitbox_der) - (autos[i].x > hitbox_izq ? autos[i].x : hitbox_izq);
+                let colisiony = (autos[i].y + autos[i].altura < hitbox_abajo ? autos[i].y + autos[i].altura : hitbox_abajo) - (autos[i].y > hitbox_arriba ? autos[i].y : hitbox_arriba);
+
+
+                if (colisionx < colisiony)
+                {
+                    //costados
+                    if (autos[i].x + autos[i].ancho / 2 < centrox)
+                    {
+                        colisiones.izquierda = false;
+                        porcion.x = autos[i].x + autos[i].ancho - 7;
+                    } 
+                    else
+                    {
+                        colisiones.derecha = false;
+                        porcion.x = autos[i].x - (porcion.ancho - 5);
+                    }
+                }
+                else
+                {
+                    //arriba y abajo
+                    if (autos[i].y + autos[i].altura / 2  < centroy)
+                    {
+                        colisiones.arriba = false;
+                        porcion.y = autos[i].y + autos[i].altura - (porcion.altura - 15);
+                    } 
+                    else
+                    {
+                        colisiones.abajo = false;
+                        porcion.y = autos[i].y - (porcion.altura - 6);
+                    }
+                }
+            }
+        }
+    }
+    
+
+    porcion.x -= Math.cos(porcion.angulo) * porcion.velocidad;
+    porcion.y -= Math.sin(porcion.angulo) * porcion.velocidad;
+    
+    return colisiones;
+}
+
+function dibujar()
+{
+    for (let i=0; i<autos.length; i++)
+    {
+        if (autos[i].angulo != 0)
+        {
+            ctx.save();
+            ctx.translate(autos[i].x + (autos[i].anchoimagen / 2), autos[i].y + (autos[i].altoimagen / 2));
+            //ctx.rotate(auto.angulo * (Math.PI / 180));
+            ctx.rotate(autos[i].angulo_muestra);
+            ctx.imageSmoothingEnabled = false;
+            ctx.drawImage(autos[i].imagen, -autos[i].anchoimagen / 2, -autos[i].altoimagen / 2, autos[i].anchoimagen, autos[i].altoimagen);
+            ctx.restore();
+            if(autos[i].min_turbo_con > 1)
+            {
+                ctx.save();
+                ctx.translate(autos[i].x + (autos[i].anchoimagen / 2), autos[i].y + (autos[i].altoimagen / 2));
+                //ctx.rotate(auto.angulo * (Math.PI / 180));
+                ctx.rotate(autos[i].angulo_muestra);
+                ctx.imageSmoothingEnabled = false;
+                if (autos[i].min_turbo_con < 2)
+                {
+                    if (autos[i].angulo_muestra > autos[i].angulo)
+                    {
+                        ctx.save();
+                        ctx.scale(1, -1);
+                        ctx.drawImage(imagenderrape1, -autos[i].anchoimagen / 2, -autos[i].altoimagen / 2, autos[i].anchoimagen, autos[i].altoimagen);
+                        ctx.restore();
+                    }
+                    else
+                    {
+                        ctx.drawImage(imagenderrape1, -autos[i].anchoimagen / 2, -autos[i].altoimagen / 2, autos[i].anchoimagen, autos[i].altoimagen);
+                    }
+                    
+                }
+                else if (autos[i].min_turbo_con < 4)
+                {
+                    if (autos[i].angulo_muestra > autos[i].angulo)
+                    {
+                        ctx.save();
+                        ctx.scale(1, -1);
+                        ctx.drawImage(imagenderrape2, -autos[i].anchoimagen / 2, -autos[i].altoimagen / 2, autos[i].anchoimagen, autos[i].altoimagen);
+                        ctx.restore();
+                    }
+                    else
+                    {
+                        ctx.drawImage(imagenderrape2, -autos[i].anchoimagen / 2, -autos[i].altoimagen / 2, autos[i].anchoimagen, autos[i].altoimagen);
+                    }
+                }
+                else
+                {
+                    if (autos[i].angulo_muestra > autos[i].angulo)
+                    {
+                        ctx.save();
+                        ctx.scale(1, -1);
+                        ctx.drawImage(imagenderrape3, -autos[i].anchoimagen / 2, -autos[i].altoimagen / 2, autos[i].anchoimagen, autos[i].altoimagen);
+                        ctx.restore();
+                    }
+                    else
+                    {
+                        ctx.drawImage(imagenderrape3, -autos[i].anchoimagen / 2, -autos[i].altoimagen / 2, autos[i].anchoimagen, autos[i].altoimagen);
+                    }
+                }
+                
+                ctx.restore();
+            }
+        }
+        else
+        {
+            ctx.drawImage(autos[i].imagen, autos[i].x, autos[i].y, autos[i].anchoimagen, autos[i].altoimagen);
+        }
+    }
+
+    for (let i=0; i<objetos.length; i++)
+    {
+        ctx.drawImage(objetos[i].imagen, objetos[i].x, objetos[i].y, objetos[i].anchoimagen, objetos[i].altoimagen);
+    }
+    ctx.drawImage(flecha, auto.x + 3, auto.y - 25, 20, 20);
+
+    ctx.fillStyle = "rgba(106, 255, 254, 0.3)";
+    ctx.fillRect(40, 60, 140, 55);
+    ctx.fillStyle = "rgb(255, 255, 255)";
+    ctx.strokeStyle = "rgb(0, 0, 0)";
+    ctx.lineWidth = 1; 
+    ctx.font = '20px Zen Dots';
+    ctx.strokeText("Vuelta " + auto.vuelta, 50, 80);
+    ctx.fillText("Vuelta " + auto.vuelta, 50, 80);
+    ctx.strokeText(tiempo.minutos + ":" + tiempo.segundos + ":" + tiempo.centisegundos, 50, 110);
+    ctx.fillText(tiempo.minutos + ":" + tiempo.segundos + ":" + tiempo.centisegundos, 50, 110);
+    //contador de checkpoints solo para probar, despues se comenta para la expo
+    /*ctx.font = '20px Bebas Neue';
+    ctx.strokeText("Checkpoint" + auto.checkpoint, 50, 110);
+    ctx.fillText("Checkpoint " + auto.checkpoint, 50, 110);*/
+}
+
+
+setInterval(function() 
+{
+        tiempo.centisegundos++;
+        if (tiempo.centisegundos >= 100)
+        {
+            tiempo.centisegundos = 0;
+            tiempo.segundos++;
+            if (tiempo.segundos >= 60)
+            {
+                tiempo.segundos = 0;
+                tiempo.minutos++;
+            }
+        }
+        
+    //console.log(tiempo);
+}, 10);
+
+
+function moverjugador()
+{
+    document.addEventListener('keydown', function(e) 
+    {
+        if(e.key == 'F11' || e.key == 'F5' || e.key == 'F12')
+        {
+            return;
+        }
+        e.preventDefault();
+        teclas[e.key.toLowerCase()] = true;
+        
+    });
+    
+    document.addEventListener('keyup', function(e)
+    {
+        teclas[e.key.toLowerCase()] = false;
+    });
+
+    let mov = false;
+
+
+    //console.log(auto.pasto);
+
+    if (auto.pasto && !auto.boost)
+    {
+        auto.velocidadmax = 2;
+        auto.min_turbo_con = 0;
+        auto.min_turbo = 0;
+    }
+
+   /* if (teclas['arrowright'] || teclas['d'] || teclas['arrowleft'] || teclas['a']) 
+    {
+        auto.velocidadmax = 5.25;
+    }
+    else
+    {
+        auto.velocidadmax = 6;
+    }*/
+    if(auto.boost)
+    {
+        auto.velocidadmax = 8;
+        auto.velocidad = 8;
+        setTimeout(function() {auto.boost = false; auto.velocidadmax= 4.25;}, 3000); 
+    }
+    //console.log(auto.objeto);
+    if(auto.o && auto.objeto == "champi" && teclas['q'])
+    {
+        auto.boost = true;
+        auto.o = false;
+        auto.objeto = null;
+    }
+    if (teclas['arrowup'] || teclas['w'] || teclas[' ']) 
+    {
+        mov = true; 
+        if (auto.velocidad < auto.velocidadmax)
+        {
+            auto.velocidad += 0.25;
+        }
+        else if (auto.velocidad >= auto.velocidadmax)
+        {
+            auto.velocidad = auto.velocidadmax;
+        }
+    } 
+    if (teclas['arrowdown'] || teclas['s']) 
+    {
+        mov = true;
+        if (auto.velocidad > -auto.velocidadmax)
+        {
+            auto.velocidad -= 0.25;
+        } 
+        else if (auto.velocidad <= -auto.velocidadmax)
+        {
+            auto.velocidad = -auto.velocidadmax;
+        }
+    }
+    if (teclas['shift']) 
+    {
+        if (auto.min_turbo != 0)
+        {
+            auto.velocidadmax = 7;
+            auto.min_turbo -= 0.04;
+            if (auto.min_turbo < 0)
+            {
+                auto.min_turbo = 0;
+            }
+        }
+        else
+        {
+            auto.velocidadmax= 4.25;
+        }
+        if (mov && teclas['arrowleft'] || teclas['a'])
+        {
+            auto.angulo -= 0.022*(auto.velocidad/2);
+            auto.angulo_muestra = auto.angulo - 0.24*(auto.velocidad/2);
+        }
+        if (mov && teclas['arrowright'] || teclas['d'])
+        {
+            auto.angulo += 0.022*(auto.velocidad/2);
+            auto.angulo_muestra = auto.angulo + 0.24*(auto.velocidad/2);
+        }
+        if (mov && (teclas['arrowright'] || teclas['d'] || teclas['arrowleft'] || teclas['a']))
+        {
+            auto.min_turbo_con += 0.02;
+        }
+        else
+        {
+            auto.min_turbo_con += 0.01;
+        }
+    }
+    else
+    {
+        if (auto.min_turbo_con > 4)
+        {
+            auto.velocidadmax = 7;
+            auto.min_turbo_con = 0;
+            auto.min_turbo = 4;
+        }
+        else if (auto.min_turbo_con > 2)
+        {
+            auto.velocidadmax = 7;
+            auto.min_turbo_con = 0;
+            auto.min_turbo = 2;
+        }
+        else if (auto.min_turbo_con > 1)
+        {
+            auto.velocidadmax = 7;
+            auto.min_turbo_con = 0;
+            auto.min_turbo = 1;
+        }
+        else if (auto.min_turbo != 0)
+        {
+            auto.min_turbo -= 0.04;
+            if (auto.min_turbo < 0)
+            {
+                auto.min_turbo = 0;
+            }
+        }
+        else
+        {
+            if (auto.pasto)
+            {
+                auto.velocidadmax = 3.75;
+            }
+            else
+            {
+                auto.velocidadmax = 4.75;
+            }
+            auto.min_turbo_con = 0;
+        }
+        auto.angulo_muestra = auto.angulo;
+        if (teclas['arrowright'] || teclas['d']) 
+        {
+            auto.angulo += 0.017*(auto.velocidad/2);
+            auto.angulo_muestra = auto.angulo;
+        }
+        if (teclas['arrowleft'] || teclas['a']) 
+        {
+            auto.angulo -= 0.017*(auto.velocidad/2);
+            auto.angulo_muestra = auto.angulo;
+        } 
+    }
+    
+
+    
+    canvas.addEventListener("mousedown", function (e) 
+    {
+        //click 0 es izquierdo, 1 es medio (ruedita) y 2 es derecho
+        if (e.button == 0)
+        {
+            mouseapretado = true;
+            posicionmouse(e);
+        }
+        if (e.button == 2)
+        {
+            teclas['shift'] = true;
+        }
+    });
+
+    canvas.addEventListener("mousemove", function(e)
+    {
+        if (mouseapretado)
+        {
+            posicionmouse(e);
+        }
+    });
+
+    canvas.addEventListener("mouseup", function (e) 
+    {
+        if (e.button == 0)
+        {
+            mouseapretado = false;
+        }
+        if (e.button == 2)
+        {
+            teclas['shift'] = false;
+        }
+        
+    });
+
+    if (mouseapretado)
+    {
+        mov = true;
+        if (auto.velocidad < auto.velocidadmax)
+        {
+            auto.velocidad += 0.25;
+        }
+        else if (auto.velocidad >= auto.velocidadmax)
+        {
+            auto.velocidad = auto.velocidadmax;
+        }
+        let aux_x = auto.x + (auto.anchoimagen / 2);
+        let aux_y = auto.y + (auto.altoimagen / 2);
+        let deltax = mousex - aux_x;
+        let deltay = mousey - aux_y;
+        let angulo_mouse = Math.atan2(deltay, deltax);
+        let diferencia = Math.atan2(Math.sin(angulo_mouse - auto.angulo),Math.cos(angulo_mouse - auto.angulo));
+        
+        if (Math.abs(diferencia) <= Math.abs(0.017*(auto.velocidad/2))) //si la diferencia es muy poca no rota
+        {
+            auto.angulo = angulo_mouse;
+        }
+        else
+        {
+            if (teclas['shift'])
+            {
+                auto.angulo += Math.sign(diferencia) * Math.abs(0.022*(auto.velocidad/2));
+                auto.angulo_muestra = auto.angulo + 0.22*(auto.velocidad/2);
+            }
+            else
+            {
+                auto.angulo += Math.sign(diferencia) * Math.abs(0.017*(auto.velocidad/2));
+                auto.angulo_muestra = auto.angulo;
+            }
+            
+        }
+        /*if (auto.angulo > angulo_mouse)
+        {
+            auto.angulo += 0.017*(auto.velocidad/2);
+        }
+        else if (auto.angulo < angulo_mouse)
+        {
+            auto.angulo -= 0.017*(auto.velocidad/2);
+        }*/
+        
+    }
+
+    if (!mov)
+    {
+        if (auto.velocidad !=0)
+        {
+            if (auto.velocidad > 0)
+            {
+                auto.velocidad -= 0.25;
+            }
+            else
+            {
+                auto.velocidad += 0.25;
+            }
+        }
+    }
+
+    
+
+
+    
+    
+
+    auto.x += Math.cos(auto.angulo) * auto.velocidad;
+    auto.y += Math.sin(auto.angulo) * auto.velocidad;
+
+}
+
+
+
+function loop()
+{
+    ctx.clearRect(0,0,canvas.width, canvas.height);
+    dibujar();
+    for (let i=0; i<autos.length; i++)
+    {
+        colisiones(autos[i]);
+    }
+    moverjugador();
+    requestAnimationFrame(loop);
+}
+
+
+
+Promise.all(promesasCarga).then(() => 
+{
+    fondo_ctx.drawImage(imagenmapa1, 0, 0);
+    /*ctx.fillStyle = 'rgba(255,0,0,0.5)';
+    for (let i = 0; i < mapa1_caminobots.length; i++)
+    {
+        ctx.fillRect(mapa1_caminobots[i].x, mapa1_caminobots[i].y, mapa1_caminobots[i].ancho, mapa1_caminobots[i].altura);
+    }
+    //console.log(auto.x, auto.y);
+    ctx.drawImage(imagenauto1, auto.x, auto.y, auto.anchoimagen, auto.altoimagen);//*/
+    loop();
+});
+
+
+
+</script>
