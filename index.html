@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
-    <audio id="audioFondo" src="menu.ogg" autoplay loop></audio>
     <main class="menu" aria-label="Menú principal">
+    <audio id="audioFondo" src="menu.ogg" loop autoplay></audio>
     <h1>MEP<span>Kart</span></h1>
     <div class="buttons">
         <button id="play" class="primary" type="button">Jugar</button>
@@ -50,6 +50,18 @@
                 button.hidden = true;
             });
         });
+        
+        function desbloquearAudio()
+        {
+        const audio = document.getElementById("audioFondo");
+
+            try
+            {
+                audio.muted = false;
+                audio.play().catch(()=>{});
+            } catch(e){}
+        }
+        document.addEventListener('pointerdown', desbloquearAudio, { once: true });
     </script>
 </body>
 </html>
