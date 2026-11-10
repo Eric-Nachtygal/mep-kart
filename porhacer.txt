@@ -1,9 +1,8 @@
-Sprites autos
 Sprites mapas
-Gameplay
 
 
-agregar las cajitas con poderes
+
+
 Agregar poderes
 Agregar nitro
 Agregar menu de seleccion de mapa modo etc
@@ -22,3 +21,6 @@ Pasar sistema de dibujar
 Los checkpoints
 Agregar sistema de puestos
 Logica de bots
+Sprites autos
+Gameplay
+agregar las cajitas con poderes
