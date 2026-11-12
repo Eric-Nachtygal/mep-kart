@@ -1,18 +1,10 @@
 Sprites mapas
-
-
-
-
 Agregar poderes
 Agregar nitro
 Agregar menu de seleccion de mapa modo etc
-
-
-
-Agregar sistema de contar tiempo
-Modo contrareloj
+Modo contrareloj (completarlo mejor)
 Agregar sonido
-Agregar musica
+
 
 HECHO:
 Pasar sistema de colisiones
@@ -24,3 +16,5 @@ Logica de bots
 Sprites autos
 Gameplay
 agregar las cajitas con poderes
+Agregar sistema de contar tiempo
+Agregar musica
