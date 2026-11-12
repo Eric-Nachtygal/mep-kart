@@ -1,5 +1,6 @@
 body 
 {
+    margin: 0;
     min-height: 100vh;
     display: grid;
     place-items: center;
@@ -10,7 +11,10 @@ body
         radial-gradient(circle at 50% 35%, rgba(255,255,255,.12), transparent 20%),
         linear-gradient(135deg, #111827, #0f172a 55%, #020617);
 }
-
+.kart
+{
+    color: rgb(255, 28, 28);
+}
 body::before
 {
     content: "";
@@ -27,27 +31,49 @@ body::before
     pointer-events: none;  
 }
 
+.titulo
+{
+    font-size: 5rem;
+        position: fixed;
+        top: 8rem;
+        left: 50%;
+        transform: translateX(-50%);
+}
+
 main
 {
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: center; 
     padding: 20px;
     padding-top: 0px;
     opacity: 100%;
-    background-color: rgb(9, 13, 79);
-    border: 1px solid rgb(247, 255, 28);
-    border-radius: 5px;
+    border-radius: 10px;
+   
+   
+
+} 
+
+button {
+    font-style: italic;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    transform: skewX(-10deg);
 }
+
 
 .buttons
 {
     display: flex;
-    gap: 12px;
+     gap: 20px;
+    position:fixed;
+    top: 25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    
 }
-
 .buttons button
 {
     min-width: 130px;
@@ -56,13 +82,15 @@ main
     border-radius: 5px;
     color: white;
     background-color: rgb(22, 33, 125);
-    font-size: 18px;
+    font-size: 2rem;
     font-weight: bold;
     cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
 }
 
 .buttons button:hover
 {
+    transition: background-color 0.2s, color 0.2s;
     background-color: rgb(247, 255, 28);
     color: rgb(9, 13, 79);
 }
