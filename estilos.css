@@ -5,12 +5,17 @@ body
     display: grid;
     place-items: center;
     overflow: hidden;
-    font-family: Arial, sans-serif;
+    /*font-family: Arial, sans-serif;*/
     color: white;
     background:
         radial-gradient(circle at 50% 35%, rgba(255,255,255,.12), transparent 20%),
         linear-gradient(135deg, #111827, #0f172a 55%, #020617);
 }
+*
+{
+    font-family: 'Zen Dots', Arial, Helvetica, sans-serif;
+}
+
 .kart
 {
     color: rgb(255, 28, 28);
@@ -34,10 +39,11 @@ body::before
 .titulo
 {
     font-size: 5rem;
-        position: fixed;
-        top: 8rem;
-        left: 50%;
-        transform: translateX(-50%);
+    position: fixed;
+    top: 8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    
 }
 
 main
