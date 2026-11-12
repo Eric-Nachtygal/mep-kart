@@ -890,6 +890,7 @@ Promise.all(promesasCarga).then(() =>
     }
     //console.log(auto.x, auto.y);
     ctx.drawImage(imagenauto1, auto.x, auto.y, auto.anchoimagen, auto.altoimagen);//*/
+    document.getElementById("audioFondo").volume = localStorage.getItem("volumen") / 100;
     loop();
 });
 

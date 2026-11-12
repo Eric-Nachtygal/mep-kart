@@ -16,6 +16,8 @@
         <button id="carrera" class="mode-button" type="button" onclick="location.href='juego.html'" hidden>Carrera</button>
         <button id="contrarreloj" class="mode-button" type="button" onclick="location.href='contrarreloj.html'" hidden>Contrarreloj</button>
         <button id="volver" class="volver" type="button" hidden>Volver</button>
+        <label for="volumen" hidden class="config">Volumen de Música</label>
+        <input type="range" class="config" id="volumen" name="volumen" min="0" max="100" value="100" hidden>
     </div>
     </main>
 
@@ -24,6 +26,11 @@
         const configButton = document.getElementById("config");
         const modeButtons = document.querySelectorAll(".mode-button");
         const backButton = document.getElementById("volver");
+        const configbotones = document.querySelectorAll(".config");
+        const volumen = document.getElementById("volumen");
+
+        volumen.value = localStorage.getItem('volumen');
+        document.getElementById("audioFondo").volume = localStorage.getItem("volumen") / 100;
 
         playButton.addEventListener("click", () => {
             playButton.hidden = true;
@@ -37,6 +44,9 @@
             configButton.hidden = true;
             playButton.hidden = true;
             backButton.hidden = false;
+            configbotones.forEach((button) => {
+                button.hidden = false;
+            });
         });
         backButton.addEventListener("click", () => {
             backButton.hidden = true;
@@ -45,8 +55,18 @@
             modeButtons.forEach((button) => {
                 button.hidden = true;
             });
+            configbotones.forEach((button) => {
+                button.hidden = true;
+            });
         });
         
+        volumen.addEventListener("input", () =>
+        {
+            localStorage.setItem('volumen', volumen.value);
+            document.getElementById("audioFondo").volume = localStorage.getItem("volumen") / 100;
+            //console.log(volumen.value);
+        });
+
         function desbloquearAudio()
         {
         const audio = document.getElementById("audioFondo");
