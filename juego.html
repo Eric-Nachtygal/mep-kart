@@ -134,6 +134,10 @@ const imagencaja = new Image();
 imagencaja.src = 'sprites/caja_misteriosa.png';
 const imagencaja2 = new Image();
 imagencaja2.src = 'sprites/caja_misteriosa_inactiva.png';
+const imagen_champi = new Image();
+imagen_champi.src = 'sprites/champi.png';
+const imagen_tortuga = new Image();
+imagen_tortuga.src = 'sprites/tortuga_1.png';
 
 const snd_principio1 = new Audio();
 snd_principio1.src = "sonidos/principio1.ogg";
@@ -582,7 +586,7 @@ function colisiones(porcion)
     
     return colisiones;
 }
-//console.log(auto.objeto);
+
 function dibujar()
 {
     for (let i=0; i<autos.length; i++)
@@ -682,11 +686,11 @@ function dibujar()
         ctx.fillStyle = "rgba(106, 255, 254, 0.3)";
         if (auto.vuelta > 4)
         {
-            ctx.fillRect(40, 60, 270, 90);
+            ctx.fillRect(40, 30, 270, 90);
         }
         else
         {
-            ctx.fillRect(40, 60, 180, 90);
+            ctx.fillRect(40, 30, 180, 90);
         }
         
         ctx.fillStyle = "rgb(255, 255, 255)";
@@ -695,23 +699,41 @@ function dibujar()
         ctx.font = '20px Zen Dots';
         if (auto.vuelta < 4)
         {
-            ctx.strokeText("Vuelta " + (auto.vuelta + 1), 50, 80);
-            ctx.fillText("Vuelta " + (auto.vuelta + 1), 50, 80);
+            ctx.strokeText("Vuelta " + (auto.vuelta + 1), 50, 50);
+            ctx.fillText("Vuelta " + (auto.vuelta + 1), 50, 50);
         }
         else if (auto.vuelta == 4)
         {
-            ctx.strokeText("Última Vuelta", 50, 80);
-            ctx.fillText("Última Vuelta", 50, 80);
+            ctx.strokeText("Última Vuelta", 50, 50);
+            ctx.fillText("Última Vuelta", 50, 50);
         }
         else
         {
-            ctx.strokeText("Carrera Completada", 50, 80);
-            ctx.fillText("Carrera Completada", 50, 80);
+            ctx.strokeText("Carrera Completada", 50, 50);
+            ctx.fillText("Carrera Completada", 50, 50);
         }
-        ctx.strokeText("Puesto " + auto.puesto, 50, 110);
-        ctx.fillText("Puesto " + auto.puesto, 50, 110);
-        ctx.strokeText(tiempo.minutos + ":" + tiempo.segundos + ":" + tiempo.centisegundos, 50, 140);
-        ctx.fillText(tiempo.minutos + ":" + tiempo.segundos + ":" + tiempo.centisegundos, 50, 140);
+        ctx.strokeText("Puesto " + auto.puesto, 50, 80);
+        ctx.fillText("Puesto " + auto.puesto, 50, 80);
+        ctx.strokeText(tiempo.minutos + ":" + tiempo.segundos + ":" + tiempo.centisegundos, 50, 110);
+        ctx.fillText(tiempo.minutos + ":" + tiempo.segundos + ":" + tiempo.centisegundos, 50, 110);
+        ctx.fillStyle = "rgba(106, 255, 254, 0.3)";
+        ctx.fillRect(1245, 30, 90, 90);
+        ctx.strokeRect(1245, 30, 90, 90);
+    }
+    if (auto.objeto != null)
+    {
+        if (auto.objeto == "champi")
+        {
+            ctx.drawImage(imagen_champi, 1245, 30, 90, 90);
+        }
+        else if (auto.objeto == "tortuga")
+        {
+            ctx.drawImage(imagen_tortuga, 1245, 30, 90, 90);
+        }
+        else if (auto.objeto == "bananas")
+        {
+            //ctx.drawImage(imagen_bananas, 1245, 30, 90, 90);
+        }
     }
     //contador de checkpoints solo para probar, despues se comenta para la expo
     /*ctx.font = '20px Bebas Neue';

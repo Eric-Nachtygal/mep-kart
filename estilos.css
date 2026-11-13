@@ -8,8 +8,10 @@ body
     /*font-family: Arial, sans-serif;*/
     color: white;
     background:
-        radial-gradient(circle at 50% 35%, rgba(255,255,255,.12), transparent 20%),
-        linear-gradient(135deg, #111827, #0f172a 55%, #020617);
+        radial-gradient(ellipse at 50% 110%, rgba(14, 165, 233, .2), transparent 48%),
+        radial-gradient(circle at 12% 18%, rgba(37, 99, 235, .28), transparent 32%),
+        radial-gradient(circle at 88% 76%, rgba(29, 78, 216, .2), transparent 35%),
+        linear-gradient(135deg, #071426, #0b1c35 52%, #050b18);
 }
 *
 {
@@ -25,13 +27,14 @@ body::before
     content: "";
     position: fixed;
     inset: 0;
-    opacity: .18;
+    opacity: .42;
     background-image:
-        linear-gradient(45deg, #fff 25%, transparent 25%),
-        linear-gradient(-45deg, #fff 25%, transparent 25%);
-    background-size: 44px 44px;
-    mask-image: 
-        linear-gradient(to bottom, transparent, black);
+        repeating-linear-gradient(128deg, transparent 0 90px, rgba(56, 189, 248, .08) 91px 93px, transparent 94px 170px),
+        linear-gradient(45deg, rgba(255, 255, 255, .035) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(255, 255, 255, .035) 25%, transparent 25%);
+    background-size: auto, 36px 36px, 36px 36px;
+    background-position: center, 0 0, 18px 18px;
+    mask-image: linear-gradient(to bottom, transparent 8%, black 55%, transparent 100%);
     z-index: -1;          
     pointer-events: none;  
 }
@@ -66,7 +69,7 @@ button {
     font-style: italic;
     font-weight: 800;
     letter-spacing: 0.5px;
-    transform: skewX(-10deg);
+    transform: skewX(-4deg);
 }
 
 
@@ -90,10 +93,10 @@ button {
     margin: 0;
     transform-origin: center;
     padding: 12px 20px;
-    border: 2px solid rgb(247, 255, 28);
+    border: 2px solid rgb(255, 28, 28);
     border-radius: 5px;
     color: white;
-    background-color: rgb(22, 33, 125);
+    background-color: rgb(145, 24, 24);
     font-size: 2rem;
     font-weight: bold;
     cursor: pointer;
@@ -103,9 +106,10 @@ button {
 
 .buttons button:hover
 {
-    transition: background-color 0.2s, color 0.2s;
-    background-color: rgb(247, 255, 28);
-    color: rgb(9, 13, 79);
+    transition: background-color border-color 0.2s, color 0.2s;
+    background-color: rgb(255, 255, 255);
+    border-color: rgb(11, 14, 25);
+    color: rgb(0, 0, 0);
 }
 
 .buttons button[hidden]
@@ -121,9 +125,9 @@ button {
     justify-items: center;
     gap: 14px;
     padding: 22px 26px;
-    border: 2px solid rgb(247, 255, 28);
+    border: 2px solid rgb(255, 55, 28);
     border-radius: 5px;
-    background: linear-gradient(145deg, rgba(22, 33, 125, .82), rgba(9, 13, 79, .9));
+    background: linear-gradient(145deg, rgba(125, 22, 22, 0.82), rgba(79, 9, 9, 0.9));
     box-shadow: 0 16px 40px rgba(0, 0, 0, .35), inset 0 1px rgba(255, 255, 255, .12);
     backdrop-filter: blur(10px);
 }
@@ -195,7 +199,7 @@ button {
     border-radius: 50%;
     appearance: none;
     background: rgb(247, 255, 28);
-    box-shadow: 0 0 0 3px rgb(22, 33, 125), 0 0 0 5px rgba(247, 255, 28, .8), 0 3px 9px rgba(0, 0, 0, .45);
+    box-shadow: 0 0 0 3px rgb(125, 24, 22), 0 0 0 5px rgba(247, 255, 28, .8), 0 3px 9px rgba(0, 0, 0, .45);
     transition: transform .15s ease, box-shadow .15s ease;
 }
 
