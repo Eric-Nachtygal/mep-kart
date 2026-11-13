@@ -31,12 +31,60 @@
         width: 0px;
         height: 0px;
     }
+    dialog
+    {
+        min-height: 100%;
+        min-width: 100%;
+        background: #0000006d;
+        color: white;
+        border: none;
+        z-index: 1000;
+        flex-direction: column;
+        align-items: center;
+        vertical-align: middle;
+        gap: 3rem;
+        text-align: center;
+    }
+    dialog:open
+    {
+        display: flex;
+    }
+    #continuar
+    {
+        margin-top: 20%;
+    }
+    dialog button
+    {
+        background: none;
+        color: rgb(170, 170, 170);
+        border: none;
+        max-width: 300px;
+        font-size: 2rem;
+        font-family: 'Zen Dots', Arial, Helvetica, sans-serif;
+        transition: all 0.3s ease;
+    }
+
+    dialog button:hover
+    {
+        font-size: 2.2rem;
+        color: white;
+        cursor: pointer;
+    }
+
+    #salir:hover
+    {
+        transform: translatey(-0.5rem);
+    }
 
 </style>
 <body>
     <canvas id="fondo"></canvas>
     <canvas id="canvas"></canvas>
     <audio id="audioFondo" src="cancion2.ogg" autoplay loop></audio>
+    <dialog id="pausa">
+        <button id="continuar">Continuar</button>
+        <button id="salir">Salir</button>
+    </dialog>
 </body>
 </html>
 
@@ -49,6 +97,10 @@ fondo.width = 854;
 fondo.height = 480;
 const ctx = canvas.getContext("2d", { willReadFrequently: true });
 const fondo_ctx = fondo.getContext("2d", { willReadFrequently: false });
+const menupausa = document.getElementById("pausa");
+const menucontinuar = document.getElementById("continuar");
+const menusalir = document.getElementById("salir");
+const musica = document.getElementById("audioFondo");
 const promesasCarga = []; //en este array guardamos todas las imagenes
 const imagenauto1 = new Image();
 imagenauto1.src = 'sprites/auto_jugador.png';
@@ -101,6 +153,7 @@ document.addEventListener('contextmenu', function (e)
     e.preventDefault();
 });
 
+let pausa = false;
 let tiempo = 
 [
 {centisegundos: 0, segundos: 0, minutos: 0}, //vuelta 1
@@ -541,60 +594,46 @@ function dibujar()
 
 setInterval(function() 
 {
-        //tiempo total
-        if (auto.vuelta < 5)
-        {
-            tiempo[5].centisegundos++;
-            if (tiempo[5].centisegundos >= 100)
+    if (!pausa)
+    {
+            //tiempo total
+            if (auto.vuelta < 5)
             {
-                tiempo[5].centisegundos = 0;
-                tiempo[5].segundos++;
-                if (tiempo[5].segundos >= 60)
+                tiempo[5].centisegundos++;
+                if (tiempo[5].centisegundos >= 100)
                 {
-                    tiempo[5].segundos = 0;
-                    tiempo[5].minutos++;
+                    tiempo[5].centisegundos = 0;
+                    tiempo[5].segundos++;
+                    if (tiempo[5].segundos >= 60)
+                    {
+                        tiempo[5].segundos = 0;
+                        tiempo[5].minutos++;
+                    }
                 }
             }
-        }
-        //tiempo vuelta
-        if (auto.vuelta < 5)
-        {
-        tiempo[auto.vuelta].centisegundos++;
-        if (tiempo[auto.vuelta].centisegundos >= 100)
-        {
-            tiempo[auto.vuelta].centisegundos = 0;
-            tiempo[auto.vuelta].segundos++;
-            if (tiempo[auto.vuelta].segundos >= 60)
+            //tiempo vuelta
+            if (auto.vuelta < 5)
             {
-                tiempo[auto.vuelta].segundos = 0;
-                tiempo[auto.vuelta].minutos++;
+                tiempo[auto.vuelta].centisegundos++;
+                if (tiempo[auto.vuelta].centisegundos >= 100)
+                {
+                    tiempo[auto.vuelta].centisegundos = 0;
+                    tiempo[auto.vuelta].segundos++;
+                    if (tiempo[auto.vuelta].segundos >= 60)
+                    {
+                        tiempo[auto.vuelta].segundos = 0;
+                        tiempo[auto.vuelta].minutos++;
+                    }
+                }
             }
-        }
+
     }
-
-
     //console.log(tiempo);
 }, 10);
 
 
 function moverjugador()
 {
-    document.addEventListener('keydown', function(e) 
-    {
-        if(e.key == 'F11' || e.key == 'F5' || e.key == 'F12')
-        {
-            return;
-        }
-        e.preventDefault();
-        teclas[e.key.toLowerCase()] = true;
-        
-    });
-    
-    document.addEventListener('keyup', function(e)
-    {
-        teclas[e.key.toLowerCase()] = false;
-    });
-
     let mov = false;
 
 
@@ -871,11 +910,14 @@ function loop()
 {
     ctx.clearRect(0,0,canvas.width, canvas.height);
     dibujar();
-    for (let i=0; i<autos.length; i++)
+    if (!pausa)
     {
-        colisiones(autos[i]);
+        for (let i=0; i<autos.length; i++)
+        {
+            colisiones(autos[i]);
+        }
+        moverjugador();
     }
-    moverjugador();
     requestAnimationFrame(loop);
 }
 
@@ -895,6 +937,50 @@ Promise.all(promesasCarga).then(() =>
     loop();
 });
 
+document.addEventListener('keydown', function(e) 
+    {
+        if(e.key == 'F11' || e.key == 'F5' || e.key == 'F12')
+        {
+            return;
+        }
+        
+        e.preventDefault();
 
+        if (e.key == 'Enter' || e.key == 'Escape')
+        {
+            if (pausa == false)
+            {
+                pausa = true;
+                menupausa.showModal();
+                musica.pause();
+            }
+            else
+            {
+                pausa = false;
+                menupausa.close();
+                musica.play();
+            }
+        }
+
+        teclas[e.key.toLowerCase()] = true;
+    });
+    
+    document.addEventListener('keyup', function(e)
+    {
+        teclas[e.key.toLowerCase()] = false;
+    });
+
+
+    menucontinuar.onclick = function()
+    {
+        pausa = false;
+        menupausa.close();
+        musica.play();
+    };
+
+    menusalir.onclick = function()
+    {
+        window.location.href = "index.html";
+    };
 
 </script>
