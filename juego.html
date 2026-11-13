@@ -134,6 +134,14 @@ const imagencaja = new Image();
 imagencaja.src = 'sprites/caja_misteriosa.png';
 const imagencaja2 = new Image();
 imagencaja2.src = 'sprites/caja_misteriosa_inactiva.png';
+
+const snd_principio1 = new Audio();
+snd_principio1.src = "sonidos/principio1.ogg";
+snd_principio1.preload = "auto";
+const snd_principio2 = new Audio();
+snd_principio2.src = "sonidos/principio2.ogg";
+snd_principio2.preload = "auto";
+
 promesasCarga.push(new Promise(res => {
         imagenauto1.onload = res;
         imagenauto1.onerror = () => {
@@ -213,13 +221,30 @@ promesasCarga.push(new Promise(res => {
         };
     }));
 
+promesasCarga.push(new Promise(res => {
+    snd_principio1.addEventListener("canplaythrough", res, { once: true });
+    snd_principio1.addEventListener("error", () => {
+        console.error("No se pudo cargar el sonido:", ruta);
+        res(); // resolvemos igual para que el juego arranque
+    }, { once: true });
+    }));
+promesasCarga.push(new Promise(res => {
+    snd_principio2.addEventListener("canplaythrough", res, { once: true });
+    snd_principio2.addEventListener("error", () => {
+        console.error("No se pudo cargar el sonido:", ruta);
+        res(); // resolvemos igual para que el juego arranque
+    }, { once: true });
+    }));
+
+
+
 document.addEventListener('contextmenu', function (e)
 {
     e.preventDefault();
 });
 
 let pausa = false;
-let tiempo = {centisegundos: 0, segundos: 0, minutos: 0, principio: 3};
+let tiempo = {centisegundos: 0, segundos: 0, minutos: 0, principio: 4};
 let auto = {x: 880, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 3.14, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 0, imagen: imagenauto1, id:1, puesto:1, objeto: null, o: false, boost: false};
 let bot1 = {x: 920, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 3.14, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 0, imagen:imagenauto2, camino:0, id:2, puesto:2, objeto: null, o: false, boost: false};
 let bot2 = {x: 960, y: 617, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 3.14, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 0, imagen:imagenauto3, camino:0, id:3, puesto:3, objeto: null, o: false, boost: false};
@@ -557,7 +582,7 @@ function colisiones(porcion)
     
     return colisiones;
 }
-console.log(auto.objeto);
+//console.log(auto.objeto);
 function dibujar()
 {
     for (let i=0; i<autos.length; i++)
@@ -722,6 +747,14 @@ setInterval(function()
     if (tiempo.principio >= 0)
     {
         tiempo.principio--;
+        if (tiempo.principio > 0 && tiempo.principio < 4)
+        {
+            snd_principio1.play();
+        }
+        else if (tiempo.principio == 0)
+        {
+            snd_principio2.play();
+        }
     }
     //console.log(tiempo);
 }, 1000);
@@ -734,22 +767,6 @@ function moverjugador()
 {
     if (tiempo.principio < 1)
     {
-        document.addEventListener('keydown', function(e) 
-        {
-            if(e.key == 'F11' || e.key == 'F5' || e.key == 'F12')
-            {
-                return;
-            }
-            e.preventDefault();
-            teclas[e.key.toLowerCase()] = true;
-            
-        });
-        
-        document.addEventListener('keyup', function(e)
-        {
-            teclas[e.key.toLowerCase()] = false;
-        });
-
         let mov = false;
 
 
@@ -784,7 +801,7 @@ function moverjugador()
                 auto.velocidad = 8;
                 setTimeout(function() {auto.boost = false; auto.velocidadmax= 4.25;}, 3000); 
             }
-            console.log(auto.objeto);
+            //console.log(auto.objeto);
             if(auto.o && auto.objeto == "champi" && teclas['q'])
             {
                 auto.boost = true;
