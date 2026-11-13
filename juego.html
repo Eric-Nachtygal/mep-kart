@@ -356,7 +356,7 @@ function colisiones(porcion)
             setTimeout(() => {objeto.activo = true; objeto.imagen = imagencaja;}, 1000);
         }
         let auxobjeto = objeto.x + objeto.ancho > hitbox_izq && objeto.x < hitbox_der && objeto.y + objeto.altura > hitbox_arriba && objeto.y < hitbox_abajo;
-        if (auxobjeto)
+        if (auxobjeto && objeto.activo)
         {
             if (!porcion.o)
             {
@@ -502,7 +502,7 @@ function colisiones(porcion)
     
     return colisiones;
 }
-
+console.log(auto.objeto);
 function dibujar()
 {
     for (let i=0; i<autos.length; i++)
