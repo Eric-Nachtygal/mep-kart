@@ -1005,7 +1005,7 @@ document.addEventListener('keydown', function(e)
         
         e.preventDefault();
 
-        if (e.key == 'Enter' || e.key == 'Escape')
+        if ((e.key == 'Enter' || e.key == 'Escape') && tiempo[5].principio < 1)
         {
             if (pausa == false)
             {
