@@ -660,7 +660,13 @@ function moverjugador()
 
 
     //console.log(auto.pasto);
-
+    if (auto.vuelta == 5)
+    {
+        if (auto.velocidad < 0)
+        {
+            auto.velocidad = 0;
+        }
+    }
     if (auto.vuelta < 5)
     {
         if (auto.pasto && !auto.boost)
@@ -983,6 +989,13 @@ function moverbots()
                 {
                     autos[i].velocidad += 0.05;
                 }
+            }
+        }
+        if (autos[i].vuelta == 5)
+        {
+            if (autos[i].velocidad < 0)
+            {
+                autos[i].velocidad = 0;
             }
         }
 
