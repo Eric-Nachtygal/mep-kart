@@ -2,8 +2,12 @@ Sprites mapas
 Agregar poderes
 Agregar nitro
 Agregar menu de seleccion de mapa modo etc
-Modo contrareloj (completarlo mejor)
 Agregar sonido
+Agregar cuenta atras
+Agregar pausa
+Agregar menu de fin de carrera
+Agregar menu de fin de contrarreloj
+Agregar tuto en el index
 
 
 HECHO:
@@ -18,3 +22,4 @@ Gameplay
 agregar las cajitas con poderes
 Agregar sistema de contar tiempo
 Agregar musica
+Modo contrarreloj
