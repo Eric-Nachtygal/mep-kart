@@ -101,6 +101,7 @@ const menupausa = document.getElementById("pausa");
 const menucontinuar = document.getElementById("continuar");
 const menusalir = document.getElementById("salir");
 const musica = document.getElementById("audioFondo");
+
 const promesasCarga = []; //en este array guardamos todas las imagenes
 const imagenauto1 = new Image();
 imagenauto1.src = 'sprites/auto_jugador.png';
@@ -118,6 +119,14 @@ const imagencaja = new Image();
 imagencaja.src = 'sprites/caja_misteriosa.png';
 const imagencaja2 = new Image();
 imagencaja2.src = 'sprites/caja_misteriosa_inactiva.png';
+
+const snd_principio1 = new Audio();
+snd_principio1.src = "sonidos/principio1.ogg";
+snd_principio1.preload = "auto";
+const snd_principio2 = new Audio();
+snd_principio2.src = "sonidos/principio2.ogg";
+snd_principio2.preload = "auto";
+
 promesasCarga.push(new Promise(res => {
         imagenauto1.onload = res;
         imagenauto1.onerror = () => {
@@ -148,6 +157,23 @@ promesasCarga.push(new Promise(res => {
         };
     }));
 
+
+promesasCarga.push(new Promise(res => {
+    snd_principio1.addEventListener("canplaythrough", res, { once: true });
+    snd_principio1.addEventListener("error", () => {
+        console.error("No se pudo cargar el sonido:", ruta);
+        res(); // resolvemos igual para que el juego arranque
+    }, { once: true });
+    }));
+promesasCarga.push(new Promise(res => {
+    snd_principio2.addEventListener("canplaythrough", res, { once: true });
+    snd_principio2.addEventListener("error", () => {
+        console.error("No se pudo cargar el sonido:", ruta);
+        res(); // resolvemos igual para que el juego arranque
+    }, { once: true });
+    }));
+
+
 document.addEventListener('contextmenu', function (e)
 {
     e.preventDefault();
@@ -156,15 +182,15 @@ document.addEventListener('contextmenu', function (e)
 let pausa = false;
 let tiempo = 
 [
-{centisegundos: 0, segundos: 0, minutos: 0}, //vuelta 1
-{centisegundos: 0, segundos: 0, minutos: 0}, //vuelta 2
-{centisegundos: 0, segundos: 0, minutos: 0}, //vuelta 3
-{centisegundos: 0, segundos: 0, minutos: 0}, //vuelta 4
-{centisegundos: 0, segundos: 0, minutos: 0}, //vuelta 5
-{centisegundos: 0, segundos: 0, minutos: 0} //tiempo total
+    {centisegundos: 0, segundos: 0, minutos: 0}, //vuelta 1
+    {centisegundos: 0, segundos: 0, minutos: 0}, //vuelta 2
+    {centisegundos: 0, segundos: 0, minutos: 0}, //vuelta 3
+    {centisegundos: 0, segundos: 0, minutos: 0}, //vuelta 4
+    {centisegundos: 0, segundos: 0, minutos: 0}, //vuelta 5
+    {centisegundos: 0, segundos: 0, minutos: 0, principio: 4} //tiempo total
 ];
 
-let auto = {x: 880, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 0, imagen: imagenauto1, id:1, puesto:1, objeto: null, o: false, boost: false};
+let auto = {x: 880, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 3.14, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 0, imagen: imagenauto1, id:1, puesto:1, objeto: null, o: false, boost: false};
 const obj = ["champi", "tortuga", "bananas"];
 let autos = [auto];
 
@@ -551,40 +577,58 @@ function dibujar()
     }
     ctx.drawImage(flecha, auto.x + 3, auto.y - 25, 20, 20);
 
-    ctx.fillStyle = "rgba(106, 255, 254, 0.3)";
-    if (auto.vuelta > 4)
-    {
-        ctx.fillRect(40, 60, 270, 90);
-    }
-    else
-    {
-        ctx.fillRect(40, 60, 180, 90);
-    }
+
     ctx.fillStyle = "rgb(255, 255, 255)";
     ctx.strokeStyle = "rgb(0, 0, 0)";
-    ctx.lineWidth = 1; 
-    ctx.font = '20px Zen Dots';
-    if (auto.vuelta < 4)
+    if(tiempo[5].principio > 0)
     {
-        ctx.strokeText("Vuelta " + (auto.vuelta + 1), 50, 80);
-        ctx.fillText("Vuelta " + (auto.vuelta + 1), 50, 80);
+        ctx.font = '100px Arial Black';
+        ctx.strokeText(tiempo[5].principio, 600, 350);
+        ctx.fillText(tiempo[5].principio, 600, 350);
     }
-    else if (auto.vuelta == 4)
+    else if (tiempo[5].principio == 0)
     {
-        ctx.strokeText("Última Vuelta", 50, 80);
-        ctx.fillText("Última Vuelta", 50, 80);
+        ctx.font = '100px Arial Black';
+        ctx.strokeText("GO!", 600, 350);
+        ctx.fillText("GO!", 600, 350);
     }
-    else
+    if (tiempo[5].principio < 1)
     {
-        ctx.strokeText("Carrera Completada", 50, 80);
-        ctx.fillText("Carrera Completada", 50, 80);
-    }
-    ctx.strokeText(tiempo[auto.vuelta].minutos + ":" + tiempo[auto.vuelta].segundos + ":" + tiempo[auto.vuelta].centisegundos, 50, 110);
-    ctx.fillText(tiempo[auto.vuelta].minutos + ":" + tiempo[auto.vuelta].segundos + ":" + tiempo[auto.vuelta].centisegundos, 50, 110);
+        ctx.fillStyle = "rgba(106, 255, 254, 0.3)";
+        if (auto.vuelta > 4)
+        {
+            ctx.fillRect(40, 60, 270, 90);
+        }
+        else
+        {
+            ctx.fillRect(40, 60, 180, 90);
+        }
+        ctx.fillStyle = "rgb(255, 255, 255)";
+        ctx.strokeStyle = "rgb(0, 0, 0)";
+        ctx.lineWidth = 1; 
+        ctx.font = '20px Zen Dots';
+        if (auto.vuelta < 4)
+        {
+            ctx.strokeText("Vuelta " + (auto.vuelta + 1), 50, 80);
+            ctx.fillText("Vuelta " + (auto.vuelta + 1), 50, 80);
+        }
+        else if (auto.vuelta == 4)
+        {
+            ctx.strokeText("Última Vuelta", 50, 80);
+            ctx.fillText("Última Vuelta", 50, 80);
+        }
+        else
+        {
+            ctx.strokeText("Carrera Completada", 50, 80);
+            ctx.fillText("Carrera Completada", 50, 80);
+        }
+        ctx.strokeText(tiempo[auto.vuelta].minutos + ":" + tiempo[auto.vuelta].segundos + ":" + tiempo[auto.vuelta].centisegundos, 50, 110);
+        ctx.fillText(tiempo[auto.vuelta].minutos + ":" + tiempo[auto.vuelta].segundos + ":" + tiempo[auto.vuelta].centisegundos, 50, 110);
 
-    ctx.font = '15px Zen Dots';
-    ctx.strokeText("Total: " + tiempo[5].minutos + ":" + tiempo[5].segundos + ":" + tiempo[5].centisegundos, 50, 140);
-    ctx.fillText("Total: " + tiempo[5].minutos + ":" + tiempo[5].segundos + ":" + tiempo[5].centisegundos, 50, 140);
+        ctx.font = '15px Zen Dots';
+        ctx.strokeText("Total: " + tiempo[5].minutos + ":" + tiempo[5].segundos + ":" + tiempo[5].centisegundos, 50, 140);
+        ctx.fillText("Total: " + tiempo[5].minutos + ":" + tiempo[5].segundos + ":" + tiempo[5].centisegundos, 50, 140);
+    }
     //contador de checkpoints solo para probar, despues se comenta para la expo
     /*ctx.font = '20px Bebas Neue';
     ctx.strokeText("Checkpoint" + auto.checkpoint, 50, 110);
@@ -594,314 +638,329 @@ function dibujar()
 
 setInterval(function() 
 {
-    if (!pausa)
+    if (tiempo[5].principio < 1)
     {
-            //tiempo total
-            if (auto.vuelta < 5)
+        if (!pausa)
+        {
+            tiempo[auto.vuelta].centisegundos++;
+            if (tiempo[auto.vuelta].centisegundos >= 100)
             {
-                tiempo[5].centisegundos++;
-                if (tiempo[5].centisegundos >= 100)
+                tiempo[auto.vuelta].centisegundos = 0;
+                tiempo[auto.vuelta].segundos++;
+                if (tiempo[auto.vuelta].segundos >= 60)
                 {
-                    tiempo[5].centisegundos = 0;
-                    tiempo[5].segundos++;
-                    if (tiempo[5].segundos >= 60)
-                    {
-                        tiempo[5].segundos = 0;
-                        tiempo[5].minutos++;
-                    }
-                }
-            }
-            //tiempo vuelta
-            if (auto.vuelta < 5)
-            {
-                tiempo[auto.vuelta].centisegundos++;
-                if (tiempo[auto.vuelta].centisegundos >= 100)
-                {
-                    tiempo[auto.vuelta].centisegundos = 0;
-                    tiempo[auto.vuelta].segundos++;
-                    if (tiempo[auto.vuelta].segundos >= 60)
-                    {
-                        tiempo[auto.vuelta].segundos = 0;
-                        tiempo[auto.vuelta].minutos++;
-                    }
+                    tiempo[auto.vuelta].segundos = 0;
+                    tiempo[auto.vuelta].minutos++;
                 }
             }
 
+            tiempo[5].centisegundos++;
+            if (tiempo[5].centisegundos >= 100)
+            {
+                tiempo[5].centisegundos = 0;
+                tiempo[5].segundos++;
+                if (tiempo[5].segundos >= 60)
+                {
+                    tiempo[5].segundos = 0;
+                    tiempo[5].minutos++;
+                }
+            }
+        }
     }
     //console.log(tiempo);
 }, 10);
 
 
+setInterval(function() 
+{
+    if (tiempo[5].principio >= 0)
+    {
+        tiempo[5].principio--;
+        if (tiempo[5].principio > 0 && tiempo[5].principio < 4)
+        {
+            snd_principio1.play();
+        }
+        else if (tiempo[5].principio == 0)
+        {
+            snd_principio2.play();
+        }
+    }
+    //console.log(tiempo);
+}, 1000);
+
+
 function moverjugador()
 {
-    let mov = false;
-
-
-    //console.log(auto.pasto);
-
-    if (auto.vuelta < 5)
+    if (tiempo[5].principio < 1)
     {
-        if (auto.pasto && !auto.boost)
-        {
-            auto.velocidadmax = 2;
-            auto.min_turbo_con = 0;
-            auto.min_turbo = 0;
-        }
+        let mov = false;
 
-    /* if (teclas['arrowright'] || teclas['d'] || teclas['arrowleft'] || teclas['a']) 
+
+        //console.log(auto.pasto);
+
+        if (auto.vuelta < 5)
         {
-            auto.velocidadmax = 5.25;
-        }
-        else
-        {
-            auto.velocidadmax = 6;
-        }*/
-        if(auto.boost)
-        {
-            auto.velocidadmax = 8;
-            auto.velocidad = 8;
-            setTimeout(function() {auto.boost = false; auto.velocidadmax= 4.25;}, 3000); 
-        }
-        console.log(auto.objeto);
-        if(auto.o && auto.objeto == "champi" && teclas['q'])
-        {
-            auto.boost = true;
-            auto.o = false;
-            auto.objeto = null;
-        }
-        if (teclas['arrowup'] || teclas['w'] || teclas[' ']) 
-        {
-            mov = true; 
-            if (auto.velocidad < auto.velocidadmax)
+            if (auto.pasto && !auto.boost)
             {
-                auto.velocidad += 0.25;
+                auto.velocidadmax = 2;
+                auto.min_turbo_con = 0;
+                auto.min_turbo = 0;
             }
-            else if (auto.velocidad >= auto.velocidadmax)
+
+        /* if (teclas['arrowright'] || teclas['d'] || teclas['arrowleft'] || teclas['a']) 
             {
-                auto.velocidad = auto.velocidadmax;
-            }
-        } 
-        if (teclas['arrowdown'] || teclas['s']) 
-        {
-            mov = true;
-            if (auto.velocidad > -auto.velocidadmax)
-            {
-                auto.velocidad -= 0.25;
-            } 
-            else if (auto.velocidad <= -auto.velocidadmax)
-            {
-                auto.velocidad = -auto.velocidadmax;
-            }
-        }
-        if (teclas['shift']) 
-        {
-            if (auto.min_turbo != 0)
-            {
-                auto.velocidadmax = 7;
-                auto.min_turbo -= 0.04;
-                if (auto.min_turbo < 0)
-                {
-                    auto.min_turbo = 0;
-                }
+                auto.velocidadmax = 5.25;
             }
             else
             {
-                auto.velocidadmax= 4.25;
-            }
-            if (mov && teclas['arrowleft'] || teclas['a'])
-            {
-                auto.angulo -= 0.022*(auto.velocidad/2);
-                auto.angulo_muestra = auto.angulo - 0.24*(auto.velocidad/2);
-            }
-            if (mov && teclas['arrowright'] || teclas['d'])
-            {
-                auto.angulo += 0.022*(auto.velocidad/2);
-                auto.angulo_muestra = auto.angulo + 0.24*(auto.velocidad/2);
-            }
-            if (mov && (teclas['arrowright'] || teclas['d'] || teclas['arrowleft'] || teclas['a']))
-            {
-                auto.min_turbo_con += 0.02;
-            }
-            else
-            {
-                auto.min_turbo_con += 0.01;
-            }
-        }
-        else
-        {
-            if (auto.min_turbo_con > 4)
-            {
-                auto.velocidadmax = 7;
-                auto.min_turbo_con = 0;
-                auto.min_turbo = 4;
-            }
-            else if (auto.min_turbo_con > 2)
-            {
-                auto.velocidadmax = 7;
-                auto.min_turbo_con = 0;
-                auto.min_turbo = 2;
-            }
-            else if (auto.min_turbo_con > 1)
-            {
-                auto.velocidadmax = 7;
-                auto.min_turbo_con = 0;
-                auto.min_turbo = 1;
-            }
-            else if (auto.min_turbo != 0)
-            {
-                auto.min_turbo -= 0.04;
-                if (auto.min_turbo < 0)
-                {
-                    auto.min_turbo = 0;
-                }
-            }
-            else
-            {
-                if (auto.pasto)
-                {
-                    auto.velocidadmax = 3.75;
-                }
-                else
-                {
-                    auto.velocidadmax = 4.75;
-                }
-                auto.min_turbo_con = 0;
-            }
-            auto.angulo_muestra = auto.angulo;
-            if (teclas['arrowright'] || teclas['d']) 
-            {
-                auto.angulo += 0.017*(auto.velocidad/2);
-                auto.angulo_muestra = auto.angulo;
-            }
-            if (teclas['arrowleft'] || teclas['a']) 
-            {
-                auto.angulo -= 0.017*(auto.velocidad/2);
-                auto.angulo_muestra = auto.angulo;
-            } 
-        }
-        
-
-        
-        canvas.addEventListener("mousedown", function (e) 
-        {
-            //click 0 es izquierdo, 1 es medio (ruedita) y 2 es derecho
-            if (e.button == 0)
-            {
-                mouseapretado = true;
-                posicionmouse(e);
-            }
-            if (e.button == 2)
-            {
-                teclas['shift'] = true;
-            }
-        });
-
-        canvas.addEventListener("mousemove", function(e)
-        {
-            if (mouseapretado)
-            {
-                posicionmouse(e);
-            }
-        });
-
-        canvas.addEventListener("mouseup", function (e) 
-        {
-            if (e.button == 0)
-            {
-                mouseapretado = false;
-            }
-            if (e.button == 2)
-            {
-                teclas['shift'] = false;
-            }
-            
-        });
-
-        if (mouseapretado)
-        {
-            mov = true;
-            if (auto.velocidad < auto.velocidadmax)
-            {
-                auto.velocidad += 0.25;
-            }
-            else if (auto.velocidad >= auto.velocidadmax)
-            {
-                auto.velocidad = auto.velocidadmax;
-            }
-            let aux_x = auto.x + (auto.anchoimagen / 2);
-            let aux_y = auto.y + (auto.altoimagen / 2);
-            let deltax = mousex - aux_x;
-            let deltay = mousey - aux_y;
-            let angulo_mouse = Math.atan2(deltay, deltax);
-            let diferencia = Math.atan2(Math.sin(angulo_mouse - auto.angulo),Math.cos(angulo_mouse - auto.angulo));
-            
-            if (Math.abs(diferencia) <= Math.abs(0.017*(auto.velocidad/2))) //si la diferencia es muy poca no rota
-            {
-                auto.angulo = angulo_mouse;
-            }
-            else
-            {
-                if (teclas['shift'])
-                {
-                    auto.angulo += Math.sign(diferencia) * Math.abs(0.022*(auto.velocidad/2));
-                    auto.angulo_muestra = auto.angulo + 0.22*(auto.velocidad/2);
-                }
-                else
-                {
-                    auto.angulo += Math.sign(diferencia) * Math.abs(0.017*(auto.velocidad/2));
-                    auto.angulo_muestra = auto.angulo;
-                }
-                
-            }
-            /*if (auto.angulo > angulo_mouse)
-            {
-                auto.angulo += 0.017*(auto.velocidad/2);
-            }
-            else if (auto.angulo < angulo_mouse)
-            {
-                auto.angulo -= 0.017*(auto.velocidad/2);
+                auto.velocidadmax = 6;
             }*/
-            
-        }
-
-        if (!mov)
-        {
-            if (auto.velocidad !=0)
+            if(auto.boost)
             {
-                if (auto.velocidad > 0)
-                {
-                    auto.velocidad -= 0.25;
-                }
-                else
+                auto.velocidadmax = 8;
+                auto.velocidad = 8;
+                setTimeout(function() {auto.boost = false; auto.velocidadmax= 4.25;}, 3000); 
+            }
+            //console.log(auto.objeto);
+            if(auto.o && auto.objeto == "champi" && teclas['q'])
+            {
+                auto.boost = true;
+                auto.o = false;
+                auto.objeto = null;
+            }
+            if (teclas['arrowup'] || teclas['w'] || teclas[' ']) 
+            {
+                mov = true; 
+                if (auto.velocidad < auto.velocidadmax)
                 {
                     auto.velocidad += 0.25;
                 }
-            }
-        }
-    }
-    else
-    {
-        if (auto.velocidad !=0)
-            {
-                if (auto.velocidad > 0)
+                else if (auto.velocidad >= auto.velocidadmax)
                 {
-                    auto.velocidad -= 0.05;
+                    auto.velocidad = auto.velocidadmax;
+                }
+            } 
+            if (teclas['arrowdown'] || teclas['s']) 
+            {
+                mov = true;
+                if (auto.velocidad > -auto.velocidadmax)
+                {
+                    auto.velocidad -= 0.25;
+                } 
+                else if (auto.velocidad <= -auto.velocidadmax)
+                {
+                    auto.velocidad = -auto.velocidadmax;
+                }
+            }
+            if (teclas['shift']) 
+            {
+                if (auto.min_turbo != 0)
+                {
+                    auto.velocidadmax = 7;
+                    auto.min_turbo -= 0.04;
+                    if (auto.min_turbo < 0)
+                    {
+                        auto.min_turbo = 0;
+                    }
                 }
                 else
                 {
-                    auto.velocidad += 0.05;
+                    auto.velocidadmax= 4.25;
+                }
+                if (mov && teclas['arrowleft'] || teclas['a'])
+                {
+                    auto.angulo -= 0.022*(auto.velocidad/2);
+                    auto.angulo_muestra = auto.angulo - 0.24*(auto.velocidad/2);
+                }
+                if (mov && teclas['arrowright'] || teclas['d'])
+                {
+                    auto.angulo += 0.022*(auto.velocidad/2);
+                    auto.angulo_muestra = auto.angulo + 0.24*(auto.velocidad/2);
+                }
+                if (mov && (teclas['arrowright'] || teclas['d'] || teclas['arrowleft'] || teclas['a']))
+                {
+                    auto.min_turbo_con += 0.02;
+                }
+                else
+                {
+                    auto.min_turbo_con += 0.01;
                 }
             }
+            else
+            {
+                if (auto.min_turbo_con > 4)
+                {
+                    auto.velocidadmax = 7;
+                    auto.min_turbo_con = 0;
+                    auto.min_turbo = 4;
+                }
+                else if (auto.min_turbo_con > 2)
+                {
+                    auto.velocidadmax = 7;
+                    auto.min_turbo_con = 0;
+                    auto.min_turbo = 2;
+                }
+                else if (auto.min_turbo_con > 1)
+                {
+                    auto.velocidadmax = 7;
+                    auto.min_turbo_con = 0;
+                    auto.min_turbo = 1;
+                }
+                else if (auto.min_turbo != 0)
+                {
+                    auto.min_turbo -= 0.04;
+                    if (auto.min_turbo < 0)
+                    {
+                        auto.min_turbo = 0;
+                    }
+                }
+                else
+                {
+                    if (auto.pasto)
+                    {
+                        auto.velocidadmax = 3.75;
+                    }
+                    else
+                    {
+                        auto.velocidadmax = 4.75;
+                    }
+                    auto.min_turbo_con = 0;
+                }
+                auto.angulo_muestra = auto.angulo;
+                if (teclas['arrowright'] || teclas['d']) 
+                {
+                    auto.angulo += 0.017*(auto.velocidad/2);
+                    auto.angulo_muestra = auto.angulo;
+                }
+                if (teclas['arrowleft'] || teclas['a']) 
+                {
+                    auto.angulo -= 0.017*(auto.velocidad/2);
+                    auto.angulo_muestra = auto.angulo;
+                } 
+            }
+            
+
+            
+            canvas.addEventListener("mousedown", function (e) 
+            {
+                //click 0 es izquierdo, 1 es medio (ruedita) y 2 es derecho
+                if (e.button == 0)
+                {
+                    mouseapretado = true;
+                    posicionmouse(e);
+                }
+                if (e.button == 2)
+                {
+                    teclas['shift'] = true;
+                }
+            });
+
+            canvas.addEventListener("mousemove", function(e)
+            {
+                if (mouseapretado)
+                {
+                    posicionmouse(e);
+                }
+            });
+
+            canvas.addEventListener("mouseup", function (e) 
+            {
+                if (e.button == 0)
+                {
+                    mouseapretado = false;
+                }
+                if (e.button == 2)
+                {
+                    teclas['shift'] = false;
+                }
+                
+            });
+
+            if (mouseapretado)
+            {
+                mov = true;
+                if (auto.velocidad < auto.velocidadmax)
+                {
+                    auto.velocidad += 0.25;
+                }
+                else if (auto.velocidad >= auto.velocidadmax)
+                {
+                    auto.velocidad = auto.velocidadmax;
+                }
+                let aux_x = auto.x + (auto.anchoimagen / 2);
+                let aux_y = auto.y + (auto.altoimagen / 2);
+                let deltax = mousex - aux_x;
+                let deltay = mousey - aux_y;
+                let angulo_mouse = Math.atan2(deltay, deltax);
+                let diferencia = Math.atan2(Math.sin(angulo_mouse - auto.angulo),Math.cos(angulo_mouse - auto.angulo));
+                
+                if (Math.abs(diferencia) <= Math.abs(0.017*(auto.velocidad/2))) //si la diferencia es muy poca no rota
+                {
+                    auto.angulo = angulo_mouse;
+                }
+                else
+                {
+                    if (teclas['shift'])
+                    {
+                        auto.angulo += Math.sign(diferencia) * Math.abs(0.022*(auto.velocidad/2));
+                        auto.angulo_muestra = auto.angulo + 0.22*(auto.velocidad/2);
+                    }
+                    else
+                    {
+                        auto.angulo += Math.sign(diferencia) * Math.abs(0.017*(auto.velocidad/2));
+                        auto.angulo_muestra = auto.angulo;
+                    }
+                    
+                }
+                /*if (auto.angulo > angulo_mouse)
+                {
+                    auto.angulo += 0.017*(auto.velocidad/2);
+                }
+                else if (auto.angulo < angulo_mouse)
+                {
+                    auto.angulo -= 0.017*(auto.velocidad/2);
+                }*/
+                
+            }
+
+            if (!mov)
+            {
+                if (auto.velocidad !=0)
+                {
+                    if (auto.velocidad > 0)
+                    {
+                        auto.velocidad -= 0.25;
+                    }
+                    else
+                    {
+                        auto.velocidad += 0.25;
+                    }
+                }
+            }
+        }
+        else
+        {
+            if (auto.velocidad !=0)
+                {
+                    if (auto.velocidad > 0)
+                    {
+                        auto.velocidad -= 0.05;
+                    }
+                    else
+                    {
+                        auto.velocidad += 0.05;
+                    }
+                }
+        }
+        
+
+
+        
+        
+
+        auto.x += Math.cos(auto.angulo) * auto.velocidad;
+        auto.y += Math.sin(auto.angulo) * auto.velocidad;
     }
-    
-
-
-    
-    
-
-    auto.x += Math.cos(auto.angulo) * auto.velocidad;
-    auto.y += Math.sin(auto.angulo) * auto.velocidad;
-
 }
 
 
@@ -946,7 +1005,7 @@ document.addEventListener('keydown', function(e)
         
         e.preventDefault();
 
-        if (e.key == 'Enter' || e.key == 'Escape')
+        if ((e.key == 'Enter' || e.key == 'Escape') && tiempo[5].principio < 1)
         {
             if (pausa == false)
             {
