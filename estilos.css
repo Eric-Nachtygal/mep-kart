@@ -38,12 +38,12 @@ body::before
 
 .titulo
 {
-    font-size: 5rem;
+    font-size: 8rem;
     position: fixed;
-    top: 8rem;
+    top: 4rem;
     left: 50%;
     transform: translateX(-50%);
-    
+    text-shadow:  12px 16px rgba(0, 0, 0, .5);
 }
 
 main
@@ -73,16 +73,22 @@ button {
 .buttons
 {
     display: flex;
-     gap: 20px;
+    gap: 20px;
     position:fixed;
     top: 25rem;
     left: 50%;
     transform: translateX(-50%);
-    
+    flex-direction: column;
+    align-items: center;
 }
+
+
 .buttons button
 {
-    min-width: 130px;
+    min-width: 350px;
+    max-width: 350px;
+    margin: 0;
+    transform-origin: center;
     padding: 12px 20px;
     border: 2px solid rgb(247, 255, 28);
     border-radius: 5px;
@@ -92,6 +98,7 @@ button {
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.2s, color 0.2s;
+    
 }
 
 .buttons button:hover
@@ -108,16 +115,22 @@ button {
 
 .buttons:has(#volumen:not([hidden]))
 {
+    transform: skewX(-10deg) translateX(-50%);
     display: grid;
     grid-template-columns: 1fr;
     justify-items: center;
     gap: 14px;
     padding: 22px 26px;
-    border: 1px solid rgba(247, 255, 28, .38);
-    border-radius: 18px;
+    border: 2px solid rgb(247, 255, 28);
+    border-radius: 5px;
     background: linear-gradient(145deg, rgba(22, 33, 125, .82), rgba(9, 13, 79, .9));
     box-shadow: 0 16px 40px rgba(0, 0, 0, .35), inset 0 1px rgba(255, 255, 255, .12);
     backdrop-filter: blur(10px);
+}
+
+.buttons:has(#volumen:not([hidden])) button
+{
+    transform: skewX(0deg);
 }
 
 .buttons:has(#volumen:not([hidden])) #volver
