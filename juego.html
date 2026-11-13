@@ -164,7 +164,7 @@ document.addEventListener('contextmenu', function (e)
     e.preventDefault();
 });
 
-let tiempo = {centisegundos: 0, segundos: 0, minutos: 0};
+let tiempo = {centisegundos: 0, segundos: 0, minutos: 0, principio: 3};
 let auto = {x: 880, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 0, imagen: imagenauto1, id:1, puesto:1, objeto: null, o: false, boost: false};
 let bot1 = {x: 920, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 0, imagen:imagenauto2, camino:0, id:2, puesto:2, objeto: null, o: false, boost: false};
 let bot2 = {x: 960, y: 617, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 0, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 0, imagen:imagenauto3, camino:0, id:3, puesto:3, objeto: null, o: false, boost: false};
@@ -581,47 +581,68 @@ function dibujar()
         ctx.drawImage(objetos[i].imagen, objetos[i].x, objetos[i].y, objetos[i].anchoimagen, objetos[i].altoimagen);
     }
     ctx.drawImage(flecha, auto.x + 3, auto.y - 25, 20, 20);
-    ctx.fillStyle = "rgba(106, 255, 254, 0.3)";
-    if (auto.vuelta > 4)
-    {
-        ctx.fillRect(40, 60, 270, 90);
-    }
-    else
-    {
-        ctx.fillRect(40, 60, 180, 90);
-    }
+    
+    
     ctx.fillStyle = "rgb(255, 255, 255)";
     ctx.strokeStyle = "rgb(0, 0, 0)";
-    ctx.lineWidth = 1; 
-    ctx.font = '20px Zen Dots';
-    if (auto.vuelta < 4)
+    if(tiempo.principio > 0)
     {
-        ctx.strokeText("Vuelta " + (auto.vuelta + 1), 50, 80);
-        ctx.fillText("Vuelta " + (auto.vuelta + 1), 50, 80);
+        ctx.font = '100px Arial Black';
+        ctx.strokeText(tiempo.principio, 600, 350);
+        ctx.fillText(tiempo.principio, 600, 350);
     }
-    else if (auto.vuelta == 4)
+    else if (tiempo.principio == 0)
     {
-        ctx.strokeText("Última Vuelta", 50, 80);
-        ctx.fillText("Última Vuelta", 50, 80);
+        ctx.font = '100px Arial Black';
+        ctx.strokeText("GO!", 600, 350);
+        ctx.fillText("GO!", 600, 350);
     }
-    else
+    if (tiempo.principio < 1)
     {
-        ctx.strokeText("Carrera Completada", 50, 80);
-        ctx.fillText("Carrera Completada", 50, 80);
+        ctx.fillStyle = "rgba(106, 255, 254, 0.3)";
+        if (auto.vuelta > 4)
+        {
+            ctx.fillRect(40, 60, 270, 90);
+        }
+        else
+        {
+            ctx.fillRect(40, 60, 180, 90);
+        }
+        
+        ctx.fillStyle = "rgb(255, 255, 255)";
+        ctx.strokeStyle = "rgb(0, 0, 0)";
+        ctx.lineWidth = 1; 
+        ctx.font = '20px Zen Dots';
+        if (auto.vuelta < 4)
+        {
+            ctx.strokeText("Vuelta " + (auto.vuelta + 1), 50, 80);
+            ctx.fillText("Vuelta " + (auto.vuelta + 1), 50, 80);
+        }
+        else if (auto.vuelta == 4)
+        {
+            ctx.strokeText("Última Vuelta", 50, 80);
+            ctx.fillText("Última Vuelta", 50, 80);
+        }
+        else
+        {
+            ctx.strokeText("Carrera Completada", 50, 80);
+            ctx.fillText("Carrera Completada", 50, 80);
+        }
+        ctx.strokeText("Puesto " + auto.puesto, 50, 110);
+        ctx.fillText("Puesto " + auto.puesto, 50, 110);
+        ctx.strokeText(tiempo.minutos + ":" + tiempo.segundos + ":" + tiempo.centisegundos, 50, 140);
+        ctx.fillText(tiempo.minutos + ":" + tiempo.segundos + ":" + tiempo.centisegundos, 50, 140);
     }
-    ctx.strokeText("Puesto " + auto.puesto, 50, 110);
-    ctx.fillText("Puesto " + auto.puesto, 50, 110);
-    ctx.strokeText(tiempo.minutos + ":" + tiempo.segundos + ":" + tiempo.centisegundos, 50, 140);
-    ctx.fillText(tiempo.minutos + ":" + tiempo.segundos + ":" + tiempo.centisegundos, 50, 140);
     //contador de checkpoints solo para probar, despues se comenta para la expo
     /*ctx.font = '20px Bebas Neue';
     ctx.strokeText("Checkpoint" + auto.checkpoint, 50, 110);
     ctx.fillText("Checkpoint " + auto.checkpoint, 50, 110);*/
 }
 
-
 setInterval(function() 
 {
+    if (tiempo.principio < 1)
+    {
         tiempo.centisegundos++;
         if (tiempo.centisegundos >= 100)
         {
@@ -633,374 +654,394 @@ setInterval(function()
                 tiempo.minutos++;
             }
         }
-        
-    //console.log(tiempo);
+    }
+    
+    console.log("tiempo.principio");
+    console.log(tiempo.principio);
 }, 10);
+
+
+setInterval(function() 
+{
+    if (tiempo.principio >= 0)
+    {
+        tiempo.principio--;
+    }
+    //console.log(tiempo);
+}, 1000);
+
+
+
 
 
 function moverjugador()
 {
-    document.addEventListener('keydown', function(e) 
+    if (tiempo.principio < 1)
     {
-        if(e.key == 'F11' || e.key == 'F5' || e.key == 'F12')
+        document.addEventListener('keydown', function(e) 
         {
-            return;
-        }
-        e.preventDefault();
-        teclas[e.key.toLowerCase()] = true;
-        
-    });
-    
-    document.addEventListener('keyup', function(e)
-    {
-        teclas[e.key.toLowerCase()] = false;
-    });
-
-    let mov = false;
-
-
-    //console.log(auto.pasto);
-    if (auto.vuelta == 5)
-    {
-        if (auto.velocidad < 0)
-        {
-            auto.velocidad = 0;
-        }
-    }
-    if (auto.vuelta < 5)
-    {
-        if (auto.pasto && !auto.boost)
-        {
-            auto.velocidadmax = 2;
-            auto.min_turbo_con = 0;
-            auto.min_turbo = 0;
-        }
-
-    /* if (teclas['arrowright'] || teclas['d'] || teclas['arrowleft'] || teclas['a']) 
-        {
-            auto.velocidadmax = 5.25;
-        }
-        else
-        {
-            auto.velocidadmax = 6;
-        }*/
-        if(auto.boost)
-        {
-            auto.velocidadmax = 8;
-            auto.velocidad = 8;
-            setTimeout(function() {auto.boost = false; auto.velocidadmax= 4.25;}, 3000); 
-        }
-        console.log(auto.objeto);
-        if(auto.o && auto.objeto == "champi" && teclas['q'])
-        {
-            auto.boost = true;
-            auto.o = false;
-            auto.objeto = null;
-        }
-        if (teclas['arrowup'] || teclas['w'] || teclas[' ']) 
-        {
-            mov = true; 
-            if (auto.velocidad < auto.velocidadmax)
+            if(e.key == 'F11' || e.key == 'F5' || e.key == 'F12')
             {
-                auto.velocidad += 0.25;
+                return;
             }
-            else if (auto.velocidad >= auto.velocidadmax)
-            {
-                auto.velocidad = auto.velocidadmax;
-            }
-        } 
-        if (teclas['arrowdown'] || teclas['s']) 
-        {
-            mov = true;
-            if (auto.velocidad > -auto.velocidadmax)
-            {
-                auto.velocidad -= 0.25;
-            } 
-            else if (auto.velocidad <= -auto.velocidadmax)
-            {
-                auto.velocidad = -auto.velocidadmax;
-            }
-        }
-        if (teclas['shift']) 
-        {
-            if (auto.min_turbo != 0)
-            {
-                auto.velocidadmax = 7;
-                auto.min_turbo -= 0.04;
-                if (auto.min_turbo < 0)
-                {
-                    auto.min_turbo = 0;
-                }
-            }
-            else
-            {
-                auto.velocidadmax= 4.25;
-            }
-            if (mov && teclas['arrowleft'] || teclas['a'])
-            {
-                auto.angulo -= 0.022*(auto.velocidad/2);
-                auto.angulo_muestra = auto.angulo - 0.24*(auto.velocidad/2);
-            }
-            if (mov && teclas['arrowright'] || teclas['d'])
-            {
-                auto.angulo += 0.022*(auto.velocidad/2);
-                auto.angulo_muestra = auto.angulo + 0.24*(auto.velocidad/2);
-            }
-            if (mov && (teclas['arrowright'] || teclas['d'] || teclas['arrowleft'] || teclas['a']))
-            {
-                auto.min_turbo_con += 0.02;
-            }
-            else
-            {
-                auto.min_turbo_con += 0.01;
-            }
-        }
-        else
-        {
-            if (auto.min_turbo_con > 4)
-            {
-                auto.velocidadmax = 7;
-                auto.min_turbo_con = 0;
-                auto.min_turbo = 4;
-            }
-            else if (auto.min_turbo_con > 2)
-            {
-                auto.velocidadmax = 7;
-                auto.min_turbo_con = 0;
-                auto.min_turbo = 2;
-            }
-            else if (auto.min_turbo_con > 1)
-            {
-                auto.velocidadmax = 7;
-                auto.min_turbo_con = 0;
-                auto.min_turbo = 1;
-            }
-            else if (auto.min_turbo != 0)
-            {
-                auto.min_turbo -= 0.04;
-                if (auto.min_turbo < 0)
-                {
-                    auto.min_turbo = 0;
-                }
-            }
-            else
-            {
-                if (auto.pasto)
-                {
-                    auto.velocidadmax = 3.75;
-                }
-                else
-                {
-                    auto.velocidadmax = 4.75;
-                }
-                auto.min_turbo_con = 0;
-            }
-            auto.angulo_muestra = auto.angulo;
-            if (teclas['arrowright'] || teclas['d']) 
-            {
-                auto.angulo += 0.017*(auto.velocidad/2);
-                auto.angulo_muestra = auto.angulo;
-            }
-            if (teclas['arrowleft'] || teclas['a']) 
-            {
-                auto.angulo -= 0.017*(auto.velocidad/2);
-                auto.angulo_muestra = auto.angulo;
-            } 
-        }
-        
-
-        
-        canvas.addEventListener("mousedown", function (e) 
-        {
-            //click 0 es izquierdo, 1 es medio (ruedita) y 2 es derecho
-            if (e.button == 0)
-            {
-                mouseapretado = true;
-                posicionmouse(e);
-            }
-            if (e.button == 2)
-            {
-                teclas['shift'] = true;
-            }
-        });
-
-        canvas.addEventListener("mousemove", function(e)
-        {
-            if (mouseapretado)
-            {
-                posicionmouse(e);
-            }
-        });
-
-        canvas.addEventListener("mouseup", function (e) 
-        {
-            if (e.button == 0)
-            {
-                mouseapretado = false;
-            }
-            if (e.button == 2)
-            {
-                teclas['shift'] = false;
-            }
+            e.preventDefault();
+            teclas[e.key.toLowerCase()] = true;
             
         });
-
-        if (mouseapretado)
+        
+        document.addEventListener('keyup', function(e)
         {
-            mov = true;
-            if (auto.velocidad < auto.velocidadmax)
+            teclas[e.key.toLowerCase()] = false;
+        });
+
+        let mov = false;
+
+
+        //console.log(auto.pasto);
+        if (auto.vuelta == 5)
+        {
+            if (auto.velocidad < 0)
             {
-                auto.velocidad += 0.25;
+                auto.velocidad = 0;
             }
-            else if (auto.velocidad >= auto.velocidadmax)
+        }
+        if (auto.vuelta < 5)
+        {
+            if (auto.pasto && !auto.boost)
             {
-                auto.velocidad = auto.velocidadmax;
+                auto.velocidadmax = 2;
+                auto.min_turbo_con = 0;
+                auto.min_turbo = 0;
             }
-            let aux_x = auto.x + (auto.anchoimagen / 2);
-            let aux_y = auto.y + (auto.altoimagen / 2);
-            let deltax = mousex - aux_x;
-            let deltay = mousey - aux_y;
-            let angulo_mouse = Math.atan2(deltay, deltax);
-            let diferencia = Math.atan2(Math.sin(angulo_mouse - auto.angulo),Math.cos(angulo_mouse - auto.angulo));
-            
-            if (Math.abs(diferencia) <= Math.abs(0.017*(auto.velocidad/2))) //si la diferencia es muy poca no rota
+
+        /* if (teclas['arrowright'] || teclas['d'] || teclas['arrowleft'] || teclas['a']) 
             {
-                auto.angulo = angulo_mouse;
+                auto.velocidadmax = 5.25;
             }
             else
             {
-                if (teclas['shift'])
-                {
-                    auto.angulo += Math.sign(diferencia) * Math.abs(0.022*(auto.velocidad/2));
-                    auto.angulo_muestra = auto.angulo + 0.22*(auto.velocidad/2);
-                }
-                else
-                {
-                    auto.angulo += Math.sign(diferencia) * Math.abs(0.017*(auto.velocidad/2));
-                    auto.angulo_muestra = auto.angulo;
-                }
-                
-            }
-            /*if (auto.angulo > angulo_mouse)
-            {
-                auto.angulo += 0.017*(auto.velocidad/2);
-            }
-            else if (auto.angulo < angulo_mouse)
-            {
-                auto.angulo -= 0.017*(auto.velocidad/2);
+                auto.velocidadmax = 6;
             }*/
-            
-        }
-
-        if (!mov)
-        {
-            if (auto.velocidad !=0)
+            if(auto.boost)
             {
-                if (auto.velocidad > 0)
-                {
-                    auto.velocidad -= 0.25;
-                }
-                else
+                auto.velocidadmax = 8;
+                auto.velocidad = 8;
+                setTimeout(function() {auto.boost = false; auto.velocidadmax= 4.25;}, 3000); 
+            }
+            console.log(auto.objeto);
+            if(auto.o && auto.objeto == "champi" && teclas['q'])
+            {
+                auto.boost = true;
+                auto.o = false;
+                auto.objeto = null;
+            }
+            if (teclas['arrowup'] || teclas['w'] || teclas[' ']) 
+            {
+                mov = true; 
+                if (auto.velocidad < auto.velocidadmax)
                 {
                     auto.velocidad += 0.25;
                 }
-            }
-        }
-    }
-    else
-    {
-        if (auto.velocidad !=0)
-            {
-                if (auto.velocidad > 0)
+                else if (auto.velocidad >= auto.velocidadmax)
                 {
-                    auto.velocidad -= 0.05;
+                    auto.velocidad = auto.velocidadmax;
+                }
+            } 
+            if (teclas['arrowdown'] || teclas['s']) 
+            {
+                mov = true;
+                if (auto.velocidad > -auto.velocidadmax)
+                {
+                    auto.velocidad -= 0.25;
+                } 
+                else if (auto.velocidad <= -auto.velocidadmax)
+                {
+                    auto.velocidad = -auto.velocidadmax;
+                }
+            }
+            if (teclas['shift']) 
+            {
+                if (auto.min_turbo != 0)
+                {
+                    auto.velocidadmax = 7;
+                    auto.min_turbo -= 0.04;
+                    if (auto.min_turbo < 0)
+                    {
+                        auto.min_turbo = 0;
+                    }
                 }
                 else
                 {
-                    auto.velocidad += 0.05;
+                    auto.velocidadmax= 4.25;
+                }
+                if (mov && teclas['arrowleft'] || teclas['a'])
+                {
+                    auto.angulo -= 0.022*(auto.velocidad/2);
+                    auto.angulo_muestra = auto.angulo - 0.24*(auto.velocidad/2);
+                }
+                if (mov && teclas['arrowright'] || teclas['d'])
+                {
+                    auto.angulo += 0.022*(auto.velocidad/2);
+                    auto.angulo_muestra = auto.angulo + 0.24*(auto.velocidad/2);
+                }
+                if (mov && (teclas['arrowright'] || teclas['d'] || teclas['arrowleft'] || teclas['a']))
+                {
+                    auto.min_turbo_con += 0.02;
+                }
+                else
+                {
+                    auto.min_turbo_con += 0.01;
                 }
             }
+            else
+            {
+                if (auto.min_turbo_con > 4)
+                {
+                    auto.velocidadmax = 7;
+                    auto.min_turbo_con = 0;
+                    auto.min_turbo = 4;
+                }
+                else if (auto.min_turbo_con > 2)
+                {
+                    auto.velocidadmax = 7;
+                    auto.min_turbo_con = 0;
+                    auto.min_turbo = 2;
+                }
+                else if (auto.min_turbo_con > 1)
+                {
+                    auto.velocidadmax = 7;
+                    auto.min_turbo_con = 0;
+                    auto.min_turbo = 1;
+                }
+                else if (auto.min_turbo != 0)
+                {
+                    auto.min_turbo -= 0.04;
+                    if (auto.min_turbo < 0)
+                    {
+                        auto.min_turbo = 0;
+                    }
+                }
+                else
+                {
+                    if (auto.pasto)
+                    {
+                        auto.velocidadmax = 3.75;
+                    }
+                    else
+                    {
+                        auto.velocidadmax = 4.75;
+                    }
+                    auto.min_turbo_con = 0;
+                }
+                auto.angulo_muestra = auto.angulo;
+                if (teclas['arrowright'] || teclas['d']) 
+                {
+                    auto.angulo += 0.017*(auto.velocidad/2);
+                    auto.angulo_muestra = auto.angulo;
+                }
+                if (teclas['arrowleft'] || teclas['a']) 
+                {
+                    auto.angulo -= 0.017*(auto.velocidad/2);
+                    auto.angulo_muestra = auto.angulo;
+                } 
+            }
+            
+
+            
+            canvas.addEventListener("mousedown", function (e) 
+            {
+                //click 0 es izquierdo, 1 es medio (ruedita) y 2 es derecho
+                if (e.button == 0)
+                {
+                    mouseapretado = true;
+                    posicionmouse(e);
+                }
+                if (e.button == 2)
+                {
+                    teclas['shift'] = true;
+                }
+            });
+
+            canvas.addEventListener("mousemove", function(e)
+            {
+                if (mouseapretado)
+                {
+                    posicionmouse(e);
+                }
+            });
+
+            canvas.addEventListener("mouseup", function (e) 
+            {
+                if (e.button == 0)
+                {
+                    mouseapretado = false;
+                }
+                if (e.button == 2)
+                {
+                    teclas['shift'] = false;
+                }
+                
+            });
+
+            if (mouseapretado)
+            {
+                mov = true;
+                if (auto.velocidad < auto.velocidadmax)
+                {
+                    auto.velocidad += 0.25;
+                }
+                else if (auto.velocidad >= auto.velocidadmax)
+                {
+                    auto.velocidad = auto.velocidadmax;
+                }
+                let aux_x = auto.x + (auto.anchoimagen / 2);
+                let aux_y = auto.y + (auto.altoimagen / 2);
+                let deltax = mousex - aux_x;
+                let deltay = mousey - aux_y;
+                let angulo_mouse = Math.atan2(deltay, deltax);
+                let diferencia = Math.atan2(Math.sin(angulo_mouse - auto.angulo),Math.cos(angulo_mouse - auto.angulo));
+                
+                if (Math.abs(diferencia) <= Math.abs(0.017*(auto.velocidad/2))) //si la diferencia es muy poca no rota
+                {
+                    auto.angulo = angulo_mouse;
+                }
+                else
+                {
+                    if (teclas['shift'])
+                    {
+                        auto.angulo += Math.sign(diferencia) * Math.abs(0.022*(auto.velocidad/2));
+                        auto.angulo_muestra = auto.angulo + 0.22*(auto.velocidad/2);
+                    }
+                    else
+                    {
+                        auto.angulo += Math.sign(diferencia) * Math.abs(0.017*(auto.velocidad/2));
+                        auto.angulo_muestra = auto.angulo;
+                    }
+                    
+                }
+                /*if (auto.angulo > angulo_mouse)
+                {
+                    auto.angulo += 0.017*(auto.velocidad/2);
+                }
+                else if (auto.angulo < angulo_mouse)
+                {
+                    auto.angulo -= 0.017*(auto.velocidad/2);
+                }*/
+                
+            }
+
+            if (!mov)
+            {
+                if (auto.velocidad !=0)
+                {
+                    if (auto.velocidad > 0)
+                    {
+                        auto.velocidad -= 0.25;
+                    }
+                    else
+                    {
+                        auto.velocidad += 0.25;
+                    }
+                }
+            }
+        }
+        else
+        {
+            if (auto.velocidad !=0)
+                {
+                    if (auto.velocidad > 0)
+                    {
+                        auto.velocidad -= 0.05;
+                    }
+                    else
+                    {
+                        auto.velocidad += 0.05;
+                    }
+                }
+        }
+        
+
+
+        
+        
+
+        auto.x += Math.cos(auto.angulo) * auto.velocidad;
+        auto.y += Math.sin(auto.angulo) * auto.velocidad;
     }
-    
-
-
-    
-    
-
-    auto.x += Math.cos(auto.angulo) * auto.velocidad;
-    auto.y += Math.sin(auto.angulo) * auto.velocidad;
-
 }
 
 function moverbots()
 {
-    for (let i = 1; i < autos.length; i++)
+    if (tiempo.principio < 1)
     {
-        if (autos[i].vuelta < 5)
+        for (let i = 1; i < autos.length; i++)
         {
-            if (autos[i].velocidad < autos[i].velocidadmax)
+            if (autos[i].vuelta < 5)
             {
-                autos[i].velocidad += 0.25;
-            }
-            else if (autos[i].velocidad >= autos[i].velocidadmax)
-            {
-                autos[i].velocidad = autos[i].velocidadmax;
-            }
-
-            let aux_x = autos[i].x + (autos[i].anchoimagen / 2);
-            let aux_y = autos[i].y + (autos[i].altoimagen / 2);
-            let deltax;
-            let deltay;
-            let rndx = Math.floor(Math.random() * (15) - 7);
-            let rndy = Math.floor(Math.random() * (15) - 7);
-            if (autos[i].camino >= mapa1_caminobots.length - 1)
-            {
-                deltax = mapa1_caminobots[0].x - aux_x + rndx;
-                deltay = mapa1_caminobots[0].y - aux_y + rndy;
-            }
-            else
-            {
-                deltax = mapa1_caminobots[autos[i].camino+1].x - aux_x + rndx;
-                deltay = mapa1_caminobots[autos[i].camino+1].y - aux_y + rndy;
-            }
-            
-            let angulo_check = Math.atan2(deltay, deltax);
-            let diferencia = Math.atan2(Math.sin(angulo_check - autos[i].angulo),Math.cos(angulo_check - autos[i].angulo));
-            
-            if (Math.abs(diferencia) <= Math.abs(0.017*(auto.velocidad/2))) //si la diferencia es muy poca no rota
-            {
-                autos[i].angulo = angulo_check;
-            }
-            else
-            {
-                autos[i].angulo += Math.sign(diferencia) * Math.abs(0.017*(autos[i].velocidad/2));
-                autos[i].angulo_muestra = autos[i].angulo;
-            }
-        }
-        else
-        {
-            if (autos[i].velocidad !=0)
-            {
-                if (autos[i].velocidad > 0)
+                if (autos[i].velocidad < autos[i].velocidadmax)
                 {
-                    autos[i].velocidad -= 0.05;
+                    autos[i].velocidad += 0.25;
+                }
+                else if (autos[i].velocidad >= autos[i].velocidadmax)
+                {
+                    autos[i].velocidad = autos[i].velocidadmax;
+                }
+
+                let aux_x = autos[i].x + (autos[i].anchoimagen / 2);
+                let aux_y = autos[i].y + (autos[i].altoimagen / 2);
+                let deltax;
+                let deltay;
+                let rndx = Math.floor(Math.random() * (15) - 7);
+                let rndy = Math.floor(Math.random() * (15) - 7);
+                if (autos[i].camino >= mapa1_caminobots.length - 1)
+                {
+                    deltax = mapa1_caminobots[0].x - aux_x + rndx;
+                    deltay = mapa1_caminobots[0].y - aux_y + rndy;
                 }
                 else
                 {
-                    autos[i].velocidad += 0.05;
+                    deltax = mapa1_caminobots[autos[i].camino+1].x - aux_x + rndx;
+                    deltay = mapa1_caminobots[autos[i].camino+1].y - aux_y + rndy;
+                }
+                
+                let angulo_check = Math.atan2(deltay, deltax);
+                let diferencia = Math.atan2(Math.sin(angulo_check - autos[i].angulo),Math.cos(angulo_check - autos[i].angulo));
+                
+                if (Math.abs(diferencia) <= Math.abs(0.017*(auto.velocidad/2))) //si la diferencia es muy poca no rota
+                {
+                    autos[i].angulo = angulo_check;
+                }
+                else
+                {
+                    autos[i].angulo += Math.sign(diferencia) * Math.abs(0.017*(autos[i].velocidad/2));
+                    autos[i].angulo_muestra = autos[i].angulo;
                 }
             }
-        }
-        if (autos[i].vuelta == 5)
-        {
-            if (autos[i].velocidad < 0)
+            else
             {
-                autos[i].velocidad = 0;
+                if (autos[i].velocidad !=0)
+                {
+                    if (autos[i].velocidad > 0)
+                    {
+                        autos[i].velocidad -= 0.05;
+                    }
+                    else
+                    {
+                        autos[i].velocidad += 0.05;
+                    }
+                }
             }
-        }
+            if (autos[i].vuelta == 5)
+            {
+                if (autos[i].velocidad < 0)
+                {
+                    autos[i].velocidad = 0;
+                }
+            }
 
-        autos[i].x += Math.cos(autos[i].angulo) * autos[i].velocidad;
-        autos[i].y += Math.sin(autos[i].angulo) * autos[i].velocidad;
+            autos[i].x += Math.cos(autos[i].angulo) * autos[i].velocidad;
+            autos[i].y += Math.sin(autos[i].angulo) * autos[i].velocidad;
+        }
     }
 }
 
