@@ -138,6 +138,8 @@ const imagen_champi = new Image();
 imagen_champi.src = 'sprites/champi.png';
 const imagen_tortuga = new Image();
 imagen_tortuga.src = 'sprites/tortuga_1.png';
+const imagen_tortuga2 = new Image();
+imagen_tortuga2.src = 'sprites/tortuga_2.png';
 promesasCarga.push(new Promise(res => {
         imagenauto1.onload = res;
         imagenauto1.onerror = () => {
@@ -234,7 +236,7 @@ let bot6 = {x: 1000, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen:
 let bot7 = {x: 1000, y: 617, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 3.14, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 0, imagen:imagenmoto, camino:0, id:8, puesto:8, objeto: null, o: false, boost: false};
 const obj = ["champi", "tortuga", "bananas"];
 let autos = [auto,bot1,bot2,bot3,bot4,bot5,bot6,bot7];
-
+let tortu = {x: null, y: null, ancho: 25, altura: 10, anchoimagen: 10, altoimagen: 10,  velocidad: 10, angulo:null, imagen: imagen_tortuga2, existe: false, contador: 0 };
 let caja = {x: 400, y: 577, ancho: 25, altura: 15, anchoimagen: 40, altoimagen: 25, imagen: imagencaja, activo: true};
 let objetos = [caja];
 
@@ -806,12 +808,28 @@ function moverjugador()
                 auto.velocidad = 8;
                 setTimeout(function() {auto.boost = false; auto.velocidadmax= 4.25;}, 3000); 
             }
-            console.log(auto.objeto);
-            if(auto.o && auto.objeto == "champi" && teclas['q'])
+            if(auto.o && teclas['q'])
             {
-                auto.boost = true;
-                auto.o = false;
-                auto.objeto = null;
+                if(auto.objeto == "champi")
+                {
+                    auto.boost = true;
+                    auto.o = false;
+                    auto.objeto = null;
+                }
+                else if(auto.objeto == "tortuga")
+                {
+                    auto.o = false;
+                    auto.objeto = null;
+                    tortu.x = auto.x;
+                    tortu.y = auto.y;
+                    tortu.angulo = auto.angulo;
+                    tortu.existe = true;
+                }
+                else if(auto.objeto == "banana")
+                {
+                    auto.o = false;
+                    auto.objeto = null;
+                }
             }
             if (teclas['arrowup'] || teclas['w'] || teclas[' ']) 
             {
