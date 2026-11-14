@@ -101,7 +101,12 @@ const menupausa = document.getElementById("pausa");
 const menucontinuar = document.getElementById("continuar");
 const menusalir = document.getElementById("salir");
 const musica = document.getElementById("audioFondo");
-
+const snd_hover = new Audio();
+snd_hover.src = "sonidos/menuhover.ogg";
+snd_hover.preload = "auto";
+const snd_selec = new Audio();
+snd_selec.src = "sonidos/menuseleccionar.ogg";
+snd_selec.preload = "auto";
 const promesasCarga = []; //en este array guardamos todas las imagenes
 const imagenauto1 = new Image();
 imagenauto1.src = 'sprites/auto_jugador.png';
@@ -255,8 +260,8 @@ const mapa1_obstaculos = [
 {x:1320, y:450, ancho:40, altura:50},
 {x:760, y:240, ancho:40, altura:50},
 {x:820, y:180, ancho:40, altura:50},
-{x:880, y:180, ancho:100, altura:30},
-{x:1000, y:180, ancho:50, altura:30},
+{x:880, y:180, ancho:120, altura:30},
+{x:1000, y:180, ancho:80, altura:30},
 {x:1090, y:180, ancho:130, altura:70},
 {x:630, y:150, ancho:120, altura:280},
 {x:607, y:200, ancho:120, altura:180},
@@ -289,7 +294,7 @@ const mapa1_obstaculos = [
 {x: 200, y:170, ancho:265, altura:50},
 {x: 265, y:210, ancho:85, altura:30},
 {x: 40, y:610, ancho:35, altura:80},
-{x: 80, y:650, ancho:50, altura:30},
+{x: 70, y:650, ancho:60, altura:50},
 ];
 
 
@@ -638,7 +643,7 @@ function dibujar()
 
 setInterval(function() 
 {
-    if (tiempo[5].principio < 1)
+    if (tiempo[5].principio < 1 && auto.vuelta < 5)
     {
         if (!pausa)
         {
@@ -986,9 +991,9 @@ Promise.all(promesasCarga).then(() =>
 {
     fondo_ctx.drawImage(imagenmapa1, 0, 0);
     /*ctx.fillStyle = 'rgba(255,0,0,0.5)';
-    for (let i = 0; i < mapa1_caminobots.length; i++)
+    for (let i = 0; i < mapa1_obstaculos.length; i++)
     {
-        ctx.fillRect(mapa1_caminobots[i].x, mapa1_caminobots[i].y, mapa1_caminobots[i].ancho, mapa1_caminobots[i].altura);
+        ctx.fillRect(mapa1_obstaculos[i].x, mapa1_obstaculos[i].y, mapa1_obstaculos[i].ancho, mapa1_obstaculos[i].altura);
     }
     //console.log(auto.x, auto.y);
     ctx.drawImage(imagenauto1, auto.x, auto.y, auto.anchoimagen, auto.altoimagen);//*/
@@ -1019,6 +1024,8 @@ document.addEventListener('keydown', function(e)
                 menupausa.close();
                 musica.play();
             }
+            const snd_selecaux = new Audio(snd_selec.src);
+            snd_selecaux.play();
         }
 
         teclas[e.key.toLowerCase()] = true;
@@ -1035,10 +1042,26 @@ document.addEventListener('keydown', function(e)
         pausa = false;
         menupausa.close();
         musica.play();
+        const snd_selecaux = new Audio(snd_selec.src);
+        snd_selecaux.play();
     };
+
+    menucontinuar.addEventListener("mouseenter", ()=>
+    {
+        const snd_hoveraux = new Audio(snd_hover.src);
+        snd_hoveraux.play();
+    });
+
+    menusalir.addEventListener("mouseenter", ()=>
+    {
+        const snd_hoveraux = new Audio(snd_hover.src);
+        snd_hoveraux.play();
+    });
 
     menusalir.onclick = function()
     {
+        const snd_selecaux = new Audio(snd_selec.src);
+        snd_selecaux.play();
         window.location.href = "index.html";
     };
 
