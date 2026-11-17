@@ -146,6 +146,9 @@ const imagen_tortuga = new Image();
 imagen_tortuga.src = 'sprites/tortuga_1.png';
 const imagen_tortuga2 = new Image();
 imagen_tortuga2.src = 'sprites/tortuga_2.png';
+const imagen_banana = new Image();
+imagen_banana.src = 'sprites/banana_1.png';
+
 
 const snd_principio1 = new Audio();
 snd_principio1.src = "sonidos/principio1.ogg";
@@ -753,7 +756,7 @@ function dibujar()
         }
         else if (auto.objeto == "bananas")
         {
-            //ctx.drawImage(imagen_bananas, 1245, 30, 90, 90);
+            ctx.drawImage(imagen_banana, 1245, 30, 90, 90);
         }
     }
     if (tortu.existe)
@@ -869,12 +872,14 @@ function moverjugador()
                     tortu.x += Math.cos(tortu.angulo) * auto.anchoimagen;
                     tortu.y += Math.sin(tortu.angulo) * auto.altoimagen;
                 }
-                else if(auto.objeto == "banana")
+                else if(auto.objeto == "bananas")
                 {
                     auto.o = false;
                     auto.objeto = null;
                 }
+                
             }
+            console.log(auto.objeto);
             if (teclas['arrowup'] || teclas['w'] || teclas[' ']) 
             {
                 mov = true; 
