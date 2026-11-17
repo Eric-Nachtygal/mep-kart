@@ -12,6 +12,7 @@ body
         radial-gradient(circle at 12% 18%, rgba(37, 99, 235, .28), transparent 32%),
         radial-gradient(circle at 88% 76%, rgba(29, 78, 216, .2), transparent 35%),
         linear-gradient(135deg, #071426, #0b1c35 52%, #050b18);
+    z-index: -1;  
 }
 *
 {
@@ -49,6 +50,32 @@ body::before
     text-shadow:  12px 16px rgba(0, 0, 0, .5);
 }
 
+.tituloinicio
+{
+    font-size: 12rem;
+    position: fixed;
+    top: 6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    text-shadow:  12px 16px rgba(0, 0, 0, .5);
+}
+
+.inicio
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 300;
+}
+
+.inicio h2
+{
+    position: fixed;
+    top: 30rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 main
 {
     text-align: center;
@@ -61,9 +88,13 @@ main
     opacity: 100%;
     border-radius: 10px;
    
-   
 
-} 
+}
+
+.menu
+{
+    display: none;
+}
 
 button {
     font-style: italic;

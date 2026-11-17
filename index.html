@@ -11,7 +11,7 @@
     <link rel="icon" href="sprites/champi.png">
 </head>
 <body>
-    <main class="menu" aria-label="Menú principal">
+    <main class="menu" aria-label="Menú principal" id="menu">
     <audio id="audioFondo" src="menu.ogg" loop autoplay></audio>
     <h1 class="titulo"><em>MEP<span class="kart" >KART</span></em></h1>
     <div class="buttons">
@@ -26,6 +26,10 @@
         <input type="range" class="config volumen" id="volumen2" name="volumen2" min="0" max="100" value="100" hidden>
     </div>
     </main>
+    <div class="inicio" id="inicio">
+    <h1 class="tituloinicio"><em>MEP<span class="kart" >KART</span></em></h1>
+    <h2>PRESIONE CUALQUIER BOTÓN PARA INICIAR</h2>
+    </div>
 
     <script>
         const playButton = document.getElementById("play");
@@ -42,13 +46,67 @@
         const snd_selec = new Audio();
         snd_selec.src = "sonidos/menuseleccionar.ogg";
         snd_selec.preload = "auto";
-
         volumen.value = localStorage.getItem('volumen');
         document.getElementById("audioFondo").volume = localStorage.getItem("volumen") / 100;
 
         volumen2.value = localStorage.getItem('volumen2');
         snd_hover.volume = localStorage.getItem("volumen2") / 100;
         snd_selec.volume = localStorage.getItem("volumen2") / 100;
+
+
+        const ref = document.referrer;
+
+        if (!ref)
+        {
+            //entro desde el link
+            document.addEventListener("keydown",() =>
+            {
+                snd_selec.play();
+                document.getElementById("inicio").style.display = "none";
+                document.getElementById("menu").style.display = "flex";
+                document.getElementById("audioFondo").play();
+            });
+
+            document.addEventListener("click",() =>
+            {
+                snd_selec.play();
+                document.getElementById("inicio").style.display = "none";
+                document.getElementById("menu").style.display = "flex";
+                document.getElementById("audioFondo").play();
+            });
+        }
+        else 
+        {
+            const refHost = new URL(ref).hostname;
+
+            if (refHost === location.hostname) 
+            {
+                //Viene de juego/contrarreloj
+                document.getElementById("inicio").style.display = "none";
+                document.getElementById("menu").style.display = "flex";
+            } 
+            else
+            {
+                //entro desde el link
+                document.addEventListener("keydown",() =>
+                {
+                    snd_selec.play();
+                    document.getElementById("inicio").style.display = "none";
+                    document.getElementById("menu").style.display = "flex";
+                    document.getElementById("audioFondo").play();
+                });
+
+                document.addEventListener("click",() =>
+                {
+                    snd_selec.play();
+                    document.getElementById("inicio").style.display = "none";
+                    document.getElementById("menu").style.display = "flex";
+                    document.getElementById("audioFondo").play();
+                });
+            }
+        }
+
+        
 
         playButton.addEventListener("click", () => {
             playButton.hidden = true;
@@ -112,24 +170,7 @@
         });
 
         });
-
-        function desbloquearAudio()
-        {
-        const audio = document.getElementById("audioFondo");
-
-            try
-            {
-                audio.muted = false;
-                audio.play().catch(()=>{});
-            } catch(e){}
-        }
-
-        window.addEventListener("DOMContentLoaded", () =>
-        {
-            desbloquearAudio();
-        });
-
-        document.addEventListener('pointerdown', desbloquearAudio, { once: true });
+        //document.addEventListener('pointerdown', desbloquearAudio, { once: true });
 
         
     </script>
