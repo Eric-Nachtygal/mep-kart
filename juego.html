@@ -616,6 +616,20 @@ function colisiones(porcion)
             tortu.existe = false;
         }
     }
+    for (let i = 0; i < mapa1_obstaculos.length; i++)
+    {
+        if (tortu.existe)
+        {
+            let auxtortuga2 = (mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho > hit_tortuga_izq && mapa1_obstaculos[i].x < hit_tortuga_der && mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura > hit_tortuga_arriba && mapa1_obstaculos[i].y < hit_tortuga_abajo);
+            if (auxtortuga2)
+            {
+                tortu.x = null;
+                tortu.y = null;
+                tortu.angulo = null;
+                tortu.existe = false;
+            }
+        }
+    }
     return colisiones;
 }
 function dibujar()
