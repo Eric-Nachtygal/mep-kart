@@ -556,15 +556,7 @@ function colisiones(porcion)
         if (autos[i].id != porcion.id && autos[i].vuelta < 5)
         {
             let auxauto = autos[i].x + autos[i].ancho > hitbox_izq && autos[i].x < hitbox_der && autos[i].y + autos[i].altura > hitbox_arriba && autos[i].y < hitbox_abajo;
-            let auxtortuga = tortu.x + tortu.ancho > hitbox_izq && tortu.x < hitbox_der && tortu.y + tortu.altura > hitbox_arriba && tortu.y < hitbox_abajo;
-            if (auxtortuga)
-            {
-                autos[i].velocidad = 0;
-                tortu.x = null;
-                tortu.y = null;
-                tortu.angulo = null;
-                tortu.existe = false;
-            }
+            
             if (auxauto)
             {
                 //donde hay mas colision
@@ -607,10 +599,25 @@ function colisiones(porcion)
 
     porcion.x -= Math.cos(porcion.angulo) * porcion.velocidad;
     porcion.y -= Math.sin(porcion.angulo) * porcion.velocidad;
-    
+    if (tortu.existe)
+    {
+        let auxtortuga = (hit_tortuga_der > hitbox_izq && hit_tortuga_izq < hitbox_der && hit_tortuga_abajo > hitbox_arriba && hit_tortuga_arriba < hitbox_abajo);
+        if (auxtortuga)
+        {
+            porcion.velocidadmax = 0;
+            porcion.velocidad = 0;
+            setTimeout(() => 
+            { 
+                porcion.velocidadmax = 4.75; 
+            }, 1000);
+            tortu.x = null;
+            tortu.y = null;
+            tortu.angulo = null;
+            tortu.existe = false;
+        }
+    }
     return colisiones;
 }
-
 function dibujar()
 {
     for (let i=0; i<autos.length; i++)
@@ -752,6 +759,7 @@ function dibujar()
         }
         else if (auto.objeto == "tortuga")
         {
+
             ctx.drawImage(imagen_tortuga, 1245, 30, 90, 90);
         }
         else if (auto.objeto == "bananas")
