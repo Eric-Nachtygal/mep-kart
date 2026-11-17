@@ -8,8 +8,6 @@ Agregar menu de fin de carrera
 Agregar menu de fin de contrarreloj
 Agregar tuto en el index
 Mini pantalla de carga en el index (basicamente, el titulo un poco mas grande, un boton de iniciar, y al hacer click se reproduce el audio porque si no se bugea)
-Volumen sonido (musica ya está hecho)
-
 
 HECHO:
 Pasar sistema de colisiones
@@ -25,3 +23,4 @@ Agregar sistema de contar tiempo
 Agregar musica
 Modo contrarreloj
 Agregar pausa
+Volumen sonido (musica ya está hecho)
