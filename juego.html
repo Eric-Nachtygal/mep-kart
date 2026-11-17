@@ -780,10 +780,12 @@ setInterval(function()
         if (tiempo.principio > 0 && tiempo.principio < 4)
         {
             snd_principio1.play();
+            snd_principio1.volume = (localStorage.getItem("volumen2") / 100) * 3;
         }
         else if (tiempo.principio == 0)
         {
             snd_principio2.play();
+            snd_principio2.volume = (localStorage.getItem("volumen2") / 100) * 3;
         }
     }
     //console.log(tiempo);
@@ -1270,6 +1272,7 @@ Promise.all(promesasCarga).then(() =>
                 musica.play();
             }
             const snd_selecaux = new Audio(snd_selec.src);
+            snd_selecaux.volume = localStorage.getItem("volumen2") / 100;
             snd_selecaux.play();
         }
 
@@ -1288,24 +1291,28 @@ Promise.all(promesasCarga).then(() =>
         menupausa.close();
         musica.play();
         const snd_selecaux = new Audio(snd_selec.src);
+        snd_selecaux.volume = localStorage.getItem("volumen2") / 100;
         snd_selecaux.play();
     };
 
     menucontinuar.addEventListener("mouseenter", ()=>
     {
         const snd_hoveraux = new Audio(snd_hover.src);
+        snd_hoveraux.volume = localStorage.getItem("volumen2") / 100;
         snd_hoveraux.play();
     });
 
     menusalir.addEventListener("mouseenter", ()=>
     {
         const snd_hoveraux = new Audio(snd_hover.src);
+        snd_hoveraux.volume = localStorage.getItem("volumen2") / 100;
         snd_hoveraux.play();
     });
 
     menusalir.onclick = function()
     {
         const snd_selecaux = new Audio(snd_selec.src);
+        snd_selecaux.volume = localStorage.getItem("volumen2") / 100;
         snd_selecaux.play();
         window.location.href = "index.html";
     };

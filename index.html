@@ -21,7 +21,9 @@
         <button id="contrarreloj" class="mode-button" type="button" onclick="location.href='contrarreloj.html'" hidden>Contrarreloj</button>
         <button id="volver" class="volver" type="button" hidden>Volver</button>
         <label for="volumen" hidden class="config">Volumen de Música</label>
-        <input type="range" class="config" id="volumen" name="volumen" min="0" max="100" value="100" hidden>
+        <input type="range" class="config volumen" id="volumen" name="volumen" min="0" max="100" value="100" hidden>
+        <label for="volumen2" hidden class="config">Volumen del Sonido</label>
+        <input type="range" class="config volumen" id="volumen2" name="volumen2" min="0" max="100" value="100" hidden>
     </div>
     </main>
 
@@ -32,6 +34,7 @@
         const backButton = document.getElementById("volver");
         const configbotones = document.querySelectorAll(".config");
         const volumen = document.getElementById("volumen");
+        const volumen2 = document.getElementById("volumen2");
         const botones = document.querySelectorAll('button');
         const snd_hover = new Audio();
         snd_hover.src = "sonidos/menuhover.ogg";
@@ -42,6 +45,10 @@
 
         volumen.value = localStorage.getItem('volumen');
         document.getElementById("audioFondo").volume = localStorage.getItem("volumen") / 100;
+
+        volumen2.value = localStorage.getItem('volumen2');
+        snd_hover.volume = localStorage.getItem("volumen2") / 100;
+        snd_selec.volume = localStorage.getItem("volumen2") / 100;
 
         playButton.addEventListener("click", () => {
             playButton.hidden = true;
@@ -78,12 +85,21 @@
             //console.log(volumen.value);
         });
 
+        volumen2.addEventListener("input", () =>
+        {
+            localStorage.setItem('volumen2', volumen2.value);
+            snd_hover.volume = localStorage.getItem("volumen2") / 100;
+            snd_selec.volume = localStorage.getItem("volumen2") / 100;
+            //console.log(volumen2.value);
+        });
+
         botones.forEach(boton => {
         
         //hover
         boton.addEventListener("mouseenter", () =>
         {
             const snd_hoveraux = new Audio(snd_hover.src);
+            snd_hoveraux.volume = localStorage.getItem("volumen2") / 100;
             snd_hoveraux.play();
         });
 
@@ -91,6 +107,7 @@
         boton.addEventListener("click", () =>
         {
             const snd_selecaux = new Audio(snd_selec.src);
+            snd_selecaux.volume = localStorage.getItem("volumen2") / 100;
             snd_selecaux.play();
         });
 
