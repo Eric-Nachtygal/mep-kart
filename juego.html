@@ -267,7 +267,7 @@ let bot6 = {x: 1000, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen:
 let bot7 = {x: 1000, y: 617, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 3.14, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 0, imagen:imagenmoto, camino:0, id:8, puesto:8, objeto: null, o: false, boost: false};
 const obj = ["champi", "tortuga", "bananas"];
 let autos = [auto,bot1,bot2,bot3,bot4,bot5,bot6,bot7];
-let tortu = {x: null, y: null, ancho: 25, altura: 10, anchoimagen: 10, altoimagen: 10,  velocidad: 10, angulo:null, imagen: imagen_tortuga2, existe: false, contador: 0 };
+let tortu = {x: null, y: null, ancho: 20, altura: 20, anchoimagen: 20, altoimagen: 20,  velocidad: 10, angulo:null, imagen: imagen_tortuga2, existe: false, contador: 0 };
 let caja = {x: 400, y: 577, ancho: 25, altura: 15, anchoimagen: 40, altoimagen: 25, imagen: imagencaja, activo: true};
 let objetos = [caja];
 
@@ -408,7 +408,10 @@ function colisiones(porcion)
     let hitbox_der = (porcion.x + porcion.ancho) - 2;
     let hitbox_abajo = (porcion.y + porcion.altura) -3;
     let hitbox_arriba = hitbox_abajo - 9;
-
+    let hit_tortuga_izq = tortu.x + 4;
+    let hit_tortuga_der = (tortu.x + tortu.ancho) - 2;
+    let hit_tortuga_abajo = (tortu.y + tortu.altura) - 3;
+    let hit_tortuga_arriba = hit_tortuga_abajo - 9;
     if (porcion.y <= 17)
     {
         porcion.y = 17;
@@ -460,6 +463,7 @@ function colisiones(porcion)
             return;
         }
     });
+
     for (let i = 0; i < mapa1_checkpoints.length; i++)
     {
         let auxcheckpoint = mapa1_checkpoints[i].x + mapa1_checkpoints[i].ancho > hitbox_izq && mapa1_checkpoints[i].x < hitbox_der && mapa1_checkpoints[i].y + mapa1_checkpoints[i].altura > hitbox_arriba && mapa1_checkpoints[i].y < hitbox_abajo;
@@ -549,6 +553,15 @@ function colisiones(porcion)
         if (autos[i].id != porcion.id && autos[i].vuelta < 5)
         {
             let auxauto = autos[i].x + autos[i].ancho > hitbox_izq && autos[i].x < hitbox_der && autos[i].y + autos[i].altura > hitbox_arriba && autos[i].y < hitbox_abajo;
+            let auxtortuga = tortu.x + tortu.ancho > hitbox_izq && tortu.x < hitbox_der && tortu.y + tortu.altura > hitbox_arriba && tortu.y < hitbox_abajo;
+            if (auxtortuga)
+            {
+                autos[i].velocidad = 0;
+                tortu.x = null;
+                tortu.y = null;
+                tortu.angulo = null;
+                tortu.existe = false;
+            }
             if (auxauto)
             {
                 //donde hay mas colision
@@ -743,6 +756,10 @@ function dibujar()
             //ctx.drawImage(imagen_bananas, 1245, 30, 90, 90);
         }
     }
+    if (tortu.existe)
+    { 
+        ctx.drawImage(tortu.imagen, tortu.x, tortu.y, tortu.anchoimagen, tortu.altoimagen);
+    }
     //contador de checkpoints solo para probar, despues se comenta para la expo
     /*ctx.font = '20px Bebas Neue';
     ctx.strokeText("Checkpoint" + auto.checkpoint, 50, 110);
@@ -847,6 +864,8 @@ function moverjugador()
                     tortu.y = auto.y;
                     tortu.angulo = auto.angulo;
                     tortu.existe = true;
+                    tortu.x += Math.cos(tortu.angulo) * auto.anchoimagen;
+                    tortu.y += Math.sin(tortu.angulo) * auto.altoimagen;
                 }
                 else if(auto.objeto == "banana")
                 {
@@ -1082,7 +1101,11 @@ function moverjugador()
 
 
         
-        
+        if (tortu.existe)
+        {
+            tortu.x += Math.cos(tortu.angulo) * tortu.velocidad;
+            tortu.y += Math.sin(tortu.angulo) * tortu.velocidad;
+        }
 
         auto.x += Math.cos(auto.angulo) * auto.velocidad;
         auto.y += Math.sin(auto.angulo) * auto.velocidad;
