@@ -87,6 +87,10 @@
         <button id="continuar">Continuar</button>
         <button id="salir">Salir</button>
     </dialog>
+    <dialog id="fin">
+        <button id="reiniciar">Reiniciar</button>
+        <button id="salir2">Volver al Menú</button>
+    </dialog>
 </body>
 </html>
 
@@ -102,6 +106,9 @@ const fondo_ctx = fondo.getContext("2d", { willReadFrequently: false });
 const menupausa = document.getElementById("pausa");
 const menucontinuar = document.getElementById("continuar");
 const menusalir = document.getElementById("salir");
+const fin = document.getElementById("fin");
+const finreiniciar = document.getElementById("reiniciar");
+const finsalir = document.getElementById("salir2");
 const musica = document.getElementById("audioFondo");
 const snd_hover = new Audio();
 snd_hover.src = "sonidos/menuhover.ogg";
@@ -271,7 +278,7 @@ let bot7 = {x: 1000, y: 617, ancho: 25, altura: 15, anchoimagen: 25, altoimagen:
 const obj = ["champi", "tortuga", "bananas"];
 let autos = [auto,bot1,bot2,bot3,bot4,bot5,bot6,bot7];
 let tortu = {x: null, y: null, ancho: 20, altura: 20, anchoimagen: 20, altoimagen: 20,  velocidad: 10, angulo:null, imagen: imagen_tortuga2, existe: false, contador: 0 };
-let caja = {x: 400, y: 577, ancho: 25, altura: 15, anchoimagen: 40, altoimagen: 25, imagen: imagencaja, activo: true};
+let caja = {x: 400, y: 577, ancho: 40, altura: 25, anchoimagen: 40, altoimagen: 25, imagen: imagencaja, activo: true};
 let objetos = [caja];
 
 let mouseapretado = false;
@@ -831,13 +838,17 @@ function moverjugador()
 
 
         //console.log(auto.pasto);
-        if (auto.vuelta == 5)
+        /*if (auto.vuelta == 5)
         {
-            if (auto.velocidad < 0)
+            if (auto.velocidad > 0)
             {
-                auto.velocidad = 0;
+                auto.velocidad -= 0.05;
             }
-        }
+            else if (auto.velocidad < 0)
+            {
+                auto.velocidad += 0.05;
+            }
+        }*/
         if (auto.vuelta < 5)
         {
             if (auto.pasto && !auto.boost)
@@ -859,7 +870,7 @@ function moverjugador()
             {
                 auto.velocidadmax = 8;
                 auto.velocidad = 8;
-                setTimeout(function() {auto.boost = false; auto.velocidadmax= 4.25;}, 3000); 
+                setTimeout(function() {auto.boost = false; auto.velocidadmax= 4.25;}, 1200); 
             }
             if(auto.o && teclas['q'])
             {
@@ -887,7 +898,7 @@ function moverjugador()
                 }
                 
             }
-            console.log(auto.objeto);
+            //console.log(auto.objeto);
             if (teclas['arrowup'] || teclas['w'] || teclas[' ']) 
             {
                 mov = true; 
@@ -1101,16 +1112,17 @@ function moverjugador()
         else
         {
             if (auto.velocidad !=0)
+            {
+                if (auto.velocidad > 0)
                 {
-                    if (auto.velocidad > 0)
-                    {
-                        auto.velocidad -= 0.05;
-                    }
-                    else
-                    {
-                        auto.velocidad += 0.05;
-                    }
+                    auto.velocidad -= 0.25;
                 }
+                else if (auto.velocidad < 0)
+                {
+                    auto.velocidad += 0.25;
+                }
+                //console.log(auto.velocidad);
+            }
         }
         
 
@@ -1180,11 +1192,11 @@ function moverbots()
                 {
                     if (autos[i].velocidad > 0)
                     {
-                        autos[i].velocidad -= 0.05;
+                        autos[i].velocidad -= 0.25;
                     }
-                    else
+                    else (autos[i].velocidad < 0)
                     {
-                        autos[i].velocidad += 0.05;
+                        autos[i].velocidad += 0.25;
                     }
                 }
             }
@@ -1218,6 +1230,12 @@ function loop()
         moverjugador();
         moverbots();
         definir_puestos();
+    }
+    if (auto.vuelta == 5 && auto.velocidad == 0)
+    {
+        document.getElementById("fin").showModal();
+        musica.pause();
+        return;
     }
     requestAnimationFrame(loop);
 }
@@ -1351,6 +1369,36 @@ Promise.all(promesasCarga).then(() =>
         snd_selecaux.volume = localStorage.getItem("volumen2") / 100;
         snd_selecaux.play();
         window.location.href = "index.html";
+    };
+
+    finsalir.addEventListener("mouseenter", ()=>
+    {
+        const snd_hoveraux = new Audio(snd_hover.src);
+        snd_hoveraux.volume = localStorage.getItem("volumen2") / 100;
+        snd_hoveraux.play();
+    });
+
+    finsalir.onclick = function()
+    {
+        const snd_selecaux = new Audio(snd_selec.src);
+        snd_selecaux.volume = localStorage.getItem("volumen2") / 100;
+        snd_selecaux.play();
+        window.location.href = "index.html";
+    };
+
+    finreiniciar.addEventListener("mouseenter", ()=>
+    {
+        const snd_hoveraux = new Audio(snd_hover.src);
+        snd_hoveraux.volume = localStorage.getItem("volumen2") / 100;
+        snd_hoveraux.play();
+    });
+
+    finreiniciar.onclick = function()
+    {
+        const snd_selecaux = new Audio(snd_selec.src);
+        snd_selecaux.volume = localStorage.getItem("volumen2") / 100;
+        snd_selecaux.play();
+        window.location.href = "juego.html";
     };
 
 </script>

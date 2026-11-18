@@ -1,4 +1,4 @@
-Sprites mapas
+Sprites mapas (pinchó)
 Agregar poderes
 Agregar nitro (descartado)
 Agregar menu de seleccion de mapa modo etc (tecnicamente hecho pero se puede agregar mas cosas)
