@@ -16,6 +16,7 @@
         margin: 0;
         box-sizing: border-box;
         image-rendering: pixelated;
+        font-family: 'Zen Dots', Arial, Helvetica, sans-serif;
     }
     canvas
     {
@@ -49,7 +50,7 @@
     {
         display: flex;
     }
-    #continuar
+    #continuar, #reiniciar
     {
         margin-top: 20%;
     }
@@ -58,9 +59,8 @@
         background: none;
         color: rgb(170, 170, 170);
         border: none;
-        max-width: 300px;
+        max-width: 350px;
         font-size: 2rem;
-        font-family: 'Zen Dots', Arial, Helvetica, sans-serif;
         transition: all 0.3s ease;
     }
 
@@ -71,12 +71,34 @@
         cursor: pointer;
     }
 
-    #salir:hover
+    #salir:hover, #salir2:hover
     {
         transform: translatey(-0.5rem);
     }
     
+    h1
+    {
+        font-size: 2rem;
+        font-weight: normal;
+        position: fixed;
+    }
 
+    #tiempo
+    {
+        top: 11rem;
+    }
+
+
+    #mensaje
+    {
+        top: 6rem;
+        font-size: 3rem;
+    }
+
+    #puesto
+    {
+        top: 14rem;
+    }
 
 </style>
 <body>
@@ -88,6 +110,9 @@
         <button id="salir">Salir</button>
     </dialog>
     <dialog id="fin">
+        <h1 id="tiempo">Tiempo total: </h1>
+        <h1 id="puesto">Puesto: </h1>
+        <h1 id="mensaje"></h1>
         <button id="reiniciar">Reiniciar</button>
         <button id="salir2">Volver al Menú</button>
     </dialog>
@@ -1282,6 +1307,20 @@ function loop()
     {
         document.getElementById("fin").showModal();
         musica.pause();
+        document.getElementById("tiempo").innerHTML = "Tiempo: " + tiempo.minutos + ":" + tiempo.segundos + ":" + tiempo.centisegundos;
+        document.getElementById("puesto").innerHTML = "Puesto: " + auto.puesto;
+        if (auto.puesto > 4)
+        {
+            document.getElementById("mensaje").innerHTML = "¡Volvé a intentarlo!";
+        }
+        else if (auto.puesto > 1)
+        {
+            document.getElementById("mensaje").innerHTML = "¡Muy bien!";
+        }
+        else
+        {
+            document.getElementById("mensaje").innerHTML = "¡Ganaste!";
+        }
         return;
     }
     requestAnimationFrame(loop);
@@ -1358,7 +1397,7 @@ Promise.all(promesasCarga).then(() =>
         
         e.preventDefault();
 
-        if ((e.key == 'Enter' || e.key == 'Escape') && tiempo.principio < 1)
+        if ((e.key == 'Enter' || e.key == 'Escape') && tiempo.principio < 1 && auto.vuelta < 5)
         {
             if (pausa == false)
             {
