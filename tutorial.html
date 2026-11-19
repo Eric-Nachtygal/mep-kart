@@ -1,11 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="estilos.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap" rel="stylesheet">
+    <title>MEPKART - Tutorial</title>
 </head>
 <body>
-    
+<button id="tuto_volver" onclick="location.href = 'index.html'">Volver</button>
+<div class="tuto_container">
+    <div class="botones_info">
+    <button onclick="cambiarinfo(3)">Información General</button>
+    <button onclick="cambiarinfo(1)">Controles de Teclado</button>
+    <button onclick="cambiarinfo(2)">Controles de Mouse</button>
+    </div>
+    <div class="tuto_info" id="info" style="display: flex;">
+        <div>
+            <h1>DE QUÉ TRATA EL JUEGO</h1>
+            <h3>MEPKART es un juego de autos de un solo jugador visto desde arriba. Hay dos modos de juego: Carrera y Contrarreloj.</h3>
+            <h3>En Carrera, tu objetivo es ganar una carrera de 5 vueltas a 7 oponentes. </h3>
+            <h3>Podrás usar objetos en tu camino si agarras una caja. Hay un hongo que te permite ir más rápido por un segundo, un caparazón que podes arrojar a tus oponentes, y una banana que hace tropezar a quién la toque.</h3>
+        </div>
+        <div class="tuto_costado">
+            <h3>Tu Auto</h3>
+            <h3>Las cajas de objetos</h3>
+        </div>
+        <div class="tuto_costado">
+            <img src="sprites/auto_jugador.png" alt="Tu Auto">
+            <img id="caja" src="sprites/caja_misteriosa.png" alt="Caja de Objetos">
+        </div>
+    </div>
+    <div class="tuto_info" id="teclado" hidden>
+        67
+    </div>
+    <div class="tuto_info" id="mouse" hidden>
+        76
+    </div>
+</div>
 </body>
 </html>
+
+<script>
+function cambiarinfo(aux)
+{
+    if (aux == 1)
+    {
+        document.getElementById("teclado").style.display = "flex";
+        document.getElementById("mouse").style.display = "none";
+        document.getElementById("info").style.display = "none";
+    }
+    else if (aux == 2)
+    {
+        document.getElementById("teclado").style.display = "none";
+        document.getElementById("mouse").style.display = "flex";
+        document.getElementById("info").style.display = "none";
+    }
+    else
+    {
+        document.getElementById("teclado").style.display = "none";
+        document.getElementById("mouse").style.display = "none";
+        document.getElementById("info").style.display = "flex";
+    }
+}
+</script>
