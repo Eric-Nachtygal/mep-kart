@@ -16,10 +16,12 @@
     <h1 class="titulo"><em>MEP<span class="kart" >KART</span></em></h1>
     <div class="buttons">
         <button id="play" class="primary" type="button">Jugar</button>
+        <button id="tutorial" class="primary" type="button" onclick="location.href = 'tutorial.html'">Tutorial</button>
         <button id="config" class="primary" type="button">Configuración</button>
         <button id="carrera" class="mode-button" type="button" onclick="location.href='juego.html'" hidden>Carrera</button>
         <button id="contrarreloj" class="mode-button" type="button" onclick="location.href='contrarreloj.html'" hidden>Contrarreloj</button>
         <button id="volver" class="volver" type="button" hidden>Volver</button>
+        <button id="acelerar" class="config" type="button" hidden></button>
         <label for="volumen" hidden class="config">Volumen de Música</label>
         <input type="range" class="config volumen" id="volumen" name="volumen" min="0" max="100" value="100" hidden>
         <label for="volumen2" hidden class="config">Volumen del Sonido</label>
@@ -34,11 +36,18 @@
     <script>
         const playButton = document.getElementById("play");
         const configButton = document.getElementById("config");
+        const tutobutton = document.getElementById("tutorial");
         const modeButtons = document.querySelectorAll(".mode-button");
         const backButton = document.getElementById("volver");
         const configbotones = document.querySelectorAll(".config");
         const volumen = document.getElementById("volumen");
         const volumen2 = document.getElementById("volumen2");
+        const acelerar = document.getElementById("acelerar");
+        acelerar.innerHTML = "Acelerar: Manual";
+        if (localStorage.getItem("acelerar") !== null && localStorage.getItem("acelerar") == "auto")
+        {
+            acelerar.innerHTML = "Acelerar: Automático";
+        }
         const botones = document.querySelectorAll('button');
         const snd_hover = new Audio();
         snd_hover.src = "sonidos/menuhover.ogg";
@@ -113,11 +122,13 @@
             modeButtons.forEach((button) => {
                 button.hidden = false;
             });
+            tutobutton.hidden = true;
             backButton.hidden = false;
             configButton.hidden = true;
         });
         configButton.addEventListener("click", () => {
             configButton.hidden = true;
+            tutobutton.hidden = true;
             playButton.hidden = true;
             backButton.hidden = false;
             configbotones.forEach((button) => {
@@ -126,6 +137,7 @@
         });
         backButton.addEventListener("click", () => {
             backButton.hidden = true;
+            tutobutton.hidden = false;
             configButton.hidden = false;
             playButton.hidden = false;
             modeButtons.forEach((button) => {
@@ -136,6 +148,20 @@
             });
         });
         
+        acelerar.addEventListener("click", () =>
+        {
+            if (localStorage.getItem("acelerar") !== null && localStorage.getItem("acelerar") == "auto")
+            {
+                acelerar.innerHTML = "Acelerar: Manual";
+                localStorage.setItem("acelerar", "manual");
+            }
+            else
+            {
+                acelerar.innerHTML = "Acelerar: Automático";
+                localStorage.setItem("acelerar", "auto");
+            }
+        });
+
         volumen.addEventListener("input", () =>
         {
             localStorage.setItem('volumen', volumen.value);
