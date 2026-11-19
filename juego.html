@@ -690,6 +690,10 @@ function colisiones(porcion)
 }
 function dibujar()
 {
+    for (let i=0; i<objetos.length; i++)
+    {
+        ctx.drawImage(objetos[i].imagen, objetos[i].x, objetos[i].y, objetos[i].anchoimagen, objetos[i].altoimagen);
+    }
     for (let i=0; i<autos.length; i++)
     {
         if (autos[i].angulo != 0)
@@ -761,10 +765,7 @@ function dibujar()
         }
     }
 
-    for (let i=0; i<objetos.length; i++)
-    {
-        ctx.drawImage(objetos[i].imagen, objetos[i].x, objetos[i].y, objetos[i].anchoimagen, objetos[i].altoimagen);
-    }
+    
     ctx.drawImage(flecha, auto.x + 3, auto.y - 25, 20, 20);
     
     
