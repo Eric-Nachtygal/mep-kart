@@ -499,22 +499,22 @@ function colisiones(porcion)
     }
     objetos.forEach(objeto => 
     {
-        
-        if (!objeto.activo)
-        {
-            setTimeout(() => {objeto.activo = true; objeto.imagen = imagencaja;}, 1000);
-        }
         let auxobjeto = objeto.x + objeto.ancho > hitbox_izq && objeto.x < hitbox_der && objeto.y + objeto.altura > hitbox_arriba && objeto.y < hitbox_abajo;
+
         if (auxobjeto && objeto.activo)
         {
             if (!porcion.o)
-            {
+            {   
                 porcion.objeto = obj[Math.floor(Math.random() * 3)];
                 porcion.o = true;
             }
             objeto.imagen = imagencaja2;
             objeto.activo = false;
             return;
+        }
+        else if (!objeto.activo && !auxobjeto)
+        {
+            setTimeout(() => {objeto.activo = true; objeto.imagen = imagencaja;}, 1000);
         }
     });
 
@@ -986,7 +986,7 @@ function moverjugador()
             //console.log(auto.objeto);
             if (acel_auto)
             {
-               mov = true; 
+                mov = true; 
                 if (auto.velocidad < auto.velocidadmax)
                 {
                     auto.velocidad += 0.25;
@@ -1149,6 +1149,27 @@ function moverjugador()
 
             if (mouseapretado)
             {
+                if (auto.pasto && !auto.boost)
+            {
+                auto.velocidadmax = 2;
+                auto.min_turbo_con = 0;
+                auto.min_turbo = 0;
+            }
+            if(auto.boost)
+            {
+                auto.velocidadmax = 8;
+                auto.velocidad = 8;
+                setTimeout(function() {auto.boost = false; auto.velocidadmax= 4.25;}, 1200); 
+            }
+            if(auto.o && teclas['q'])
+            {
+                if(auto.objeto == "champi")
+                {
+                    auto.boost = true;
+                    auto.o = false;
+                    auto.objeto = null;
+                }
+            }
                 mov = true;
                 if (!acel_auto)
                 {
@@ -1176,8 +1197,16 @@ function moverjugador()
                 {
                     if (teclas['shift'])
                     {
-                        auto.angulo += Math.sign(diferencia) * Math.abs(0.022*(auto.velocidad/2));
-                        auto.angulo_muestra = auto.angulo + 0.22*(auto.velocidad/2);
+                        if (auto.angulo > angulo_mouse)
+                        {
+                            auto.angulo += Math.sign(diferencia) * Math.abs(0.022*(auto.velocidad/2));
+                            auto.angulo_muestra = auto.angulo - 0.22*(auto.velocidad/2);
+                        }
+                        else if (auto.angulo < angulo_mouse)
+                        {
+                            auto.angulo += Math.sign(diferencia) * Math.abs(0.022*(auto.velocidad/2));
+                            auto.angulo_muestra = auto.angulo + 0.22*(auto.velocidad/2);
+                        }
                     }
                     else
                     {

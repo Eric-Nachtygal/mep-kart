@@ -959,8 +959,28 @@ function moverjugador()
 
             if (mouseapretado)
             {
+                if (auto.pasto && !auto.boost)
+            {
+                auto.velocidadmax = 2;
+                auto.min_turbo_con = 0;
+                auto.min_turbo = 0;
+            }
+            if(auto.boost)
+            {
+                auto.velocidadmax = 8;
+                auto.velocidad = 8;
+                setTimeout(function() {auto.boost = false; auto.velocidadmax= 4.25;}, 1200); 
+            }
+            if(auto.o && teclas['q'])
+            {
+                if(auto.objeto == "champi")
+                {
+                    auto.boost = true;
+                    auto.o = false;
+                    auto.objeto = null;
+                }
+            }
                 mov = true;
-                
                 if (!acel_auto)
                 {
                     if (auto.velocidad < auto.velocidadmax)
@@ -987,8 +1007,16 @@ function moverjugador()
                 {
                     if (teclas['shift'])
                     {
-                        auto.angulo += Math.sign(diferencia) * Math.abs(0.022*(auto.velocidad/2));
-                        auto.angulo_muestra = auto.angulo + 0.22*(auto.velocidad/2);
+                        if (auto.angulo > angulo_mouse)
+                        {
+                            auto.angulo += Math.sign(diferencia) * Math.abs(0.022*(auto.velocidad/2));
+                            auto.angulo_muestra = auto.angulo - 0.22*(auto.velocidad/2);
+                        }
+                        else if (auto.angulo < angulo_mouse)
+                        {
+                            auto.angulo += Math.sign(diferencia) * Math.abs(0.022*(auto.velocidad/2));
+                            auto.angulo_muestra = auto.angulo + 0.22*(auto.velocidad/2);
+                        }
                     }
                     else
                     {
