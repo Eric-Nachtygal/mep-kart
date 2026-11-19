@@ -50,7 +50,11 @@
     {
         display: flex;
     }
-    #continuar, #reiniciar
+    #continuar
+    {
+        margin-top: 15%;
+    }
+    #reiniciar
     {
         margin-top: 20%;
     }
@@ -107,6 +111,7 @@
     <audio id="audioFondo" src="cancion2.ogg" autoplay loop></audio>
     <dialog id="pausa">
         <button id="continuar">Continuar</button>
+        <button id="reiniciar2">Reiniciar</button>
         <button id="salir">Salir</button>
     </dialog>
     <dialog id="fin">
@@ -133,6 +138,7 @@ const menucontinuar = document.getElementById("continuar");
 const menusalir = document.getElementById("salir");
 const fin = document.getElementById("fin");
 const finreiniciar = document.getElementById("reiniciar");
+const finreiniciar2 = document.getElementById("reiniciar2");
 const finsalir = document.getElementById("salir2");
 const musica = document.getElementById("audioFondo");
 const snd_hover = new Audio();
@@ -1211,7 +1217,22 @@ document.addEventListener('keydown', function(e)
         const snd_selecaux = new Audio(snd_selec.src);
         snd_selecaux.volume = localStorage.getItem("volumen2") / 100;
         snd_selecaux.play();
-        window.location.href = "juego.html";
+        window.location.href = "contrarreloj.html";
+    };
+
+    finreiniciar2.addEventListener("mouseenter", ()=>
+    {
+        const snd_hoveraux = new Audio(snd_hover.src);
+        snd_hoveraux.volume = localStorage.getItem("volumen2") / 100;
+        snd_hoveraux.play();
+    });
+
+    finreiniciar2.onclick = function()
+    {
+        const snd_selecaux = new Audio(snd_selec.src);
+        snd_selecaux.volume = localStorage.getItem("volumen2") / 100;
+        snd_selecaux.play();
+        window.location.href = "contrarreloj.html";
     };
 
 </script>
