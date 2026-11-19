@@ -882,12 +882,12 @@ setInterval(function()
         if (tiempo.principio > 0 && tiempo.principio < 4)
         {
             snd_principio1.play();
-            snd_principio1.volume = (localStorage.getItem("volumen2") / 100) * 3;
+            snd_principio1.volume = (localStorage.getItem("volumen2") / 100);
         }
         else if (tiempo.principio == 0)
         {
             snd_principio2.play();
-            snd_principio2.volume = (localStorage.getItem("volumen2") / 100) * 3;
+            snd_principio2.volume = (localStorage.getItem("volumen2") / 100);
         }
     }
     //console.log(tiempo);
