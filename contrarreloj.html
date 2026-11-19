@@ -16,6 +16,7 @@
         margin: 0;
         box-sizing: border-box;
         image-rendering: pixelated;
+        font-family: 'Zen Dots', Arial, Helvetica, sans-serif;
     }
     canvas
     {
@@ -49,7 +50,7 @@
     {
         display: flex;
     }
-    #continuar
+    #continuar, #reiniciar
     {
         margin-top: 20%;
     }
@@ -58,9 +59,8 @@
         background: none;
         color: rgb(170, 170, 170);
         border: none;
-        max-width: 300px;
+        max-width: 350px;
         font-size: 2rem;
-        font-family: 'Zen Dots', Arial, Helvetica, sans-serif;
         transition: all 0.3s ease;
     }
 
@@ -71,9 +71,33 @@
         cursor: pointer;
     }
 
-    #salir:hover
+    #salir:hover, #salir2:hover
     {
         transform: translatey(-0.5rem);
+    }
+    
+    h1
+    {
+        font-size: 2rem;
+        font-weight: normal;
+        position: fixed;
+    }
+
+    #tiempo
+    {
+        top: 11rem;
+    }
+
+
+    #mensaje
+    {
+        top: 6rem;
+        font-size: 3rem;
+    }
+
+    #tiempo2
+    {
+        top: 14rem;
     }
 
 </style>
@@ -84,6 +108,13 @@
     <dialog id="pausa">
         <button id="continuar">Continuar</button>
         <button id="salir">Salir</button>
+    </dialog>
+    <dialog id="fin">
+        <h1 id="tiempo">Tiempo total: </h1>
+        <h1 id="tiempo2">Mejor Vuelta: </h1>
+        <h1 id="mensaje"></h1>
+        <button id="reiniciar">Reiniciar</button>
+        <button id="salir2">Volver al Menú</button>
     </dialog>
 </body>
 </html>
@@ -100,6 +131,9 @@ const fondo_ctx = fondo.getContext("2d", { willReadFrequently: false });
 const menupausa = document.getElementById("pausa");
 const menucontinuar = document.getElementById("continuar");
 const menusalir = document.getElementById("salir");
+const fin = document.getElementById("fin");
+const finreiniciar = document.getElementById("reiniciar");
+const finsalir = document.getElementById("salir2");
 const musica = document.getElementById("audioFondo");
 const snd_hover = new Audio();
 snd_hover.src = "sonidos/menuhover.ogg";
@@ -697,12 +731,12 @@ setInterval(function()
         if (tiempo[5].principio > 0 && tiempo[5].principio < 4)
         {
             snd_principio1.play();
-            snd_principio1.volume = (localStorage.getItem("volumen2") / 100) * 3;
+            snd_principio1.volume = (localStorage.getItem("volumen2") / 100);
         }
         else if (tiempo[5].principio == 0)
         {
             snd_principio2.play();
-            snd_principio2.volume = (localStorage.getItem("volumen2") / 100) * 3;
+            snd_principio2.volume = (localStorage.getItem("volumen2") / 100);
         }
     }
     //console.log(tiempo);
@@ -964,11 +998,11 @@ function moverjugador()
                 {
                     if (auto.velocidad > 0)
                     {
-                        auto.velocidad -= 0.05;
+                        auto.velocidad -= 0.25;
                     }
                     else
                     {
-                        auto.velocidad += 0.05;
+                        auto.velocidad += 0.25;
                     }
                 }
         }
@@ -996,11 +1030,51 @@ function loop()
             colisiones(autos[i]);
         }
         moverjugador();
+        if (auto.vuelta == 5 && auto.velocidad == 0)
+        {
+            document.getElementById("fin").showModal();
+            musica.pause();
+            document.getElementById("tiempo").innerHTML = "Tiempo Total: " + tiempo[5].minutos + ":" + tiempo[5].segundos + ":" + tiempo[5].centisegundos;
+            let mejorvuelta = 0;
+            for (let i= 1; i < 5; i++)
+            {
+                if (convertirTiempo(tiempo[i]) < convertirTiempo(tiempo[mejorvuelta]))
+                {
+                    mejorvuelta = i;
+                }
+            }
+            document.getElementById("tiempo2").innerHTML = "Mejor Vuelta: " + tiempo[mejorvuelta].minutos + ":" + tiempo[mejorvuelta].segundos + ":" + tiempo[mejorvuelta].centisegundos;
+            let record;
+            if (localStorage.getItem("record") !== null)
+            {
+                record = JSON.parse(localStorage.getItem("record"));
+            }
+            else
+            {
+                record = {minutos: 999, segundos: 999, centisegundos: 999};
+            }
+                
+            if (convertirTiempo(tiempo[5]) < convertirTiempo(record))
+            {
+                localStorage.setItem('record', JSON.stringify(tiempo[5]));
+                document.getElementById("mensaje").innerHTML = "¡Nuevo Record!";
+            }
+            else
+            {
+                document.getElementById("mensaje").innerHTML = "Record: " + record.minutos + ":" + record.minutos + ":" + record.centisegundos;
+            }
+            return;
+        }
     }
     requestAnimationFrame(loop);
 }
 
-
+function convertirTiempo(aux) 
+{
+    return aux.minutos * 6000 +
+           aux.segundos * 100 +
+           aux.centisegundos;
+}
 
 Promise.all(promesasCarga).then(() => 
 {
@@ -1083,6 +1157,36 @@ document.addEventListener('keydown', function(e)
         snd_selecaux.volume = localStorage.getItem("volumen2") / 100;
         snd_selecaux.play();
         window.location.href = "index.html";
+    };
+
+    finsalir.addEventListener("mouseenter", ()=>
+    {
+        const snd_hoveraux = new Audio(snd_hover.src);
+        snd_hoveraux.volume = localStorage.getItem("volumen2") / 100;
+        snd_hoveraux.play();
+    });
+
+    finsalir.onclick = function()
+    {
+        const snd_selecaux = new Audio(snd_selec.src);
+        snd_selecaux.volume = localStorage.getItem("volumen2") / 100;
+        snd_selecaux.play();
+        window.location.href = "index.html";
+    };
+
+    finreiniciar.addEventListener("mouseenter", ()=>
+    {
+        const snd_hoveraux = new Audio(snd_hover.src);
+        snd_hoveraux.volume = localStorage.getItem("volumen2") / 100;
+        snd_hoveraux.play();
+    });
+
+    finreiniciar.onclick = function()
+    {
+        const snd_selecaux = new Audio(snd_selec.src);
+        snd_selecaux.volume = localStorage.getItem("volumen2") / 100;
+        snd_selecaux.play();
+        window.location.href = "juego.html";
     };
 
 </script>
