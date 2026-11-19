@@ -124,6 +124,8 @@ const imagencaja = new Image();
 imagencaja.src = 'sprites/caja_misteriosa.png';
 const imagencaja2 = new Image();
 imagencaja2.src = 'sprites/caja_misteriosa_inactiva.png';
+const imagen_champi = new Image();
+imagen_champi.src = 'sprites/champi.png';
 
 const snd_principio1 = new Audio();
 snd_principio1.src = "sonidos/principio1.ogg";
@@ -602,11 +604,11 @@ function dibujar()
         ctx.fillStyle = "rgba(106, 255, 254, 0.3)";
         if (auto.vuelta > 4)
         {
-            ctx.fillRect(40, 60, 270, 90);
+            ctx.fillRect(40, 30, 270, 90);
         }
         else
         {
-            ctx.fillRect(40, 60, 180, 90);
+            ctx.fillRect(40, 30, 180, 90);
         }
         ctx.fillStyle = "rgb(255, 255, 255)";
         ctx.strokeStyle = "rgb(0, 0, 0)";
@@ -614,31 +616,42 @@ function dibujar()
         ctx.font = '20px Zen Dots';
         if (auto.vuelta < 4)
         {
-            ctx.strokeText("Vuelta " + (auto.vuelta + 1), 50, 80);
-            ctx.fillText("Vuelta " + (auto.vuelta + 1), 50, 80);
+            ctx.strokeText("Vuelta " + (auto.vuelta + 1), 50, 50);
+            ctx.fillText("Vuelta " + (auto.vuelta + 1), 50, 50);
         }
         else if (auto.vuelta == 4)
         {
-            ctx.strokeText("Última Vuelta", 50, 80);
-            ctx.fillText("Última Vuelta", 50, 80);
+            ctx.strokeText("Última Vuelta", 50, 50);
+            ctx.fillText("Última Vuelta", 50, 50);
         }
         else
         {
-            ctx.strokeText("Carrera Completada", 50, 80);
-            ctx.fillText("Carrera Completada", 50, 80);
+            ctx.strokeText("Carrera Completada", 50, 50);
+            ctx.fillText("Carrera Completada", 50, 50);
         }
-        ctx.strokeText(tiempo[auto.vuelta].minutos + ":" + tiempo[auto.vuelta].segundos + ":" + tiempo[auto.vuelta].centisegundos, 50, 110);
-        ctx.fillText(tiempo[auto.vuelta].minutos + ":" + tiempo[auto.vuelta].segundos + ":" + tiempo[auto.vuelta].centisegundos, 50, 110);
+        ctx.strokeText(tiempo[auto.vuelta].minutos + ":" + tiempo[auto.vuelta].segundos + ":" + tiempo[auto.vuelta].centisegundos, 50, 80);
+        ctx.fillText(tiempo[auto.vuelta].minutos + ":" + tiempo[auto.vuelta].segundos + ":" + tiempo[auto.vuelta].centisegundos, 50, 80);
 
         ctx.font = '15px Zen Dots';
-        ctx.strokeText("Total: " + tiempo[5].minutos + ":" + tiempo[5].segundos + ":" + tiempo[5].centisegundos, 50, 140);
-        ctx.fillText("Total: " + tiempo[5].minutos + ":" + tiempo[5].segundos + ":" + tiempo[5].centisegundos, 50, 140);
+        ctx.strokeText("Total: " + tiempo[5].minutos + ":" + tiempo[5].segundos + ":" + tiempo[5].centisegundos, 50, 110);
+        ctx.fillText("Total: " + tiempo[5].minutos + ":" + tiempo[5].segundos + ":" + tiempo[5].centisegundos, 50, 110);
+        ctx.fillStyle = "rgba(106, 255, 254, 0.3)";
+        ctx.fillRect(1245, 30, 90, 90);
+        ctx.strokeRect(1245, 30, 90, 90);
+        }
+        if (auto.objeto != null)
+        {
+            if (auto.objeto == "champi")
+            {
+                ctx.drawImage(imagen_champi, 1245, 30, 90, 90);
+            }
+        }
     }
     //contador de checkpoints solo para probar, despues se comenta para la expo
     /*ctx.font = '20px Bebas Neue';
     ctx.strokeText("Checkpoint" + auto.checkpoint, 50, 110);
     ctx.fillText("Checkpoint " + auto.checkpoint, 50, 110);*/
-}
+
 
 
 setInterval(function() 
@@ -726,7 +739,7 @@ function moverjugador()
             {
                 auto.velocidadmax = 8;
                 auto.velocidad = 8;
-                setTimeout(function() {auto.boost = false; auto.velocidadmax= 4.25;}, 3000); 
+                setTimeout(function() {auto.boost = false; auto.velocidadmax= 4.25;}, 1200); 
             }
             //console.log(auto.objeto);
             if(auto.o && auto.objeto == "champi" && teclas['q'])
