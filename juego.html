@@ -1363,12 +1363,15 @@ function definir_puestos()
 
     for (let i= 0; i < autos.length; i++)
     {
-        for (let j=0; j < distancias.length; j++)
+        if (autos[i].vuelta < 5)
         {
-            if (distancias[j].auto == i)
+            for (let j=0; j < distancias.length; j++)
             {
-                autos[i].puesto = j + 1;
-                break;
+                if (distancias[j].auto == i)
+                {
+                    autos[i].puesto = j + 1;
+                    break;
+                }
             }
         }
     }
