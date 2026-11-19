@@ -1197,8 +1197,16 @@ function moverjugador()
                 {
                     if (teclas['shift'])
                     {
-                        auto.angulo += Math.sign(diferencia) * Math.abs(0.022*(auto.velocidad/2));
-                        auto.angulo_muestra = auto.angulo + 0.22*(auto.velocidad/2);
+                        if (auto.angulo>angulo_mouse)
+                        {
+                            auto.angulo += Math.sign(diferencia) * Math.abs(0.022*(auto.velocidad/2));
+                            auto.angulo_muestra = auto.angulo - 0.22*(auto.velocidad/2);
+                        }
+                        else if (auto.angulo<angulo_mouse)
+                        {
+                            auto.angulo += Math.sign(diferencia) * Math.abs(0.022*(auto.velocidad/2));
+                            auto.angulo_muestra = auto.angulo + 0.22*(auto.velocidad/2);
+                        }
                     }
                     else
                     {
