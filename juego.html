@@ -493,22 +493,22 @@ function colisiones(porcion)
     }
     objetos.forEach(objeto => 
     {
-        
-        if (!objeto.activo)
-        {
-            setTimeout(() => {objeto.activo = true; objeto.imagen = imagencaja;}, 1000);
-        }
         let auxobjeto = objeto.x + objeto.ancho > hitbox_izq && objeto.x < hitbox_der && objeto.y + objeto.altura > hitbox_arriba && objeto.y < hitbox_abajo;
+
         if (auxobjeto && objeto.activo)
         {
             if (!porcion.o)
-            {
+            {   
                 porcion.objeto = obj[Math.floor(Math.random() * 3)];
                 porcion.o = true;
             }
             objeto.imagen = imagencaja2;
             objeto.activo = false;
             return;
+        }
+        else if (!objeto.activo && !auxobjeto)
+        {
+            setTimeout(() => {objeto.activo = true; objeto.imagen = imagencaja;}, 1000);
         }
     });
 
