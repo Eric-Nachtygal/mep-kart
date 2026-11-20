@@ -10,12 +10,13 @@
     <title>MEPKART - Tutorial</title>
 </head>
 <body>
+<audio id="audioFondo" src="menu.ogg" loop autoplay></audio>
 <button id="tuto_volver" onclick="location.href = 'index.html'">Volver</button>
 <div class="tuto_container">
     <div class="botones_info">
-    <button onclick="cambiarinfo(3)">Información General</button>
-    <button onclick="cambiarinfo(1)">Controles de Teclado</button>
-    <button onclick="cambiarinfo(2)">Controles de Mouse</button>
+    <button id="botoninfo" onclick="cambiarinfo(3)" class="seleccionado">Información General</button>
+    <button id="botonteclado" onclick="cambiarinfo(1)">Controles de Teclado</button>
+    <button id="botonmouse" onclick="cambiarinfo(2)">Controles de Mouse</button>
     </div>
     <div class="tuto_info" id="info" style="display: flex;">
         <div>
@@ -78,25 +79,65 @@
 </html>
 
 <script>
+
+document.getElementById("audioFondo").volume = localStorage.getItem("volumen") / 100;
+
 function cambiarinfo(aux)
 {
     if (aux == 1)
     {
         document.getElementById("teclado").style.display = "flex";
+        document.getElementById("botonteclado").classList.add('seleccionado');
         document.getElementById("mouse").style.display = "none";
+        document.getElementById("botonmouse").classList.remove('seleccionado');
         document.getElementById("info").style.display = "none";
+        document.getElementById("botoninfo").classList.remove('seleccionado');
     }
     else if (aux == 2)
     {
         document.getElementById("teclado").style.display = "none";
+        document.getElementById("botonteclado").classList.remove('seleccionado');
         document.getElementById("mouse").style.display = "flex";
+        document.getElementById("botonmouse").classList.add('seleccionado');
         document.getElementById("info").style.display = "none";
+        document.getElementById("botoninfo").classList.remove('seleccionado');
     }
     else
     {
         document.getElementById("teclado").style.display = "none";
+        document.getElementById("botonteclado").classList.remove('seleccionado');
         document.getElementById("mouse").style.display = "none";
+        document.getElementById("botonmouse").classList.remove('seleccionado');
         document.getElementById("info").style.display = "flex";
+        document.getElementById("botoninfo").classList.add('seleccionado');
     }
 }
+
+const botones = document.querySelectorAll('button');
+const snd_hover = new Audio();
+snd_hover.src = "sonidos/menuhover.ogg";
+snd_hover.preload = "auto";
+const snd_selec = new Audio();
+snd_selec.src = "sonidos/menuseleccionar.ogg";
+snd_selec.preload = "auto";
+
+botones.forEach(boton => {
+        
+        //hover
+        boton.addEventListener("mouseenter", () =>
+        {
+            const snd_hoveraux = new Audio(snd_hover.src);
+            snd_hoveraux.volume = localStorage.getItem("volumen2") / 100;
+            snd_hoveraux.play();
+        });
+
+        //click
+        boton.addEventListener("click", () =>
+        {
+            const snd_selecaux = new Audio(snd_selec.src);
+            snd_selecaux.volume = localStorage.getItem("volumen2") / 100;
+            snd_selecaux.play();
+        });
+
+        });
 </script>
