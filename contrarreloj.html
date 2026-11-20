@@ -274,8 +274,9 @@ let auto = {x: 880, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 
 const obj = ["champi", "tortuga", "bananas"];
 let autos = [auto];
 
-let caja = {x: 400, y: 577, ancho: 25, altura: 15, anchoimagen: 40, altoimagen: 25, imagen: imagencaja, activo: true};
-let objetos = [caja];
+let caja = {x: 400, y: 585, ancho: 40, altura: 25, anchoimagen: 40, altoimagen: 25, imagen: imagencaja, activo: true};
+let caja2 = {x: 900, y: 100, ancho: 40, altura: 25, anchoimagen: 40, altoimagen: 25, imagen: imagencaja, activo: true};
+let objetos = [caja, caja2];
 
 let mouseapretado = false;
 let teclas = {};
@@ -842,9 +843,21 @@ function moverjugador()
                 auto.o = false;
                 auto.objeto = null;
             }
+            canvas.addEventListener("mousedown", function (e) 
+            {
+                if (auto.o && e.button == 1)
+                {
+                    if(auto.objeto == "champi")
+                    {
+                        auto.boost = true;
+                        auto.o = false;
+                        auto.objeto = null;
+                    }
+                }
+            });
             if (acel_auto)
             {
-               mov = true; 
+                mov = true; 
                 if (auto.velocidad < auto.velocidadmax)
                 {
                     auto.velocidad += 0.25;

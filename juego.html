@@ -1256,15 +1256,6 @@ function moverjugador()
                 auto.velocidad = 8;
                 setTimeout(function() {auto.boost = false; auto.velocidadmax= 4.25;}, 1200); 
             }
-            if(auto.o && teclas['q'])
-            {
-                if(auto.objeto == "champi")
-                {
-                    auto.boost = true;
-                    auto.o = false;
-                    auto.objeto = null;
-                }
-            }
                 mov = true;
                 if (!acel_auto)
                 {
