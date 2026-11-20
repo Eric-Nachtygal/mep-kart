@@ -347,8 +347,8 @@ let autos = [auto,bot1,bot2,bot3,bot4,bot5,bot6,bot7];
 let tortu = {x: null, y: null, ancho: 20, altura: 20, anchoimagen: 20, altoimagen: 20, velocidad: 10, angulo: null, imagen: imagen_tortuga2, existe: false, contador: 0 };
 let banana = {x: null, y: null, ancho: 20, altura: 20, anchoimagen: 20, altoimagen: 20, imagen: imagen_banana, existe: false, contador: 0 };
 
-let caja = {x: 400, y: 585, ancho: 40, altura: 25, anchoimagen: 40, altoimagen: 25, imagen: imagencaja, activo: true};
-let caja2 = {x: 900, y: 100, ancho: 40, altura: 25, anchoimagen: 40, altoimagen: 25, imagen: imagencaja, activo: true};
+let caja = {x: 400, y: 585, ancho: 21.25, altura: 25, anchoimagen: 40, altoimagen: 25, imagen: imagencaja, activo: true};
+let caja2 = {x: 900, y: 100, ancho: 21.25, altura: 25, anchoimagen: 40, altoimagen: 25, imagen: imagencaja, activo: true};
 let objetos = [caja, caja2];
 
 let mouseapretado = false;
@@ -749,7 +749,8 @@ function dibujar()
 {
     for (let i=0; i<objetos.length; i++)
     {
-        ctx.drawImage(objetos[i].imagen, objetos[i].x, objetos[i].y, objetos[i].anchoimagen, objetos[i].altoimagen);
+        ctx.drawImage(objetos[i].imagen, objetos[i].x - objetos[i].anchoimagen / 4, objetos[i].y, objetos[i].anchoimagen, objetos[i].altoimagen);
+
     }
     for (let i=0; i<autos.length; i++)
     {
