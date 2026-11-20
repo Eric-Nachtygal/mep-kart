@@ -1,8 +1,7 @@
 Sprites mapas (pinchó)
 Agregar nitro (descartado)
-Agregar menu de seleccion de mapa modo etc (tecnicamente hecho pero se puede agregar mas cosas)
 Agregar sonido
-Agregar cuenta atras
+
 
 HECHO:
 Pasar sistema de colisiones
@@ -24,3 +23,5 @@ Agregar menu de fin de carrera
 Agregar menu de fin de contrarreloj
 Agregar tuto en el index
 Agregar poderes
+Agregar cuenta atras
+Agregar menu de seleccion de mapa modo etc
