@@ -276,7 +276,7 @@ let autos = [auto];
 
 let caja = {x: 400, y: 585, ancho: 21.25, altura: 25, anchoimagen: 40, altoimagen: 25, imagen: imagencaja, activo: true};
 let caja2 = {x: 900, y: 100, ancho: 21.25, altura: 25, anchoimagen: 40, altoimagen: 25, imagen: imagencaja, activo: true};
-let objetos = [caja , caja2];
+let objetos = [caja, caja2];
 
 let mouseapretado = false;
 let teclas = {};
@@ -432,7 +432,7 @@ function colisiones(porcion)
         {
             if (!porcion.o)
             {   
-                porcion.objeto = obj[Math.floor(Math.random() * 3)];
+                porcion.objeto = 1;
                 porcion.o = true;
                 if (porcion.id == 1)
                 {
