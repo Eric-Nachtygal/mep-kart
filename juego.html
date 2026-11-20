@@ -476,6 +476,7 @@ function posicionmouse(e)
     mousey = (e.clientY) * (canvas.height / canvas.clientHeight);
 }
 
+let caja_aux = 0;
 function colisiones(porcion)
 {
     porcion.x += Math.cos(porcion.angulo) * porcion.velocidad;
@@ -533,6 +534,7 @@ function colisiones(porcion)
 
         if (auxobjeto && objeto.activo)
         {
+            caja_aux = 32;
             if (!porcion.o)
             {   
                 porcion.objeto = obj[Math.floor(Math.random() * 3)];
@@ -548,7 +550,24 @@ function colisiones(porcion)
         }
         else if (!objeto.activo && !auxobjeto)
         {
-            setTimeout(() => {objeto.activo = true; objeto.imagen = imagencaja;}, 1000);
+            setTimeout(() => 
+            {
+                // al cumplirse el segundo, se fija si algún auto sigue encima
+                let ocupada = autos.some(a =>
+                {
+                    let izq = a.x + 4;
+                    let der = a.x + a.ancho - 2;
+                    let abajo = a.y + a.altura - 3;
+                    let arriba = abajo - 9;
+                    return objeto.x + objeto.ancho > izq && objeto.x < der && objeto.y + objeto.altura > arriba && objeto.y < abajo;
+                });
+
+                if (!ocupada)
+                {
+                    objeto.activo = true; 
+                    objeto.imagen = imagencaja;
+                }
+            }, 1000);
         }
     });
 
