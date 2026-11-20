@@ -345,7 +345,7 @@ let bot7 = {x: 1000, y: 617, ancho: 25, altura: 15, anchoimagen: 25, altoimagen:
 const obj = ["champi", "tortuga", "bananas"];
 let autos = [auto,bot1,bot2,bot3,bot4,bot5,bot6,bot7];
 let tortu = {x: null, y: null, ancho: 20, altura: 20, anchoimagen: 20, altoimagen: 20, velocidad: 10, angulo: null, imagen: imagen_tortuga2, existe: false, contador: 0 };
-let banana = {x: null, y: null, ancho: 20, altura: 20, anchoimagen: 20, altoimagen: 20, imagen: imagen_banana, existe: false, contador: 0 };
+let banana = {x: null, y: null, ancho: 30, altura: 30, anchoimagen: 30, altoimagen: 30, imagen: imagen_banana, existe: false, contador: 0 };
 
 let caja = {x: 400, y: 585, ancho: 21.25, altura: 25, anchoimagen: 40, altoimagen: 25, imagen: imagencaja, activo: true};
 let caja2 = {x: 900, y: 100, ancho: 21.25, altura: 25, anchoimagen: 40, altoimagen: 25, imagen: imagencaja, activo: true};
@@ -1011,7 +1011,8 @@ function moverjugador()
             if(auto.boost)
             {
                 auto.velocidadmax = 8;
-                auto.velocidad = 8;
+                auto.velocidad /= Math.abs(auto.velocidad);
+                auto.velocidad *= 8;
                 setTimeout(function() {auto.boost = false; auto.velocidadmax= 4.25;}, 1200); 
             }
             canvas.addEventListener("mousedown", function (e) 
@@ -1419,13 +1420,13 @@ function moverbots()
                     }
                 }
             }
-            if (autos[i].vuelta == 5)
+            /*if (autos[i].vuelta == 5)
             {
                 if (autos[i].velocidad < 0)
                 {
                     autos[i].velocidad = 0;
                 }
-            }
+            }*/
 
             autos[i].x += Math.cos(autos[i].angulo) * autos[i].velocidad;
             autos[i].y += Math.sin(autos[i].angulo) * autos[i].velocidad;
