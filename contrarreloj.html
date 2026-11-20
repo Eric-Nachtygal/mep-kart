@@ -833,7 +833,8 @@ function moverjugador()
             if(auto.boost)
             {
                 auto.velocidadmax = 8;
-                auto.velocidad = 8;
+                auto.velocidad /= Math.abs(auto.velocidad);
+                auto.velocidad *= 8;
                 setTimeout(function() {auto.boost = false; auto.velocidadmax= 4.25;}, 1200); 
             }
             //console.log(auto.objeto);
@@ -1029,7 +1030,8 @@ function moverjugador()
             if(auto.boost)
             {
                 auto.velocidadmax = 8;
-                auto.velocidad = 8;
+                auto.velocidad /= Math.abs(auto.velocidad);
+                auto.velocidad *= 8;
                 setTimeout(function() {auto.boost = false; auto.velocidadmax= 4.25;}, 1200); 
             }
             if(auto.o && teclas['q'])

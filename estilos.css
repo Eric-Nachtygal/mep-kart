@@ -298,15 +298,18 @@ button {
 
 .tuto_container
 {
-    width: 93rem;
-    height: 42rem;
+    width: min(93rem, calc(100vw - 2rem));
+    height: calc(100vh - 2rem);
     background-color: #692020;
     position: fixed;
     top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
     border-radius: 20px;
     box-shadow: rgba(2, 1, 16, 0.49) 0px 0px 5px 5px;
     display: flex;
     padding: 1rem;
+    box-sizing: border-box;
 }
 
 .botones_info button
@@ -314,6 +317,7 @@ button {
     height: 2rem;
     background-color: rgb(158, 158, 158);
     transition: all 0.2s ease;
+    text-align: center;
 }
 
 .botones_info button.seleccionado
@@ -344,11 +348,19 @@ button {
 {
     position: fixed;
     top: 15rem;
+    left: 50%;
+    transform: translateX(-50%);
     text-align: center;
     flex-direction: column;
     justify-items: center;
     align-items: center;
-    width: 97%;
+    width: min(89rem, calc(100vw - 4rem));
+    box-sizing: border-box;
+}
+
+.tuto_info > div
+{
+    width: 100%;
 }
 
 .tuto_costado
@@ -356,18 +368,28 @@ button {
     display: flex;
     flex-direction: row;
     gap: 10rem;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.tuto_costado h2
+{
+    width: 20rem;
+    text-align: center;
 }
 
 .tuto_costado img
 {
     width: 8rem;
     image-rendering: pixelated;
-    margin-left: -10%;
+    margin-left: -5%;
 }
 
 .tuto_costado #caja
 {
-    margin-left: 7%;
+    margin-left: 3%;
+   
 }
 
 #acelerar
@@ -375,7 +397,6 @@ button {
     font-size: 120%;
     margin-bottom: 10px;
 }
-
 @media (max-width: 600px)
 {
     .titulo

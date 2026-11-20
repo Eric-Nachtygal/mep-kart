@@ -614,53 +614,6 @@ function colisiones(porcion)
         }
     }
 
-    for (let i = 0; i < mapa1_obstaculos.length; i++)
-    {
-        let auxobstaculo = mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho > hitbox_izq && mapa1_obstaculos[i].x < hitbox_der && mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura > hitbox_arriba && mapa1_obstaculos[i].y < hitbox_abajo;
-        if (auxobstaculo)
-        {
-            //donde hay mas colision
-            let colisionx = (mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho < hitbox_der ? mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho : hitbox_der) - (mapa1_obstaculos[i].x > hitbox_izq ? mapa1_obstaculos[i].x : hitbox_izq);
-            let colisiony = (mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura < hitbox_abajo ? mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura : hitbox_abajo) - (mapa1_obstaculos[i].y > hitbox_arriba ? mapa1_obstaculos[i].y : hitbox_arriba);
-
-
-            if (colisionx < colisiony)
-            {
-                //costados
-                if (mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho / 2 < centrox)
-                {
-                    colisiones.izquierda = false;
-                    porcion.x = mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho - 4;
-                } 
-                else
-                {
-                    colisiones.derecha = false;
-                    porcion.x = mapa1_obstaculos[i].x - (porcion.ancho - 2);
-                }
-            }
-            else
-            {
-                //arriba y abajo
-                if (mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura / 2  < centroy)
-                {
-                    colisiones.arriba = false;
-                    porcion.y = mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura - (porcion.altura - 12);
-                } 
-                else
-                {
-                    colisiones.abajo = false;
-                    porcion.y = mapa1_obstaculos[i].y - (porcion.altura - 3);
-                }
-            }
-
-            if (porcion.id == 1)
-            {
-                snd_choque.play();
-            }
-            
-        }
-    }
-
     for (let i = 0; i < autos.length; i++)
     {
         if (autos[i].id != porcion.id && autos[i].vuelta < 5)
@@ -709,6 +662,55 @@ function colisiones(porcion)
             }
         }
     }
+    
+
+    for (let i = 0; i < mapa1_obstaculos.length; i++)
+    {
+        let auxobstaculo = mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho > hitbox_izq && mapa1_obstaculos[i].x < hitbox_der && mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura > hitbox_arriba && mapa1_obstaculos[i].y < hitbox_abajo;
+        if (auxobstaculo)
+        {
+            //donde hay mas colision
+            let colisionx = (mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho < hitbox_der ? mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho : hitbox_der) - (mapa1_obstaculos[i].x > hitbox_izq ? mapa1_obstaculos[i].x : hitbox_izq);
+            let colisiony = (mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura < hitbox_abajo ? mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura : hitbox_abajo) - (mapa1_obstaculos[i].y > hitbox_arriba ? mapa1_obstaculos[i].y : hitbox_arriba);
+
+
+            if (colisionx < colisiony)
+            {
+                //costados
+                if (mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho / 2 < centrox)
+                {
+                    colisiones.izquierda = false;
+                    porcion.x = mapa1_obstaculos[i].x + mapa1_obstaculos[i].ancho - 4;
+                } 
+                else
+                {
+                    colisiones.derecha = false;
+                    porcion.x = mapa1_obstaculos[i].x - (porcion.ancho - 2);
+                }
+            }
+            else
+            {
+                //arriba y abajo
+                if (mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura / 2  < centroy)
+                {
+                    colisiones.arriba = false;
+                    porcion.y = mapa1_obstaculos[i].y + mapa1_obstaculos[i].altura - (porcion.altura - 12);
+                } 
+                else
+                {
+                    colisiones.abajo = false;
+                    porcion.y = mapa1_obstaculos[i].y - (porcion.altura - 3);
+                }
+            }
+
+            if (porcion.id == 1)
+            {
+                snd_choque.play();
+            }
+            
+        }
+    }
+
     
 
     porcion.x -= Math.cos(porcion.angulo) * porcion.velocidad;
@@ -1274,7 +1276,8 @@ function moverjugador()
             if(auto.boost)
             {
                 auto.velocidadmax = 8;
-                auto.velocidad = 8;
+                auto.velocidad /= Math.abs(auto.velocidad);
+                auto.velocidad *= 8;
                 setTimeout(function() {auto.boost = false; auto.velocidadmax= 4.25;}, 1200); 
             }
                 mov = true;
@@ -1399,8 +1402,8 @@ function moverbots()
                 let aux_y = autos[i].y + (autos[i].altoimagen / 2);
                 let deltax;
                 let deltay;
-                let rndx = Math.floor(Math.random() * (15) - 7);
-                let rndy = Math.floor(Math.random() * (15) - 7);
+                let rndx = Math.floor(Math.random() * (25 - (-25)) + (-25));
+                let rndy = Math.floor(Math.random() * (25 - (-25)) + (-25));
                 if (autos[i].camino >= mapa1_caminobots.length - 1)
                 {
                     deltax = mapa1_caminobots[0].x - aux_x + rndx;
@@ -1429,14 +1432,14 @@ function moverbots()
             {
                 if (autos[i].velocidad !=0)
                 {
-                    if (autos[i].velocidad > 0)
-                    {
-                        autos[i].velocidad -= 0.25;
-                    }
+                   /* if (autos[i].velocidad > 0)
+                    {*/
+                        autos[i].velocidad = 0;
+                    /*}
                     else (autos[i].velocidad < 0)
                     {
-                        autos[i].velocidad += 0.25;
-                    }
+                        autos[i].velocidad = 0;
+                    }*/
                 }
             }
             /*if (autos[i].vuelta == 5)
