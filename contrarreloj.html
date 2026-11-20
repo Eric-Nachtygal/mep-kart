@@ -276,7 +276,7 @@ let autos = [auto];
 
 let caja = {x: 400, y: 585, ancho: 21.25, altura: 25, anchoimagen: 40, altoimagen: 25, imagen: imagencaja, activo: true};
 let caja2 = {x: 900, y: 100, ancho: 21.25, altura: 25, anchoimagen: 40, altoimagen: 25, imagen: imagencaja, activo: true};
-let objetos = [caja, caja2];
+let objetos = [caja , caja2];
 
 let mouseapretado = false;
 let teclas = {};
@@ -426,17 +426,13 @@ function colisiones(porcion)
     }
     objetos.forEach(objeto => 
     {
-        
-        if (!objeto.activo)
-        {
-            setTimeout(() => {objeto.activo = true; objeto.imagen = imagencaja;}, 1000);
-        }
         let auxobjeto = objeto.x + objeto.ancho > hitbox_izq && objeto.x < hitbox_der && objeto.y + objeto.altura > hitbox_arriba && objeto.y < hitbox_abajo;
-        if (auxobjeto)
+
+        if (auxobjeto && objeto.activo)
         {
             if (!porcion.o)
-            {
-                porcion.objeto = obj[Math.floor(Math.random() * objetos.length)];
+            {   
+                porcion.objeto = obj[Math.floor(Math.random() * 3)];
                 porcion.o = true;
                 if (porcion.id == 1)
                 {
@@ -446,6 +442,10 @@ function colisiones(porcion)
             objeto.imagen = imagencaja2;
             objeto.activo = false;
             return;
+        }
+        else if (!objeto.activo && !auxobjeto)
+        {
+            setTimeout(() => {objeto.activo = true; objeto.imagen = imagencaja;}, 1000);
         }
     });
     for (let i = 0; i < mapa1_checkpoints.length; i++)
