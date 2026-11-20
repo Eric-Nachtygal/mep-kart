@@ -274,8 +274,8 @@ let auto = {x: 880, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 
 const obj = ["champi", "tortuga", "bananas"];
 let autos = [auto];
 
-let caja = {x: 400, y: 585, ancho: 40, altura: 25, anchoimagen: 40, altoimagen: 25, imagen: imagencaja, activo: true};
-let caja2 = {x: 900, y: 100, ancho: 40, altura: 25, anchoimagen: 40, altoimagen: 25, imagen: imagencaja, activo: true};
+let caja = {x: 400, y: 585, ancho: 21.25, altura: 25, anchoimagen: 40, altoimagen: 25, imagen: imagencaja, activo: true};
+let caja2 = {x: 900, y: 100, ancho: 21.25, altura: 25, anchoimagen: 40, altoimagen: 25, imagen: imagencaja, activo: true};
 let objetos = [caja, caja2];
 
 let mouseapretado = false;
@@ -588,7 +588,7 @@ function dibujar()
 {
     for (let i=0; i<objetos.length; i++)
     {
-        ctx.drawImage(objetos[i].imagen, objetos[i].x, objetos[i].y, objetos[i].anchoimagen, objetos[i].altoimagen);
+        ctx.drawImage(objetos[i].imagen, objetos[i].x - objetos[i].anchoimagen / 4, objetos[i].y, objetos[i].anchoimagen, objetos[i].altoimagen);
     }
     for (let i=0; i<autos.length; i++)
     {
