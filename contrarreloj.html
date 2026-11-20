@@ -166,6 +166,8 @@ const imagencaja2 = new Image();
 imagencaja2.src = 'sprites/caja_misteriosa_inactiva.png';
 const imagen_champi = new Image();
 imagen_champi.src = 'sprites/champi.png';
+const semaforo = new Image();
+semaforo.src = "sprites/semaforo.png";
 
 const snd_principio1 = new Audio();
 snd_principio1.src = "sonidos/principio1.ogg";
@@ -173,6 +175,12 @@ snd_principio1.preload = "auto";
 const snd_principio2 = new Audio();
 snd_principio2.src = "sonidos/principio2.ogg";
 snd_principio2.preload = "auto";
+const snd_choque = new Audio();
+snd_choque.src = "sonidos/choque.ogg";
+snd_choque.preload = "auto";
+const snd_item = new Audio();
+snd_item.src = "sonidos/item.ogg";
+snd_item.preload = "auto";
 
 promesasCarga.push(new Promise(res => {
         imagenauto1.onload = res;
@@ -203,7 +211,13 @@ promesasCarga.push(new Promise(res => {
             res();
         };
     }));
-
+promesasCarga.push(new Promise(res => {
+        semaforo.onload = res;
+        semaforo.onerror = () => {
+            console.error("aaaaaaaaaaaaaaaaaaaa");
+            res();
+        };
+    }));
 
 promesasCarga.push(new Promise(res => {
     snd_principio1.addEventListener("canplaythrough", res, { once: true });
@@ -219,7 +233,20 @@ promesasCarga.push(new Promise(res => {
         res(); // resolvemos igual para que el juego arranque
     }, { once: true });
     }));
-
+promesasCarga.push(new Promise(res => {
+    snd_choque.addEventListener("canplaythrough", res, { once: true });
+    snd_choque.addEventListener("error", () => {
+        console.error("No se pudo cargar el sonido:", ruta);
+        res(); // resolvemos igual para que el juego arranque
+    }, { once: true });
+    }));
+promesasCarga.push(new Promise(res => {
+    snd_item.addEventListener("canplaythrough", res, { once: true });
+    snd_item.addEventListener("error", () => {
+        console.error("No se pudo cargar el sonido:", ruta);
+        res(); // resolvemos igual para que el juego arranque
+    }, { once: true });
+    }));
 
 document.addEventListener('contextmenu', function (e)
 {
@@ -410,6 +437,10 @@ function colisiones(porcion)
             {
                 porcion.objeto = obj[Math.floor(Math.random() * objetos.length)];
                 porcion.o = true;
+                if (porcion.id == 1)
+                {
+                    snd_item.play();
+                }
             }
             objeto.imagen = imagencaja2;
             objeto.activo = false;
@@ -497,10 +528,11 @@ function colisiones(porcion)
                     porcion.y = mapa1_obstaculos[i].y - (porcion.altura - 3);
                 }
             }
+            snd_choque.play();
         }
     }
 
-    for (let i = 0; i < autos.length; i++)
+   /* for (let i = 0; i < autos.length; i++)
     {
         if (autos[i].id != porcion.id)
         {
@@ -542,7 +574,7 @@ function colisiones(porcion)
                 }
             }
         }
-    }
+    }*/
     
 
     porcion.x -= Math.cos(porcion.angulo) * porcion.velocidad;
@@ -635,15 +667,31 @@ function dibujar()
     ctx.strokeStyle = "rgb(0, 0, 0)";
     if(tiempo[5].principio > 0)
     {
-        ctx.font = '100px Arial Black';
+        /*ctx.font = '100px Arial Black';
         ctx.strokeText(tiempo[5].principio, 600, 350);
-        ctx.fillText(tiempo[5].principio, 600, 350);
+        ctx.fillText(tiempo[5].principio, 600, 350);*/
+        switch (tiempo[5].principio)
+        {
+            case 4:
+            ctx.drawImage(semaforo, 0 * 27, 0 * 15, 27, 15, 535, 250, 270, 150);
+            break;
+            case 3:
+            ctx.drawImage(semaforo, 1 * 27, 0 * 15, 27, 15, 535, 250, 270, 150);
+            break;
+            case 2:
+            ctx.drawImage(semaforo, 0 * 27, 1 * 15, 27, 15, 535, 250, 270, 150);
+            break;
+            case 1:
+            ctx.drawImage(semaforo, 1 * 27, 1 * 15, 27, 15, 535, 250, 270, 150);
+            break;
+        }
     }
     else if (tiempo[5].principio == 0)
     {
-        ctx.font = '100px Arial Black';
+        /*ctx.font = '100px Arial Black';
         ctx.strokeText("GO!", 600, 350);
-        ctx.fillText("GO!", 600, 350);
+        ctx.fillText("GO!", 600, 350);*/
+        ctx.drawImage(semaforo, 0 * 27, 2 * 15, 27, 15, 535, 250, 270, 150);
     }
     if (tiempo[5].principio < 1)
     {
@@ -1092,7 +1140,7 @@ function loop()
         if (auto.vuelta == 5 && auto.velocidad == 0)
         {
             document.getElementById("fin").showModal();
-            musica.pause();
+            musica.src = "fin.ogg";
             document.getElementById("tiempo").innerHTML = "Tiempo Total: " + tiempo[5].minutos + ":" + tiempo[5].segundos + ":" + tiempo[5].centisegundos;
             let mejorvuelta = 0;
             for (let i= 1; i < 5; i++)
