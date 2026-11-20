@@ -432,7 +432,7 @@ function colisiones(porcion)
         {
             if (!porcion.o)
             {   
-                porcion.objeto = 1;
+                porcion.objeto = obj[0];
                 porcion.o = true;
                 if (porcion.id == 1)
                 {
@@ -581,9 +581,9 @@ function colisiones(porcion)
     porcion.x -= Math.cos(porcion.angulo) * porcion.velocidad;
     porcion.y -= Math.sin(porcion.angulo) * porcion.velocidad;
     
+console.log(porcion.objeto);
     return colisiones;
 }
-
 function dibujar()
 {
     for (let i=0; i<objetos.length; i++)
