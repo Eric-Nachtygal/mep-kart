@@ -188,6 +188,8 @@ const imagen_banana = new Image();
 imagen_banana.src = 'sprites/banana_1.png';
 const imagen_banana2 = new Image();
 imagen_banana2.src = 'sprites/banana_2.png';
+const semaforo = new Image();
+semaforo.src = "sprites/semaforo.png";
 
 const snd_principio1 = new Audio();
 snd_principio1.src = "sonidos/principio1.ogg";
@@ -195,6 +197,12 @@ snd_principio1.preload = "auto";
 const snd_principio2 = new Audio();
 snd_principio2.src = "sonidos/principio2.ogg";
 snd_principio2.preload = "auto";
+const snd_choque = new Audio();
+snd_choque.src = "sonidos/choque.ogg";
+snd_choque.preload = "auto";
+const snd_item = new Audio();
+snd_item.src = "sonidos/item.ogg";
+snd_item.preload = "auto";
 
 promesasCarga.push(new Promise(res => {
         imagenauto1.onload = res;
@@ -274,6 +282,13 @@ promesasCarga.push(new Promise(res => {
             res();
         };
     }));
+promesasCarga.push(new Promise(res => {
+        semaforo.onload = res;
+        semaforo.onerror = () => {
+            console.error("aaaaaaaaaaaaaaaaaaaa");
+            res();
+        };
+    }));
 
 promesasCarga.push(new Promise(res => {
     snd_principio1.addEventListener("canplaythrough", res, { once: true });
@@ -285,6 +300,20 @@ promesasCarga.push(new Promise(res => {
 promesasCarga.push(new Promise(res => {
     snd_principio2.addEventListener("canplaythrough", res, { once: true });
     snd_principio2.addEventListener("error", () => {
+        console.error("No se pudo cargar el sonido:", ruta);
+        res(); // resolvemos igual para que el juego arranque
+    }, { once: true });
+    }));
+promesasCarga.push(new Promise(res => {
+    snd_choque.addEventListener("canplaythrough", res, { once: true });
+    snd_choque.addEventListener("error", () => {
+        console.error("No se pudo cargar el sonido:", ruta);
+        res(); // resolvemos igual para que el juego arranque
+    }, { once: true });
+    }));
+promesasCarga.push(new Promise(res => {
+    snd_item.addEventListener("canplaythrough", res, { once: true });
+    snd_item.addEventListener("error", () => {
         console.error("No se pudo cargar el sonido:", ruta);
         res(); // resolvemos igual para que el juego arranque
     }, { once: true });
@@ -507,6 +536,10 @@ function colisiones(porcion)
             {   
                 porcion.objeto = obj[Math.floor(Math.random() * 3)];
                 porcion.o = true;
+                if (porcion.id == 1)
+                {
+                    snd_item.play();
+                }
             }
             objeto.imagen = imagencaja2;
             objeto.activo = false;
@@ -599,6 +632,12 @@ function colisiones(porcion)
                     porcion.y = mapa1_obstaculos[i].y - (porcion.altura - 3);
                 }
             }
+
+            if (porcion.id == 1)
+            {
+                snd_choque.play();
+            }
+            
         }
     }
 
@@ -642,6 +681,10 @@ function colisiones(porcion)
                         colisiones.abajo = false;
                         porcion.y = autos[i].y - (porcion.altura - 6);
                     }
+                }
+                if (porcion.id == 1)
+                {
+                    snd_choque.play();
                 }
             }
         }
@@ -700,6 +743,7 @@ function colisiones(porcion)
     }
     return colisiones;
 }
+
 function dibujar()
 {
     for (let i=0; i<objetos.length; i++)
@@ -785,15 +829,31 @@ function dibujar()
     ctx.strokeStyle = "rgb(0, 0, 0)";
     if(tiempo.principio > 0)
     {
-        ctx.font = '100px Arial Black';
+        /*ctx.font = '100px Arial Black';
         ctx.strokeText(tiempo.principio, 600, 350);
-        ctx.fillText(tiempo.principio, 600, 350);
+        ctx.fillText(tiempo.principio, 600, 350);*/
+        switch (tiempo.principio)
+        {
+            case 4:
+            ctx.drawImage(semaforo, 0 * 27, 0 * 15, 27, 15, 535, 250, 270, 150);
+            break;
+            case 3:
+            ctx.drawImage(semaforo, 1 * 27, 0 * 15, 27, 15, 535, 250, 270, 150);
+            break;
+            case 2:
+            ctx.drawImage(semaforo, 0 * 27, 1 * 15, 27, 15, 535, 250, 270, 150);
+            break;
+            case 1:
+            ctx.drawImage(semaforo, 1 * 27, 1 * 15, 27, 15, 535, 250, 270, 150);
+            break;
+        }
     }
     else if (tiempo.principio == 0)
     {
-        ctx.font = '100px Arial Black';
+        /*ctx.font = '100px Arial Black';
         ctx.strokeText("GO!", 600, 350);
-        ctx.fillText("GO!", 600, 350);
+        ctx.fillText("GO!", 600, 350);*/
+        ctx.drawImage(semaforo, 0 * 27, 2 * 15, 27, 15, 535, 250, 270, 150);
     }
     if (tiempo.principio < 1)
     {
@@ -1366,7 +1426,7 @@ function loop()
     if (auto.vuelta == 5 && auto.velocidad == 0)
     {
         document.getElementById("fin").showModal();
-        musica.pause();
+        musica.src = "fin.ogg";
         document.getElementById("tiempo").innerHTML = "Tiempo: " + tiempo.minutos + ":" + tiempo.segundos + ":" + tiempo.centisegundos;
         document.getElementById("puesto").innerHTML = "Puesto: " + auto.puesto;
         if (auto.puesto > 4)
