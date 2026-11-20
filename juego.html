@@ -952,7 +952,41 @@ function moverjugador()
                 auto.velocidad = 8;
                 setTimeout(function() {auto.boost = false; auto.velocidadmax= 4.25;}, 1200); 
             }
-            if(auto.o && teclas['q'])
+            canvas.addEventListener("mousedown", function (e) 
+            {
+                if (auto.o && e.button == 1)
+                {
+                    if(auto.objeto == "champi")
+                    {
+                        auto.boost = true;
+                        auto.o = false;
+                        auto.objeto = null;
+                    }
+                    else if(auto.objeto == "tortuga")
+                    {
+                        auto.o = false;
+                        auto.objeto = null;
+                        tortu.x = auto.x;
+                        tortu.y = auto.y;
+                        tortu.angulo = auto.angulo;
+                        tortu.existe = true;
+                        tortu.x += Math.cos(tortu.angulo) * auto.anchoimagen;
+                        tortu.y += Math.sin(tortu.angulo) * auto.altoimagen;
+                    }
+                    else if(auto.objeto == "bananas")
+                    {
+                        auto.o = false;
+                        auto.objeto = null;
+                        banana.x = auto.x;
+                        banana.y = auto.y;
+                        banana.existe = true;
+                        banana.x -= Math.cos(auto.angulo) * auto.anchoimagen;
+                        banana.y -= Math.sin(auto.angulo) * auto.altoimagen;
+                    }
+                }
+                
+            });
+            if(auto.o && teclas['q'] )
             {
                 if(auto.objeto == "champi")
                 {
