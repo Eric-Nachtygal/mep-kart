@@ -23,9 +23,9 @@
         <button id="volver" class="volver" type="button" hidden>Volver</button>
         <button id="acelerar" class="config" type="button" hidden></button>
         <label for="volumen" hidden class="config">Volumen de Música</label>
-        <input type="range" class="config volumen" id="volumen" name="volumen" min="0" max="100" value="70" hidden>
+        <input type="range" class="config volumen" id="volumen" name="volumen" min="0" max="100" hidden>
         <label for="volumen2" hidden class="config">Volumen del Sonido</label>
-        <input type="range" class="config volumen" id="volumen2" name="volumen2" min="0" max="100" value="100" hidden>
+        <input type="range" class="config volumen" id="volumen2" name="volumen2" min="0" max="100" hidden>
     </div>
     </main>
     <div class="inicio" id="inicio">
@@ -55,20 +55,24 @@
         const snd_selec = new Audio();
         snd_selec.src = "sonidos/menuseleccionar.ogg";
         snd_selec.preload = "auto";
-        if (localStorage.getItem('volumen') !== null)
-        {
-            localStorage.setItem('volumen', 70);
-        }
-        if (localStorage.getItem('volumen2') !== null)
-        {
-            localStorage.setItem('volumen2', 100);
-        }
-        volumen.value = localStorage.getItem('volumen');
-        document.getElementById("audioFondo").volume = localStorage.getItem("volumen") / 100;
 
-        volumen2.value = localStorage.getItem('volumen2');
-        snd_hover.volume = localStorage.getItem("volumen2") / 100;
-        snd_selec.volume = localStorage.getItem("volumen2") / 100;
+        document.addEventListener("load",()=>
+        {
+            if (localStorage.getItem('volumen') !== null)
+            {
+                localStorage.setItem('volumen', 70);
+            }
+            if (localStorage.getItem('volumen2') !== null)
+            {
+                localStorage.setItem('volumen2', 100);
+            }
+            volumen.value = localStorage.getItem('volumen');
+            document.getElementById("audioFondo").volume = localStorage.getItem("volumen") / 100;
+
+            volumen2.value = localStorage.getItem('volumen2');
+            snd_hover.volume = localStorage.getItem("volumen2") / 100;
+            snd_selec.volume = localStorage.getItem("volumen2") / 100;
+        });
 
 
         const ref = document.referrer;

@@ -181,6 +181,16 @@ snd_choque.preload = "auto";
 const snd_item = new Audio();
 snd_item.src = "sonidos/item.ogg";
 snd_item.preload = "auto";
+const snd_champi = new Audio("sonidos/champi.ogg");
+snd_champi.preload = "auto";
+snd_champi.volume = (localStorage.getItem("volumen2") / 100);
+const snd_item_usar = new Audio("sonidos/tirarobjeto.ogg");
+snd_item_usar.preload = "auto";
+snd_item_usar.volume = (localStorage.getItem("volumen2") / 100);
+const snd_motor = new Audio("sonidos/motor.ogg");
+snd_motor.preload = "auto";
+snd_motor.loop = true;
+snd_motor.volume = (localStorage.getItem("volumen2") / 100);
 
 promesasCarga.push(new Promise(res => {
         imagenauto1.onload = res;
@@ -247,6 +257,29 @@ promesasCarga.push(new Promise(res => {
         res(); // resolvemos igual para que el juego arranque
     }, { once: true });
     }));
+promesasCarga.push(new Promise(res => {
+    snd_item_usar.addEventListener("canplaythrough", res, { once: true });
+    snd_item_usar.addEventListener("error", () => {
+        console.error("No se pudo cargar el sonido:", ruta);
+        res(); // resolvemos igual para que el juego arranque
+    }, { once: true });
+    }));
+
+promesasCarga.push(new Promise(res => {
+    snd_champi.addEventListener("canplaythrough", res, { once: true });
+    snd_champi.addEventListener("error", () => {
+        console.error("No se pudo cargar el sonido:", ruta);
+        res(); // resolvemos igual para que el juego arranque
+    }, { once: true });
+    }));
+
+promesasCarga.push(new Promise(res => {
+    snd_motor.addEventListener("canplaythrough", res, { once: true });
+    snd_motor.addEventListener("error", () => {
+        console.error("No se pudo cargar el sonido:", ruta);
+        res(); // resolvemos igual para que el juego arranque
+    }, { once: true });
+    }));
 
 document.addEventListener('contextmenu', function (e)
 {
@@ -260,6 +293,7 @@ if (localStorage.getItem("acelerar") !== null && localStorage.getItem("acelerar"
 }
 
 let pausa = false;
+let mov = false;
 let tiempo = 
 [
     {centisegundos: 0, segundos: 0, minutos: 0}, //vuelta 1
@@ -808,9 +842,6 @@ function moverjugador()
 {
     if (tiempo[5].principio < 1)
     {
-        let mov = false;
-
-
         //console.log(auto.pasto);
 
         if (auto.vuelta < 5)
@@ -833,8 +864,15 @@ function moverjugador()
             if(auto.boost)
             {
                 auto.velocidadmax = 8;
-                auto.velocidad /= Math.abs(auto.velocidad);
-                auto.velocidad *= 8;
+                if (auto.velocidad != 0)
+                {
+                    auto.velocidad /= Math.abs(auto.velocidad);
+                    auto.velocidad *= 8;
+                }
+                else
+                {
+                    auto.velocidad = 8;
+                }
                 setTimeout(function() {auto.boost = false; auto.velocidadmax= 4.25;}, 1200); 
             }
             //console.log(auto.objeto);
@@ -843,6 +881,7 @@ function moverjugador()
                 auto.boost = true;
                 auto.o = false;
                 auto.objeto = null;
+                snd_champi.play();
             }
             canvas.addEventListener("mousedown", function (e) 
             {
@@ -991,6 +1030,10 @@ function moverjugador()
                 {
                     mouseapretado = true;
                     posicionmouse(e);
+                    if (!mov && snd_motor.paused)
+                    {
+                        snd_motor.play();
+                    }
                 }
                 if (e.button == 2)
                 {
@@ -1011,6 +1054,7 @@ function moverjugador()
                 if (e.button == 0)
                 {
                     mouseapretado = false;
+                    mov = false;
                 }
                 if (e.button == 2)
                 {
@@ -1101,6 +1145,7 @@ function moverjugador()
 
             if (!mov)
             {
+                snd_motor.pause();
                 if (auto.velocidad !=0)
                 {
                     if (auto.velocidad > 0)
@@ -1239,6 +1284,10 @@ document.addEventListener('keydown', function(e)
             snd_selecaux.volume = localStorage.getItem("volumen2") / 100;
             snd_selecaux.play();
         }
+        else if (!mov && snd_motor.paused)
+        {
+            snd_motor.play();
+        }
 
         teclas[e.key.toLowerCase()] = true;
     });
@@ -1246,6 +1295,11 @@ document.addEventListener('keydown', function(e)
     document.addEventListener('keyup', function(e)
     {
         teclas[e.key.toLowerCase()] = false;
+        mov = false;
+        if (e.key == "Enter" || e.key == "Escape")
+        {
+            snd_motor.pause();
+        }
     });
 
 

@@ -203,6 +203,16 @@ snd_choque.preload = "auto";
 const snd_item = new Audio();
 snd_item.src = "sonidos/item.ogg";
 snd_item.preload = "auto";
+const snd_champi = new Audio("sonidos/champi.ogg");
+snd_champi.preload = "auto";
+snd_champi.volume = (localStorage.getItem("volumen2") / 100);
+const snd_item_usar = new Audio("sonidos/tirarobjeto.ogg");
+snd_item_usar.preload = "auto";
+snd_item_usar.volume = (localStorage.getItem("volumen2") / 100);
+const snd_motor = new Audio("sonidos/motor.ogg");
+snd_motor.preload = "auto";
+snd_motor.loop = true;
+snd_motor.volume = (localStorage.getItem("volumen2") / 100);
 
 promesasCarga.push(new Promise(res => {
         imagenauto1.onload = res;
@@ -318,8 +328,29 @@ promesasCarga.push(new Promise(res => {
         res(); // resolvemos igual para que el juego arranque
     }, { once: true });
     }));
+promesasCarga.push(new Promise(res => {
+    snd_item_usar.addEventListener("canplaythrough", res, { once: true });
+    snd_item_usar.addEventListener("error", () => {
+        console.error("No se pudo cargar el sonido:", ruta);
+        res(); // resolvemos igual para que el juego arranque
+    }, { once: true });
+    }));
 
+promesasCarga.push(new Promise(res => {
+    snd_champi.addEventListener("canplaythrough", res, { once: true });
+    snd_champi.addEventListener("error", () => {
+        console.error("No se pudo cargar el sonido:", ruta);
+        res(); // resolvemos igual para que el juego arranque
+    }, { once: true });
+    }));
 
+promesasCarga.push(new Promise(res => {
+    snd_motor.addEventListener("canplaythrough", res, { once: true });
+    snd_motor.addEventListener("error", () => {
+        console.error("No se pudo cargar el sonido:", ruta);
+        res(); // resolvemos igual para que el juego arranque
+    }, { once: true });
+    }));
 
 document.addEventListener('contextmenu', function (e)
 {
@@ -333,6 +364,7 @@ if (localStorage.getItem("acelerar") !== null && localStorage.getItem("acelerar"
 }
 
 let pausa = false;
+let mov = false;
 let tiempo = {centisegundos: 0, segundos: 0, minutos: 0, principio: 4};
 let auto = {x: 880, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 3.14, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 0, imagen: imagenauto1, id:1, puesto:1, objeto: null, o: false, boost: false};
 let bot1 = {x: 920, y: 647, ancho: 25, altura: 15, anchoimagen: 25, altoimagen: 15,  velocidad: 0, velocidadmax: 4.75, angulo: 3.14, angulo_muestra: 3.14, min_turbo_con: 0, min_turbo: 0, pasto: false, checkpoint: 0, vuelta: 0, imagen:imagenauto2, camino:0, id:2, puesto:2, objeto: null, o: false, boost: false};
@@ -711,6 +743,9 @@ function colisiones(porcion)
             tortu.y = null;
             tortu.angulo = null;
             tortu.existe = false;
+            let snd_choque_aux = snd_choque;
+            snd_choque_aux.volume = localStorage.getItem("volumen2") / 100;
+            snd_choque_aux.play();
         }
     }
     if (banana.existe)
@@ -728,6 +763,9 @@ function colisiones(porcion)
             banana.y = null;
             banana.angulo = null;
             banana.existe = false;
+            let snd_choque_aux = snd_choque;
+            snd_choque_aux.volume = localStorage.getItem("volumen2") / 100;
+            snd_choque_aux.play();
         }
     }
     for (let i = 0; i < mapa1_obstaculos.length; i++)
@@ -978,9 +1016,6 @@ function moverjugador()
 {
     if (tiempo.principio < 1)
     {
-        let mov = false;
-
-
         //console.log(auto.pasto);
         /*if (auto.vuelta == 5)
         {
@@ -1013,8 +1048,15 @@ function moverjugador()
             if(auto.boost)
             {
                 auto.velocidadmax = 8;
-                auto.velocidad /= Math.abs(auto.velocidad);
-                auto.velocidad *= 8;
+                if (auto.velocidad != 0)
+                {
+                    auto.velocidad /= Math.abs(auto.velocidad);
+                    auto.velocidad *= 8;
+                }
+                else
+                {
+                    auto.velocidad = 8;
+                }
                 setTimeout(function() {auto.boost = false; auto.velocidadmax= 4.25;}, 1200); 
             }
             canvas.addEventListener("mousedown", function (e) 
@@ -1058,6 +1100,7 @@ function moverjugador()
                     auto.boost = true;
                     auto.o = false;
                     auto.objeto = null;
+                    snd_champi.play();
                 }
                 else if(auto.objeto == "tortuga")
                 {
@@ -1069,6 +1112,7 @@ function moverjugador()
                     tortu.existe = true;
                     tortu.x += Math.cos(tortu.angulo) * auto.anchoimagen;
                     tortu.y += Math.sin(tortu.angulo) * auto.altoimagen;
+                    snd_item_usar.play();
                 }
                 else if(auto.objeto == "bananas")
                 {
@@ -1079,6 +1123,7 @@ function moverjugador()
                     banana.existe = true;
                     banana.x -= Math.cos(auto.angulo) * auto.anchoimagen;
                     banana.y -= Math.sin(auto.angulo) * auto.altoimagen;
+                    snd_item_usar.play();
                 }
                 
             }
@@ -1218,6 +1263,10 @@ function moverjugador()
                 {
                     mouseapretado = true;
                     posicionmouse(e);
+                    if (!mov && snd_motor.paused)
+                    {
+                        snd_motor.play();
+                    }
                 }
                 if (e.button == 2)
                 {
@@ -1238,6 +1287,7 @@ function moverjugador()
                 if (e.button == 0)
                 {
                     mouseapretado = false;
+                    mov = false;
                 }
                 if (e.button == 2)
                 {
@@ -1319,6 +1369,7 @@ function moverjugador()
 
             if (!mov)
             {
+                snd_motor.pause();
                 if (auto.velocidad !=0)
                 {
                     if (auto.velocidad > 0)
@@ -1551,6 +1602,7 @@ Promise.all(promesasCarga).then(() =>
         
         e.preventDefault();
 
+        
         if ((e.key == 'Enter' || e.key == 'Escape') && tiempo.principio < 1 && auto.vuelta < 5)
         {
             if (pausa == false)
@@ -1569,6 +1621,10 @@ Promise.all(promesasCarga).then(() =>
             snd_selecaux.volume = localStorage.getItem("volumen2") / 100;
             snd_selecaux.play();
         }
+        else if (!mov && snd_motor.paused)
+        {
+            snd_motor.play();
+        }
 
         teclas[e.key.toLowerCase()] = true;
     });
@@ -1576,6 +1632,11 @@ Promise.all(promesasCarga).then(() =>
     document.addEventListener('keyup', function(e)
     {
         teclas[e.key.toLowerCase()] = false;
+        mov = false;
+        if (e.key == "Enter" || e.key == "Escape")
+        {
+            snd_motor.pause();
+        }
     });
 
 
