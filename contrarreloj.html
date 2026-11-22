@@ -191,6 +191,12 @@ const snd_motor = new Audio("sonidos/motor.ogg");
 snd_motor.preload = "auto";
 snd_motor.loop = true;
 snd_motor.volume = (localStorage.getItem("volumen2") / 100);
+const snd_vuelta = new Audio("sonidos/vuelta.ogg");
+snd_vuelta.preload = "auto";
+snd_vuelta.volume = (localStorage.getItem("volumen2") / 100);
+const snd_ultvuelta = new Audio("sonidos/ultimavuelta.ogg");
+snd_ultvuelta.preload = "auto";
+snd_ultvuelta.volume = (localStorage.getItem("volumen2") / 100);
 
 promesasCarga.push(new Promise(res => {
         imagenauto1.onload = res;
@@ -276,6 +282,20 @@ promesasCarga.push(new Promise(res => {
 promesasCarga.push(new Promise(res => {
     snd_motor.addEventListener("canplaythrough", res, { once: true });
     snd_motor.addEventListener("error", () => {
+        console.error("No se pudo cargar el sonido:", ruta);
+        res(); // resolvemos igual para que el juego arranque
+    }, { once: true });
+    }));
+promesasCarga.push(new Promise(res => {
+    snd_vuelta.addEventListener("canplaythrough", res, { once: true });
+    snd_vuelta.addEventListener("error", () => {
+        console.error("No se pudo cargar el sonido:", ruta);
+        res(); // resolvemos igual para que el juego arranque
+    }, { once: true });
+    }));
+promesasCarga.push(new Promise(res => {
+    snd_ultvuelta.addEventListener("canplaythrough", res, { once: true });
+    snd_ultvuelta.addEventListener("error", () => {
         console.error("No se pudo cargar el sonido:", ruta);
         res(); // resolvemos igual para que el juego arranque
     }, { once: true });
@@ -496,6 +516,14 @@ function colisiones(porcion)
             {
                 porcion.checkpoint = 0;
                 porcion.vuelta += 1;
+                if (porcion.vuelta < 4)
+                {
+                    snd_vuelta.play();
+                }
+                else
+                {
+                    snd_ultvuelta.play();
+                }
                 //console.log("Vuelta: " + porcion.vuelta);
                 break;
             }
@@ -618,6 +646,7 @@ function colisiones(porcion)
 console.log(porcion.objeto);
     return colisiones;
 }
+
 function dibujar()
 {
     for (let i=0; i<objetos.length; i++)
@@ -1199,6 +1228,7 @@ function loop()
         moverjugador();
         if (auto.vuelta == 5 && auto.velocidad == 0)
         {
+            snd_motor.pause();
             document.getElementById("fin").showModal();
             musica.src = "fin.ogg";
             document.getElementById("tiempo").innerHTML = "Tiempo Total: " + tiempo[5].minutos + ":" + tiempo[5].segundos + ":" + tiempo[5].centisegundos;

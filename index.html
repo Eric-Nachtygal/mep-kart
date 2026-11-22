@@ -56,23 +56,22 @@
         snd_selec.src = "sonidos/menuseleccionar.ogg";
         snd_selec.preload = "auto";
 
-        document.addEventListener("load",()=>
-        {
-            if (localStorage.getItem('volumen') !== null)
-            {
-                localStorage.setItem('volumen', 70);
-            }
-            if (localStorage.getItem('volumen2') !== null)
-            {
-                localStorage.setItem('volumen2', 100);
-            }
-            volumen.value = localStorage.getItem('volumen');
-            document.getElementById("audioFondo").volume = localStorage.getItem("volumen") / 100;
 
-            volumen2.value = localStorage.getItem('volumen2');
-            snd_hover.volume = localStorage.getItem("volumen2") / 100;
-            snd_selec.volume = localStorage.getItem("volumen2") / 100;
-        });
+        if (localStorage.getItem('volumen') == null)
+        {
+            localStorage.setItem('volumen', 70);
+        }
+        if (localStorage.getItem('volumen2') == null)
+        {
+            localStorage.setItem('volumen2', 100);
+        }
+        volumen.value = localStorage.getItem('volumen');
+        document.getElementById("audioFondo").volume = localStorage.getItem("volumen") / 100;
+
+        volumen2.value = localStorage.getItem('volumen2');
+        snd_hover.volume = localStorage.getItem("volumen2") / 100;
+        snd_selec.volume = localStorage.getItem("volumen2") / 100;
+     
 
 
         const ref = document.referrer;
